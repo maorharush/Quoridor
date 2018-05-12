@@ -13,8 +13,8 @@ import java.util.Random;
  * 
  * The AI has 3 settings, easy, normal and hard.
  * 
- * @author Joey Tuong
- * @author Luke Pearson
+ * @author Find and change me plz!!
+ * @author Find and change me plz!!
  *
  */
 public class AI extends Player {
