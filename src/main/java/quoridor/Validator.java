@@ -8,7 +8,7 @@ public class Validator {
     // you must implement the no-arg constructor and the check method
     
     // you may add extra fields and methods to this class
-    // but the ProvidedTests code only calls the specified methods
+    // but the _ProvidedTests code only calls the specified methods
     Player[] ar = new Player[2];
 
 	Board board;

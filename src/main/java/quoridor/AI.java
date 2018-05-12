@@ -156,7 +156,7 @@ public class AI extends Player {
      */
     public Position getMoveHard(Board board) {
         List<Integer> players = board.getPlayers();
-        while (players.get(0) != this.getID()) {
+        while (!players.get(0).equals(this.getID())) {
             players.add(players.remove(0));
         }
         
@@ -170,7 +170,6 @@ public class AI extends Player {
             int temp = alphaBeta(players, this.getID(),
                     board.makeMove(current.toString()), 0, -1000000, +1000000);
             if (temp >= maxscore) {
-                maxscore = temp;
                 maxMove = current;
                 break;
             }

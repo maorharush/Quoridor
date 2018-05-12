@@ -45,14 +45,14 @@ public class Board {
                 boxes[i][j].setNeighbour(Direction.DOWN, boxes[i + 1][j]);
             }
         }
-        for (int i = 0; i < boxes.length; i++) {
+        for (Box[] boxe : boxes) {
             for (int j = 1; j < boxes.length; j++) {
-                boxes[i][j].setNeighbour(Direction.LEFT, boxes[i][j - 1]);
+                boxe[j].setNeighbour(Direction.LEFT, boxe[j - 1]);
             }
         }
-        for (int i = 0; i < boxes.length; i++) {
+        for (Box[] boxe : boxes) {
             for (int j = 0; j < boxes.length - 1; j++) {
-                boxes[i][j].setNeighbour(Direction.RIGHT, boxes[i][j + 1]);
+                boxe[j].setNeighbour(Direction.RIGHT, boxe[j + 1]);
             }
         }
     }

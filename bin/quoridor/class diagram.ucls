@@ -88,7 +88,7 @@
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </enumeration>  
-  <class id="12" corner="BOTTOM_RIGHT" language="java" name="quoridor.ProvidedTests" project="Quoridor" 
+  <class id="12" corner="BOTTOM_RIGHT" language="java" name="quoridor._ProvidedTests" project="Quoridor"
     file="/Quoridor/src/quoridor/ProvidedTests.java" binary="false">    
     <position height="-1" width="-1" x="626" y="1130"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" visibility="true">      
