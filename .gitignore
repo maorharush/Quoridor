@@ -1,6 +1,7 @@
 .idea
 src/main/resources/
-target/generated-sources/
-target/generated-test-sources/
 Quoridor.iml
 .project
+.classpath
+bin/
+target/
