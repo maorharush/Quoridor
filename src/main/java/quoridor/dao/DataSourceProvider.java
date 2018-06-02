@@ -14,6 +14,7 @@ public class DataSourceProvider {
         config.setReadOnly(false);
         config.setPageSize(4096); //in bytes
         config.setCacheSize(2000); //number of pages
+        config.setOpenMode(SQLiteOpenMode.CREATE);
         config.setSynchronous(SQLiteConfig.SynchronousMode.OFF);
         config.setJournalMode(SQLiteConfig.JournalMode.OFF);
 
