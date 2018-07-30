@@ -3,10 +3,9 @@ package quoridor.dao;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import quoridor.dao.dbo.*;
+import quoridor.dao.dbo.GameRecDBO;
 
-import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
 
 import static quoridor.dao.table.GameRecTable.TABLE_NAME;
 

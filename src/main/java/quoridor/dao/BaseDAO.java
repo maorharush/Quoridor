@@ -2,12 +2,10 @@ package quoridor.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.SQLException;
 
 public abstract class BaseDAO {
 
     protected JdbcTemplate jdbcTemplate;
-
     private static boolean isCreated = false;
 
     public BaseDAO() {
