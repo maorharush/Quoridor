@@ -4,6 +4,9 @@ public class GameDBO extends DBO {
     private String gameID;
     private int winner;
     private int numOfMoves;
+    private int dateStart;
+    private int dateEnd;
+    private int column;
 
     public int getWinner() {
         return winner;
@@ -44,10 +47,6 @@ public class GameDBO extends DBO {
     public void setColumn(int column) {
         this.column = column;
     }
-
-    private int dateStart;
-    private int dateEnd;
-    private int column;
     public String getGameID() {
         return gameID;
     }
