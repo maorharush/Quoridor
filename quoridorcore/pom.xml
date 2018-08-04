@@ -32,5 +32,9 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.harush.zitoon</groupId>
+            <artifactId>quoridor-common</artifactId>
+        </dependency>
     </dependencies>
 </project>
