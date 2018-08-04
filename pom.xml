@@ -49,6 +49,7 @@
             <dependency>
                 <groupId>com.harush.zitoon</groupId>
                 <artifactId>quoridor-common</artifactId>
+                <version>${common.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
