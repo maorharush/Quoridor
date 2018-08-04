@@ -1,4 +1,4 @@
-import core.Validator;
+import com.harush.zitoon.quoridor.core.Validator;
 import org.junit.Assert;
 import org.junit.Test;
 

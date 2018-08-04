@@ -1,8 +1,6 @@
 package com.harush.zitoon.quoridor.core.dao;
 
-import core.dao.GameRecDAO;
-import core.dao.GameRecDAOImpl;
-import core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import org.junit.Assert;
 import org.junit.Test;
 
