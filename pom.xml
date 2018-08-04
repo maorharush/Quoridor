@@ -12,6 +12,7 @@
     <modules>
         <module>quoridorcore</module>
         <module>quoridorcommon</module>
+        <module>quoridorui</module>
     </modules>
 
     <properties>
