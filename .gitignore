@@ -1,7 +1,4 @@
 .idea/
-src/main/resources/
 QuoridorProject.iml
-.project
-.classpath
 bin/
 target/
