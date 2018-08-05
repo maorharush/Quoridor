@@ -11,13 +11,12 @@
 
     <modules>
         <module>quoridorcore</module>
-        <module>quoridorcommon</module>
         <module>quoridorui</module>
     </modules>
 
     <properties>
         <mysql.connector.version>8.0.11</mysql.connector.version>
-        <common.version>1.0-SNAPSHOT</common.version>
+        <core.version>1.0-SNAPSHOT</core.version>
     </properties>
 
     <dependencyManagement>
@@ -49,8 +48,8 @@
             </dependency>
             <dependency>
                 <groupId>com.harush.zitoon</groupId>
-                <artifactId>quoridor-common</artifactId>
-                <version>${common.version}</version>
+                <artifactId>quoridor-core</artifactId>
+                <version>${core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

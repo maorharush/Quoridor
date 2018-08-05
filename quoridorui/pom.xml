@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.harush.zitoon</groupId>
-            <artifactId>quoridor-common</artifactId>
+            <artifactId>quoridor-core</artifactId>
         </dependency>
     </dependencies>
 </project>

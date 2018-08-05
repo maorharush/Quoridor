@@ -1,10 +1,11 @@
-package com.harush.zitoon.quoridor.core;
+package com.harush.zitoon.quoridor.core.logic;
 
-import com.harush.zitoon.quoridor.common.logic.PawnLogic;
-import com.harush.zitoon.quoridor.common.model.BoardColumn;
-import com.harush.zitoon.quoridor.common.model.BoardCoordinate;
-import com.harush.zitoon.quoridor.common.model.BoardRow;
-import com.harush.zitoon.quoridor.common.model.LogicResult;
+
+import com.harush.zitoon.quoridor.core.logic.PawnLogic;
+import com.harush.zitoon.quoridor.core.model.BoardColumn;
+import com.harush.zitoon.quoridor.core.model.BoardCoordinate;
+import com.harush.zitoon.quoridor.core.model.BoardRow;
+import com.harush.zitoon.quoridor.core.model.LogicResult;
 
 public class Pawn implements PawnLogic {
     @Override

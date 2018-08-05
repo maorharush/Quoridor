@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.common.model;
+package com.harush.zitoon.quoridor.core.model;
 
 public class BoardCoordinate {
 

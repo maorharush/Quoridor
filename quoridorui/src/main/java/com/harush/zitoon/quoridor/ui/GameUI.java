@@ -1,8 +1,8 @@
 package com.harush.zitoon.quoridor.ui;
 
-import com.harush.zitoon.quoridor.common.logic.PawnLogic;
-import com.harush.zitoon.quoridor.common.model.BoardCoordinate;
-import com.harush.zitoon.quoridor.common.model.LogicResult;
+import com.harush.zitoon.quoridor.core.logic.PawnLogic;
+import com.harush.zitoon.quoridor.core.model.BoardCoordinate;
+import com.harush.zitoon.quoridor.core.model.LogicResult;
 
 public class GameUI {
 
