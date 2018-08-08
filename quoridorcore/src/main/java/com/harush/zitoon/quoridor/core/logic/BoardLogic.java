@@ -40,8 +40,13 @@ public class BoardLogic implements Board {
     }
 
     private void setVertical(BoardPiece boardPiece, int x, int y) {
-        for (int i = 0; i < boardPiece.getLength(); i++) {
-            boardBoxes[boardPiece.getX()][boardPiece.getY() + i].setBoardPiece(null);
+        int currentX = boardPiece.getX();
+        int currentY = boardPiece.getY();
+
+        if (isValidCoordinate(currentX, currentY)) {
+            for (int i = 0; i < boardPiece.getLength(); i++) {
+                boardBoxes[boardPiece.getX()][boardPiece.getY() + i].setBoardPiece(null);
+            }
         }
 
         for (int i = 0; i < boardPiece.getLength(); i++) {
@@ -50,8 +55,13 @@ public class BoardLogic implements Board {
     }
 
     private void setHorizontal(BoardPiece boardPiece, int x, int y) {
-        for (int i = 0; i < boardPiece.getLength(); i++) {
-            boardBoxes[boardPiece.getX() + i][boardPiece.getY()].setBoardPiece(null);
+        int currentX = boardPiece.getX();
+        int currentY = boardPiece.getY();
+
+        if (isValidCoordinate(currentX, currentY)) {
+            for (int i = 0; i < boardPiece.getLength(); i++) {
+                boardBoxes[currentX + i][currentY].setBoardPiece(null);
+            }
         }
 
         for (int i = 0; i < boardPiece.getLength(); i++) {
