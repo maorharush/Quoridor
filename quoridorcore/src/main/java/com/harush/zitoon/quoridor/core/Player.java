@@ -115,7 +115,7 @@ public abstract class Player {
         if (move.length() == 3) {
             useWall();
         }
-        if (move == "undo" && g.getBoard().lastMove().length() == 3) {
+        if (move.equals("undo") && g.getBoard().lastMove().length() == 3) {
             this.walls++;
         }
         
