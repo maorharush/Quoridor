@@ -14,7 +14,7 @@ import java.io.*;
  */
 public class Human extends Player {
     
-    private boolean suppressPrompt;
+    boolean suppressPrompt;
     
     public Human() {
         super();
@@ -32,10 +32,10 @@ public class Human extends Player {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         b.printBoard();
         System.out.print("Enter the move for player "
-                + this.getID().toString() + ": ");
+                + new Integer(this.getID()).toString() + ": ");
         try {
             temp = in.readLine();
-        } catch (IOException ignored) {
+        } catch (IOException e) {
         }
         return temp;
     }
