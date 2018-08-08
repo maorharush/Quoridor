@@ -51,12 +51,11 @@ public class BoardLogicTest {
     @Test
     public void setAtValidLocation_BoardPieceSet() {
 
-        boardBoxLogics[0][0] = new BoardBoxLogic();
         boardBoxLogics[1][1] = new BoardBoxLogic();
 
         when(boardPiece.getOrientation()).thenReturn(Position.Orientation.NONE);
-        when(boardPiece.getX()).thenReturn(0);
-        when(boardPiece.getY()).thenReturn(0);
+        when(boardPiece.getX()).thenReturn(-1);
+        when(boardPiece.getY()).thenReturn(-1);
 
         LogicResult logicResult = boardLogic.setAtLocation(boardPiece, 1, 1);
 
