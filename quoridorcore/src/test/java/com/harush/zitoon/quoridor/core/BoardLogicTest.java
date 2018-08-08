@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.mockito.Mockito.when;
+
 public class BoardLogicTest {
 
     private BoardLogic boardLogic;
@@ -44,5 +46,23 @@ public class BoardLogicTest {
 
         Assert.assertFalse(logicResult.isSuccess());
         Assert.assertEquals("Cannot set board piece at (1,1)", logicResult.getErrMsg());
+    }
+
+    @Test
+    public void setAtValidLocation_BoardPieceSet() {
+
+        boardBoxLogics[0][0] = new BoardBoxLogic();
+        boardBoxLogics[1][1] = new BoardBoxLogic();
+
+        when(boardPiece.getOrientation()).thenReturn(Position.Orientation.NONE);
+        when(boardPiece.getX()).thenReturn(0);
+        when(boardPiece.getY()).thenReturn(0);
+
+        LogicResult logicResult = boardLogic.setAtLocation(boardPiece, 1, 1);
+
+        Assert.assertTrue(logicResult.isSuccess());
+
+        Assert.assertTrue(boardBoxLogics[1][1].isOccupied());
+        Assert.assertEquals(boardPiece, boardBoxLogics[1][1].getBoardPiece());
     }
 }
