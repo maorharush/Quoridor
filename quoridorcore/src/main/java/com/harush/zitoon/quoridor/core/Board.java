@@ -5,7 +5,7 @@ package com.harush.zitoon.quoridor.core;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
-import com.harush.zitoon.quoridor.core.Position.Wall;
+import com.harush.zitoon.quoridor.core.Position.Orientation;
 
 
 /**
@@ -372,7 +372,7 @@ public class Board {
             Box northwest = boxes[m.getRow()][m.getCol()];
             Box northeast = boxes[m.getRow()][m.getCol() + 1];
             Box southwest = boxes[m.getRow() + 1][m.getCol()];
-            if (m.getOrientation() == Wall.Vertical) {
+            if (m.getOrientation() == Orientation.Vertical) {
                 validity = validity
                         && northwest.getNeighbour(Direction.RIGHT) != null;
                 validity = validity
@@ -381,7 +381,7 @@ public class Board {
                         && !(northwest.getNeighbour(Direction.DOWN) == null && northeast
                                 .getNeighbour(Direction.DOWN) == null);
                 
-            } else if (m.getOrientation() == Wall.Horizontal) {
+            } else if (m.getOrientation() == Orientation.Horizontal) {
                 validity = validity
                         && northwest.getNeighbour(Direction.DOWN) != null;
                 validity = validity
@@ -502,7 +502,7 @@ public class Board {
         Box southwest = boxes[position.getRow() + 1][position.getCol()];
         Box southeast = boxes[position.getRow() + 1][position.getCol() + 1];
         
-        if (position.getOrientation() == Wall.Vertical) {
+        if (position.getOrientation() == Orientation.Vertical) {
             northwest.setNeighbour(Direction.RIGHT, null);
             northeast.setNeighbour(Direction.LEFT, null);
             southwest.setNeighbour(Direction.RIGHT, null);
@@ -523,7 +523,7 @@ public class Board {
     private void removeWall(Position position) {
         int row = position.getRow();
         int col = position.getCol();
-        if (position.getOrientation() == Wall.Horizontal) {
+        if (position.getOrientation() == Orientation.Horizontal) {
             boxes[row][col].setNeighbour(Direction.DOWN, boxes[row + 1][col]);
             boxes[row + 1][col].setNeighbour(Direction.UP, boxes[row][col]);
             boxes[row][col + 1].setNeighbour(Direction.DOWN,

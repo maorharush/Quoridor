@@ -10,12 +10,12 @@ package com.harush.zitoon.quoridor.core;
  */
 public class Position {
     
-    public enum Wall { Horizontal, Vertical };
+    public enum Orientation { Horizontal, Vertical, NONE };
     
     private int row;
     private int col;
     private boolean isWall;
-    private Wall orientation;
+    private Orientation orientation;
     
     public Position parent;
     
@@ -29,7 +29,7 @@ public class Position {
         s.append(col);
         s.append(row);
         if (isWall()) {
-            s.append(this.orientation == Wall.Vertical ? 'v' : 'h');
+            s.append(this.orientation == Orientation.Vertical ? 'v' : 'h');
         }
         return s.toString();
     }
@@ -49,7 +49,7 @@ public class Position {
         this.isWall = false;
         if (move.length() == 3) {
             this.isWall = true;
-            this.orientation = move.charAt(2) == 'h' ? Wall.Horizontal : Wall.Vertical;
+            this.orientation = move.charAt(2) == 'h' ? Orientation.Horizontal : Orientation.Vertical;
         }
     }
     
@@ -160,7 +160,7 @@ public class Position {
      * @return wall orientation
      * @throws IllegalStateException if position is not a wall.
      */
-    public Wall getOrientation() throws IllegalStateException {
+    public Orientation getOrientation() throws IllegalStateException {
         if (!isWall()) { throw new IllegalStateException("Not defined for this type of move."); }
         return this.orientation;
     }
