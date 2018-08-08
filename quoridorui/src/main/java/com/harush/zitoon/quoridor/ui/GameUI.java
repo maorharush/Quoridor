@@ -1,22 +1,29 @@
 package com.harush.zitoon.quoridor.ui;
 
-import com.harush.zitoon.quoridor.core.logic.PawnLogic;
-import com.harush.zitoon.quoridor.core.model.BoardCoordinate;
+import com.harush.zitoon.quoridor.core.logic.Board;
+import com.harush.zitoon.quoridor.core.logic.Pawn;
 import com.harush.zitoon.quoridor.core.model.LogicResult;
+
+import java.util.logging.Logger;
 
 public class GameUI {
 
-    private PawnLogic pawnLogic;
+    private static final Logger log = Logger.getLogger(GameUI.class.getSimpleName());
 
-    public GameUI(PawnLogic pawnLogic) {
-        this.pawnLogic = pawnLogic;
+    private Pawn pawn;
+
+    private Board board;
+
+    public GameUI(Board board, Pawn pawn) {
+        this.pawn = pawn;
+        this.board = board;
     }
 
-    public void movePawnOnScreen(BoardCoordinate coordinate) {
-        LogicResult logicResult = pawnLogic.move(coordinate);
+    public void movePawnOnScreen(int x, int y) {
+        LogicResult logicResult = board.setAtLocation(pawn, x, y);
 
         if (!logicResult.isSuccess()) {
-            System.out.println(logicResult.getErrMsg());
+            log.info(logicResult.getErrMsg());
         }
     }
 }
