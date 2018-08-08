@@ -21,7 +21,12 @@ public class BoardLogic implements Board {
         }
 
         if (boardPiece.getOrientation() == NONE) {
-            boardBoxes[boardPiece.getX()][boardPiece.getY()].setBoardPiece(null);
+            int currentX = boardPiece.getX();
+            int currentY = boardPiece.getY();
+
+            if (isValidCoordinate(currentX, currentY)) {
+                boardBoxes[currentX][currentY].setBoardPiece(null);
+            }
             boardBoxes[x][y].setBoardPiece(boardPiece);
         } else {
             if (boardPiece.getOrientation() == Horizontal) {
