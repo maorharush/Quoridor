@@ -63,6 +63,6 @@ public class BoardLogic implements Board {
     }
 
     private boolean isCoordinateWithinBorders(int coordinate) {
-        return coordinate >= 0 && coordinate <= 9;
+        return coordinate >= 0 && coordinate <= 8;
     }
 }
