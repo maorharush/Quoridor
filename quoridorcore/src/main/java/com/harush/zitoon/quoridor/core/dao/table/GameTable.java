@@ -7,6 +7,5 @@ public class GameTable {
     public static final String COL_NUMBER_OF_MOVES="numOfMoves";
     public static final String COL_DATE_START="dateStart";
     public static final String COL_DATE_END="dateEnd";
-    public static final String COL_COLUMN="column"; //necessary?
 
 }
