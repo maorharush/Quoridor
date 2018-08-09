@@ -3,41 +3,41 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 import java.util.Objects;
 
 public class PlayerDBO extends DBO {
-    private String playerID;
-    private String playerName;
-    private String HighestScore;
-    private int isAI;
+    private int player_id;
+    private String player_name;
+    private String highest_score;
+    private int is_AI;
 
-    public String getPlayerID() {
-        return playerID;
+    public int getPlayer_id() {
+        return player_id;
     }
 
-    public void setPlayerID(String playerID) {
-        this.playerID = playerID;
+    public void setPlayer_id(int player_id) {
+        this.player_id = player_id;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getPlayer_name() {
+        return player_name;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setPlayer_name(String player_name) {
+        this.player_name = player_name;
     }
 
-    public String getHighestScore() {
-        return HighestScore;
+    public String getHighest_score() {
+        return highest_score;
     }
 
-    public void setHighestScore(String highestScore) {
-        HighestScore = highestScore;
+    public void setHighest_score(String highest_score) {
+        this.highest_score = highest_score;
     }
 
-    public int getIsAI() {
-        return isAI;
+    public int getIs_AI() {
+        return is_AI;
     }
 
-    public void setIsAI(int isAI) {
-        this.isAI = isAI;
+    public void setIs_AI(int is_AI) {
+        this.is_AI = is_AI;
     }
 
     @Override
@@ -45,26 +45,26 @@ public class PlayerDBO extends DBO {
         if (this == o) return true;
         if (!(o instanceof PlayerDBO)) return false;
         PlayerDBO playerDBO = (PlayerDBO) o;
-        return isAI == playerDBO.isAI &&
-                Objects.equals(playerID, playerDBO.playerID) &&
-                Objects.equals(playerName, playerDBO.playerName) &&
-                Objects.equals(HighestScore, playerDBO.HighestScore);
+        return is_AI == playerDBO.is_AI &&
+                Objects.equals(player_id, playerDBO.player_id) &&
+                Objects.equals(player_name, playerDBO.player_name) &&
+                Objects.equals(highest_score, playerDBO.highest_score);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(playerID, playerName, HighestScore, isAI);
+        return Objects.hash(player_id, player_name, highest_score, is_AI);
     }
 
 
     @Override
     public String toString() {
         return "PlayerDBO{" +
-                "playerID='" + playerID + '\'' +
-                ", playerName='" + playerName + '\'' +
-                ", HighestScore='" + HighestScore + '\'' +
-                ", isAI=" + isAI +
+                "player_id='" + player_id + '\'' +
+                ", player_name='" + player_name + '\'' +
+                ", highest_score='" + highest_score + '\'' +
+                ", is_AI=" + is_AI +
                 '}';
-    }`
+    }
 }

@@ -2,6 +2,7 @@ package com.harush.zitoon.quoridor.core.dao;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -14,7 +15,11 @@ public class GameRecDAOIT {
 
     public GameRecDAOIT() {
         gameRecDAO = new GameRecDAOImpl();
+    }
 
+    @Before
+    public void before() {
+        gameRecDAO.deleteAll();
     }
 
     @Test

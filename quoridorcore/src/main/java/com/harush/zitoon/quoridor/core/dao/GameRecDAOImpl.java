@@ -1,18 +1,20 @@
 package com.harush.zitoon.quoridor.core.dao;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
+import java.sql.SQLException;
 import java.util.List;
 
-import static com.harush.zitoon.quoridor.core.dao.table.GameRecTable.TABLE_NAME;
 
 public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
 
     public GameRecDAOImpl() {
-
+        jdbcTemplate = new JdbcTemplate(DataSourceProvider.getDataSource());
+        createTable();
     }
 
     @Override
@@ -40,5 +42,14 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
             gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
             return gameRecDBO;
         });
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.execute("DELETE FROM " + TABLE_NAME);
+    }
+
+    private void createTable() {
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"game_recorder\" ( `game_id` INTEGER, `player_id` INTEGER, `cur_col` TEXT, `cur_row` INTEGER, `fence_col` TEXT, `fence_row` INTEGER, `fence_orien` TEXT, FOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE, PRIMARY KEY(`game_id`) )");
     }
 }

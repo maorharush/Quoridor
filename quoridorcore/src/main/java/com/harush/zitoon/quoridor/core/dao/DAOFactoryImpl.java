@@ -1,21 +1,19 @@
 package com.harush.zitoon.quoridor.core.dao;
 
-
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.harush.zitoon.quoridor.core.dao.table.GameRecTable;
 
 
 public class DAOFactoryImpl implements DAOFactory {
 
     private Map<String, DAO> daoMap;
 
-    public DAOFactoryImpl() throws SQLException, ClassNotFoundException {
+    public DAOFactoryImpl() {
         daoMap = new HashMap<String, DAO>() {{
-            put(GameRecTable.TABLE_NAME, new GameRecDAOImpl());
+            put(GameRecDAO.TABLE_NAME, new GameRecDAOImpl());
+            put(GameDAO.TABLE_NAME, new GameDAOImpl());
+            put(PlayerDAO.TABLE_NAME, new PlayerDAOImpl());
         }};
     }
 

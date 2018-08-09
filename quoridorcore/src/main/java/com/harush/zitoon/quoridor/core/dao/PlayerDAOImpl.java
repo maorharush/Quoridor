@@ -1,42 +1,49 @@
 package com.harush.zitoon.quoridor.core.dao;
 
 
-import com.harush.zitoon.quoridor.core.dao.table.GameRecTable;
+import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
-import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
-
-import com.harush.zitoon.quoridor.core.dao.table.PlayerTable;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
-public class PlayerDAOImpl extends BaseDAO implements PlayerDAO{
-    public PlayerDAOImpl(){
+public class PlayerDAOImpl extends BaseDAO implements PlayerDAO {
 
+    public PlayerDAOImpl() {
+        jdbcTemplate = new JdbcTemplate(DataSourceProvider.getDataSource());
+        createTable();
     }
+
     @Override
-    public  List<PlayerDBO> getAll(){
-        return jdbcTemplate.query("SELECT * FROM " + PlayerTable.TABLE_NAME, (ResultSet resultSet, int i) -> {
+    public List<PlayerDBO> getAll() {
+        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (ResultSet resultSet, int i) -> {
             PlayerDBO playerDBO = new PlayerDBO();
-
-
-            playerDBO.setPlayerID(resultSet.getString("playerID"));
-            playerDBO.setPlayerName(resultSet.getString("playerName"));
-            playerDBO.setHighestScore(resultSet.getString("HighestScore"));
-            playerDBO.setIsAI(resultSet.getInt("isAI"));
-
+            playerDBO.setPlayer_id(resultSet.getInt("player_id"));
+            playerDBO.setPlayer_name(resultSet.getString("player_name"));
+            playerDBO.setHighest_score(resultSet.getString("highest_score"));
+            playerDBO.setIs_AI(resultSet.getInt("is_AI"));
             return playerDBO;
         });
     }
+
     @Override
-    public void insert(List<PlayerDBO> dbos){
+    public void insert(List<PlayerDBO> dbos) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        simpleJdbcInsert.withTableName(GameRecTable.TABLE_NAME);
+        simpleJdbcInsert.withTableName(TABLE_NAME);
         SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(dbos);
         simpleJdbcInsert.executeBatch(batch);
     }
 
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.execute("DELETE FROM " + TABLE_NAME);
+    }
+
+    private void createTable() {
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"players\" ( `player_id` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `player_name` TEXT, `highest_score` INTEGER, `is_AI` INTEGER )");
+    }
 }

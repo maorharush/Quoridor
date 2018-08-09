@@ -11,10 +11,6 @@ public class GameRecDBO extends DBO {
     private int fence_row;
     private Character fence_orien;
 
-    public int getGame_id() {
-        return game_id;
-    }
-
     public boolean setGame_id(int game_id) {
         if (game_id < 0) {
             return false;
@@ -23,6 +19,10 @@ public class GameRecDBO extends DBO {
         this.game_id = game_id;
 
         return true;
+    }
+
+    public int getGame_id() {
+        return game_id;
     }
 
     public int getPlayer_id() {
