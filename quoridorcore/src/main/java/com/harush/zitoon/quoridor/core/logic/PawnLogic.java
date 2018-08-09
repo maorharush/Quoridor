@@ -1,12 +1,12 @@
 package com.harush.zitoon.quoridor.core.logic;
 
 
-import com.harush.zitoon.quoridor.core.Position;
+import com.harush.zitoon.quoridor.core.theirs.Position;
 import com.harush.zitoon.quoridor.core.model.*;
 
 import java.util.logging.Logger;
 
-import static com.harush.zitoon.quoridor.core.Position.Orientation.*;
+import static com.harush.zitoon.quoridor.core.theirs.Position.Orientation.*;
 
 public class PawnLogic implements Pawn {
 

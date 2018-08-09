@@ -5,6 +5,7 @@ import com.harush.zitoon.quoridor.core.logic.BoardLogic;
 import com.harush.zitoon.quoridor.core.logic.BoardPiece;
 import com.harush.zitoon.quoridor.core.logic.PawnLogic;
 import com.harush.zitoon.quoridor.core.model.LogicResult;
+import com.harush.zitoon.quoridor.core.theirs.Position;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

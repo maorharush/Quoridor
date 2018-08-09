@@ -1,10 +1,9 @@
 package com.harush.zitoon.quoridor.core.logic;
 
-import com.harush.zitoon.quoridor.core.Position;
 import com.harush.zitoon.quoridor.core.model.LogicResult;
 import org.springframework.lang.NonNull;
 
-import static com.harush.zitoon.quoridor.core.Position.Orientation.*;
+import static com.harush.zitoon.quoridor.core.theirs.Position.Orientation.*;
 
 public class BoardLogic implements Board {
 

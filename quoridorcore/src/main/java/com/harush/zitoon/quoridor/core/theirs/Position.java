@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.core;
+package com.harush.zitoon.quoridor.core.theirs;
 
 /**
  * Abstractly represents a square on the board.

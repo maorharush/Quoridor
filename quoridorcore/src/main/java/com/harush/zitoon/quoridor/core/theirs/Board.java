@@ -1,11 +1,11 @@
 
-package com.harush.zitoon.quoridor.core;
+package com.harush.zitoon.quoridor.core.theirs;
 
 
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
-import com.harush.zitoon.quoridor.core.Position.Orientation;
+import com.harush.zitoon.quoridor.core.theirs.Position.Orientation;
 
 
 /**

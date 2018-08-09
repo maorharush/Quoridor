@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.core;
+package com.harush.zitoon.quoridor.core.theirs;
 
 /**
  * Represent a single square on the quoridor grid.
