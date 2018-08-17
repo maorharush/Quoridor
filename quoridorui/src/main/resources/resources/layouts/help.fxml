@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aston.group12.controller.HelpController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.HelpController">
    <children>
       <Label layoutX="93.0" layoutY="211.0" prefHeight="17.0" prefWidth="116.0" text="Video loading..." />
       <MediaView fx:id="videoView" fitHeight="300.0" fitWidth="300.0" layoutX="14.0" layoutY="86.0" />
