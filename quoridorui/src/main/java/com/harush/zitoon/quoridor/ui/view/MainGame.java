@@ -374,8 +374,8 @@ public class MainGame extends Application implements GameScreen {
      * @param colour the colour of the pawn
      * @return the pawn component
      */
-    private PawnComponent makePawn(PawnComponent.PawnType type, int x, int y, String playerName, String colour) {
-        PawnComponent pawnComponent = new PawnComponent(type, x, y, playerName, colour);
+    private PawnComponent makePawn(PawnComponent.PawnType type, int x, int y, Player player) {
+        PawnComponent pawnComponent = new PawnComponent(type, x, y, player.getName(), player.getPawnColour());
 
         pawnComponent.setOnMouseReleased(e -> {
             int newX = toBoard(pawnComponent.getLayoutX());
@@ -468,7 +468,7 @@ public class MainGame extends Application implements GameScreen {
         }
         for (int i = 0; i < gameSession.getPlayers().size(); i++) {
             //Loop through hardcoded starting positions and pawn types to assign to each player's pawn
-            PawnComponent pawn = makePawn(pawnTypes[i], xStartingPositions[i], yStartingPositions[i], gameSession.getPlayer(i).getName(), gameSession.getPlayer(i).getPawnColour());
+            PawnComponent pawn = makePawn(pawnTypes[i], xStartingPositions[i], yStartingPositions[i], gameSession.getPlayer(i));
             pawnComponentList.add(pawn);
         }
     }

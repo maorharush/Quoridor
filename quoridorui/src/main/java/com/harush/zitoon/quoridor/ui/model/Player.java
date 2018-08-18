@@ -1,5 +1,8 @@
 package com.harush.zitoon.quoridor.ui.model;
 
+import com.harush.zitoon.quoridor.core.logic.Pawn;
+import com.harush.zitoon.quoridor.core.model.LogicResult;
+
 /**
  * Represents a Player in the game.
  * @author Xenia Vanikaki
@@ -11,6 +14,7 @@ public abstract class Player {
 	private int walls;
 	private Statistics stats;
 	private String pawnColour;
+	private Pawn pawn;
 	
 	/**
 	 * Creates a new Player by initialising its name and pawn
@@ -18,7 +22,7 @@ public abstract class Player {
 	 * @param name
 	 * @param pawnColour
 	 */
-	public Player(String name, String pawnColour){
+	public Player(String name, Pawn pawn, String pawnColour){
 		//Generate UUID
 		
 		//Initialise values.
@@ -26,6 +30,11 @@ public abstract class Player {
 		walls = Settings.getSingleton().getWalls();
 		this.stats = new Statistics();
 		this.pawnColour = pawnColour;
+		this.pawn = pawn;
+	}
+
+	public LogicResult move(int x, int y, GameSession gameSession) {
+		return pawn.move(x,y, gameSession.getBoard());
 	}
 
 

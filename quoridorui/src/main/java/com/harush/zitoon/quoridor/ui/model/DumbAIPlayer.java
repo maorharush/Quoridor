@@ -1,4 +1,7 @@
 package com.harush.zitoon.quoridor.ui.model;
+
+import com.harush.zitoon.quoridor.core.logic.Pawn;
+
 /**
  * 
  * A very simple AI player.
@@ -6,8 +9,8 @@ package com.harush.zitoon.quoridor.ui.model;
  */
 public class DumbAIPlayer extends Player implements AIPlayer {
 
-	public DumbAIPlayer(String name, String pawnColour) {
-		super(name, pawnColour);
+	public DumbAIPlayer(String name, Pawn pawn, String pawnColour) {
+		super(name, pawn, pawnColour);
 	}
 
 	@Override
