@@ -43,13 +43,12 @@ public class MainGame extends Application implements GameScreen {
     private Group verticalWallGroup = new Group();
     private Label currentTurnLabel;
     private Label wallsLabel;
-    private Scene scene;
 
     public MainGame(Stage stage, Board board, List<Player> players) {
         setupModel(board, players);
         currentTurnLabel = new Label();
         wallsLabel = new Label();
-        scene = new Scene(createContent());
+        Scene scene = new Scene(createContent());
         stage.getIcons().add(new Image("resources/icons/favicon.png"));
         stage.setTitle("Quoridor");
         stage.setScene(scene);
@@ -184,10 +183,6 @@ public class MainGame extends Application implements GameScreen {
                         return;
                     }
 
-                    if (thisX == width) { //A vertical wall cannot be placed at the very edge of the board
-                        System.out.println("You cannot place a wall here.");
-                        return;
-                    }
                     if (e.isPrimaryButtonDown()) {
                         if (gameSession.getBoard().containsWall(thisX, thisY, false) ||
                                 gameSession.getBoard().containsWall(nextWallX, nextWallY, false)) {
@@ -257,9 +252,6 @@ public class MainGame extends Application implements GameScreen {
                 int nextWallY = y;
 
                 wall.setOnMouseEntered(e -> {
-                    if (nextWallY == 0) {
-                        return;
-                    }
                     if (nextWallX > 0 && nextWallX < width) {
                         if (!gameSession.getBoard().containsWall(thisX, thisY, true) && !gameSession.getBoard().containsWall(nextWallX, nextWallY, true)) {
                             wall.setFill(Color.valueOf("bbbbbb"));
@@ -269,9 +261,6 @@ public class MainGame extends Application implements GameScreen {
 
                 });
                 wall.setOnMouseExited(e -> {
-                    if (nextWallY == 0) { //A horizontal wall cannot be placed at the very top of the board
-                        return;
-                    }
 
                     if (nextWallX > 0 && nextWallX < width) {
                         if (!gameSession.getBoard().containsWall(thisX, thisY, true) && !gameSession.getBoard().containsWall(nextWallX, nextWallY, true)) {
@@ -281,7 +270,7 @@ public class MainGame extends Application implements GameScreen {
                     }
                 });
                 wall.setOnMousePressed(e -> {
-                    if (nextWallY == 0 || nextWallX > width) { //A horizontal wall cannot be placed at the very top of the board
+                    if (nextWallX > width) { //A horizontal wall cannot be placed at the very top of the board
                         return;
                     }
 
@@ -381,28 +370,28 @@ public class MainGame extends Application implements GameScreen {
      * @param type   the pawn type
      * @param x      the starting x coordinate
      * @param y      the starting y coordinate
-     * @param name   the name to display
+     * @param playerName   the name to display
      * @param colour the colour of the pawn
      * @return the pawn component
      */
-    private PawnComponent makePawn(PawnComponent.PawnType type, int x, int y, String name, String colour) {
-        PawnComponent pawn = new PawnComponent(type, x, y, name, colour);
+    private PawnComponent makePawn(PawnComponent.PawnType type, int x, int y, String playerName, String colour) {
+        PawnComponent pawnComponent = new PawnComponent(type, x, y, playerName, colour);
 
-        pawn.setOnMouseReleased(e -> {
-            int newX = toBoard(pawn.getLayoutX());
-            int newY = toBoard(pawn.getLayoutY());
-            Tile currentTile = new Tile(toBoard(pawn.getOldX()), toBoard(pawn.getOldY()));
+        pawnComponent.setOnMouseReleased(e -> {
+            int newX = toBoard(pawnComponent.getLayoutX());
+            int newY = toBoard(pawnComponent.getLayoutY());
+            Tile currentTile = new Tile(toBoard(pawnComponent.getOldX()), toBoard(pawnComponent.getOldY()));
             Tile nextTile = new Tile(newX, newY);
             if (gameSession.isValidMove(currentTile, nextTile) && isCurrentTurn(type)) {
                 System.out.println(type + " x:" + newX + " y:" + newY);
-                pawn.move(newX, newY);
+                pawnComponent.move(newX, newY);
                 gameSession.getBoard().getTile(currentTile.getX(), currentTile.getY()).setContainsPawn(false);
                 gameSession.getBoard().getTile(nextTile.getX(), nextTile.getY()).setContainsPawn(true);
                 //Check if the pawn is in a winning position on the board
                 switch (type) {
                     case RED:
                         if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (newX == (width - 1) && newY == (height - height)) {
+                            if (newX == (width - 1) && newY == (0)) {
                                 gameSession.setWinner(gameSession.getPlayer(turnIndex));
                                 endGame(gameSession);
                             }
@@ -415,7 +404,7 @@ public class MainGame extends Application implements GameScreen {
                         break;
                     case WHITE:
                         if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (newX == (width - width) && newY == (height - 1)) {
+                            if (newX == (0) && newY == (height - 1)) {
                                 gameSession.setWinner(gameSession.getPlayer(turnIndex));
                                 endGame(gameSession);
                             }
@@ -456,10 +445,10 @@ public class MainGame extends Application implements GameScreen {
                 //update whose turn it is
                 updateTurn();
             } else {
-                pawn.reverseMove();
+                pawnComponent.reverseMove();
             }
         });
-        return pawn;
+        return pawnComponent;
     }
 
     /**
@@ -496,8 +485,8 @@ public class MainGame extends Application implements GameScreen {
         try {
             Stage stage = (Stage) tileGroup.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/layouts/stats.fxml"));
-            Scene scene = new Scene((Parent) loader.load());
-            StatsController controller = loader.<StatsController>getController();
+            Scene scene = new Scene(loader.load());
+            StatsController controller = loader.getController();
             controller.setGameSession(gs);
             stage.setTitle("Quoridor");
             stage.getIcons().add(new Image("resources/icons/favicon.png"));
