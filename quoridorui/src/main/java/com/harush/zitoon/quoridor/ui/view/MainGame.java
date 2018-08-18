@@ -31,7 +31,7 @@ public class MainGame extends Application implements GameScreen {
     private GameSession gameSession;
     private int height;
     private int width;
-    private PawnComponent.PawnType[] pawnTypes = {PawnComponent.PawnType.RED, PawnComponent.PawnType.WHITE, PawnComponent.PawnType.GREEN, PawnComponent.PawnType.BLUE}; //Could possibly loop through the pawnTypes enums instead of storing in an array
+    private PawnComponent.PawnType[] pawnTypes = PawnComponent.PawnType.values();
     private int turnIndex;
 
     private TileComponent[][] tileBoard;
