@@ -27,7 +27,7 @@ import java.util.List;
 public class MainGame extends Application implements GameScreen {
     public static final int TILE_SIZE = Settings.getSingleton().getTileSize();
 
-    private List<PawnComponent> pawnComponentList = new ArrayList<PawnComponent>(GameSession.MAX_PLAYERS);
+    private List<PawnComponent> pawnComponentList = new ArrayList<>(GameSession.MAX_PLAYERS);
     private GameSession gameSession;
     private int height;
     private int width;
@@ -48,21 +48,13 @@ public class MainGame extends Application implements GameScreen {
         setupModel(board, players);
         currentTurnLabel = new Label();
         wallsLabel = new Label();
-        Scene scene = new Scene(createContent());
-        stage.getIcons().add(new Image("resources/icons/favicon.png"));
-        stage.setTitle("Quoridor");
-        stage.setScene(scene);
-        stage.show();
+        showStage(stage, "resources/icons/favicon.png");
     }
 
     @Override
     public void start(Stage primaryStage) {
         //setupModel();
-        Scene scene = new Scene(createContent());
-        primaryStage.getIcons().add(new Image("res/icons/favicon.png"));
-        primaryStage.setTitle("Quoridor");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        showStage(primaryStage, "res/icons/favicon.png");
     }
 
     /**
@@ -83,6 +75,14 @@ public class MainGame extends Application implements GameScreen {
         turnIndex = 0;
         setupPawns();
 
+    }
+
+    private void showStage(Stage stage, String s) {
+        Scene scene = new Scene(createContent());
+        stage.getIcons().add(new Image(s));
+        stage.setTitle("Quoridor");
+        stage.setScene(scene);
+        stage.show();
     }
 
     private void setupGameSession(Board board, List<Player> players, Settings settings) {
@@ -454,8 +454,7 @@ public class MainGame extends Application implements GameScreen {
     /**
      * Sets up all the pawns in the game.
      */
-    public void setupPawns() {
-        int currentIndex = 0;
+    private void setupPawns() {
         int xStartingPositions[] = null;
         int yStartingPositions[] = null;
         //Starting positions for player 1, player 2, player 3, player 4 based on game type
@@ -469,10 +468,8 @@ public class MainGame extends Application implements GameScreen {
         }
         for (int i = 0; i < gameSession.getPlayers().size(); i++) {
             //Loop through hardcoded starting positions and pawn types to assign to each player's pawn
-            PawnComponent pawn = makePawn(pawnTypes[currentIndex], xStartingPositions[currentIndex], yStartingPositions[currentIndex], gameSession.getPlayer(i).getName(), gameSession.getPlayer(i).getPawnColour());
+            PawnComponent pawn = makePawn(pawnTypes[i], xStartingPositions[i], yStartingPositions[i], gameSession.getPlayer(i).getName(), gameSession.getPlayer(i).getPawnColour());
             pawnComponentList.add(pawn);
-            currentIndex++;
-
         }
     }
 
@@ -520,13 +517,10 @@ public class MainGame extends Application implements GameScreen {
      */
     private void updateTurn() {
         gameSession.getPlayer(turnIndex).getStatistics().incrementTotalMoves();
-        if (turnIndex < gameSession.getPlayers().size() - 1) {
-            turnIndex++;
-            System.out.println("Next turn: " + pawnTypes[turnIndex]);
-        } else if (turnIndex == gameSession.getPlayers().size() - 1) {
-            turnIndex = 0;
-            System.out.println("Next turn: " + pawnTypes[turnIndex]);
-        }
+        turnIndex = (turnIndex+1)%gameSession.getPlayers().size();
+
+        System.out.println("Next turn: " + pawnTypes[turnIndex]);
+
         currentTurnLabel.setText(gameSession.getPlayer(turnIndex).getName() + "'s turn");
         currentTurnLabel.setTextFill(Color.valueOf(gameSession.getPlayer(turnIndex).getPawnColour()));
         wallsLabel.setText("Walls left: " + gameSession.getPlayer(turnIndex).getWalls());
