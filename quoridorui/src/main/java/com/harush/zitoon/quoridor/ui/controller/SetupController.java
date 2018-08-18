@@ -20,7 +20,6 @@ import javafx.util.Pair;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -97,14 +96,12 @@ public class SetupController extends AbstractController implements Initializable
     	Node addButton = popup.getDialogPane().lookupButton(loginButtonType);
     	addButton.setDisable(true);
 
-    	name.textProperty().addListener((observable, oldValue, newValue) -> {
-    	    addButton.setDisable(newValue.trim().isEmpty());
-    	});
+    	name.textProperty().addListener((observable, oldValue, newValue) -> addButton.setDisable(newValue.trim().isEmpty()));
 
     	popup.getDialogPane().setContent(grid);
 
-    	Platform.runLater(() -> name.requestFocus());
-    	Optional<Pair<String, String>> result = popup.showAndWait();
+    	Platform.runLater(name::requestFocus);
+		popup.showAndWait();
     	String hexColor = convertColour(colorPicker);
     	System.out.println(colorPicker.getValue().toString());
     	if(!name.getText().isEmpty() && !hexColor.isEmpty()) {
@@ -127,7 +124,7 @@ public class SetupController extends AbstractController implements Initializable
     
     @FXML
     private void on2PlayerBtn(ActionEvent action) {
-    	List<Player> players = new ArrayList<Player>(2);
+    	List<Player> players = new ArrayList<>(2);
     	Player player1 = new HumanPlayer("1" , "#663366");
     	Player player2 = new HumanPlayer("2" , "#b3e6b3");
     	players.add(player1);
@@ -137,7 +134,7 @@ public class SetupController extends AbstractController implements Initializable
     
     @FXML
     private void on4PlayerBtn(ActionEvent action) {
-    	List<Player> players = new ArrayList<Player>(2);
+    	List<Player> players = new ArrayList<>(2);
     	Player player1 = new HumanPlayer("1" , "#663366");
     	Player player2 = new HumanPlayer("2" , "#b3e6b3");
     	Player player3 = new HumanPlayer("3" , "#334db3");
@@ -156,8 +153,7 @@ public class SetupController extends AbstractController implements Initializable
     private void setupGame(List<Player> players) {
     	Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
     	Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
-    	GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType());
-    	MainGame main = new MainGame(stage, gameSession, players);
+		new MainGame(stage, board, players);
     	stage.show();
     }
     
@@ -177,22 +173,20 @@ public class SetupController extends AbstractController implements Initializable
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		nameColumn.setCellValueFactory(new PropertyValueFactory<Player, String>("name"));
-		pawnColumn.setCellValueFactory(new PropertyValueFactory<Player, String>("pawnColour"));
-		pawnColumn.setCellFactory(column -> {
-	        return new TableCell<Player, String>() {
-                @Override
-                public void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setText(empty ? null : getString());
-                    setStyle("-fx-background-color:"+getString()+";");
-                }
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		pawnColumn.setCellValueFactory(new PropertyValueFactory<>("pawnColour"));
+		pawnColumn.setCellFactory(column -> new TableCell<Player, String>() {
+			@Override
+			public void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+				setText(empty ? null : getString());
+				setStyle("-fx-background-color:"+getString()+";");
+			}
 
-                private String getString() {
-                    return getItem() == null ? "" : getItem().toString();
-                }
-            };
-	    });
+			private String getString() {
+				return getItem() == null ? "" : getItem();
+			}
+		});
 		multiPlayerTable.setPlaceholder(new Label("No players yet"));
 		defaultColours = new Color[]{Color.valueOf("#663366"), Color.valueOf("#b3e6b3"), Color.valueOf("#334db3"), Color.valueOf("#ff6666")};
 		colourIndex = 0;		
