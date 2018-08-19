@@ -1,8 +1,8 @@
-package com.harush.zitoon.quoridor.ui.model;
+package com.harush.zitoon.quoridor.core.model;
 
 /**
  * Represents a Tile on the {@link Board}
- * @author Denver Fernandes
+ * @author Moar Harush
  * @author Anas Khan
  * @version 0.3
  */

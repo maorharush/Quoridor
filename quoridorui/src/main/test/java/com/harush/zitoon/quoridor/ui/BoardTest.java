@@ -2,10 +2,8 @@ package com.harush.zitoon.quoridor.ui;
 
 import static org.junit.Assert.*;
 
-import com.harush.zitoon.quoridor.ui.model.Board;
-import com.harush.zitoon.quoridor.ui.model.HumanPlayer;
-import com.harush.zitoon.quoridor.ui.model.Player;
-import com.harush.zitoon.quoridor.ui.model.Tile;
+
+import com.harush.zitoon.quoridor.core.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,13 +16,12 @@ import org.junit.Test;
 public class BoardTest {
 	
 	private Board board;
-	private Tile[][] tiles;
 	private Player player;
 
 	@Before
 	public void setUp() {
 		board = new Board(9,9);
-		player = new HumanPlayer("Alberto Del Rio", "#ffffff");
+		player = new HumanPlayer("Alberto Del Rio", new PawnLogic(board),"#ffffff");
 	}
 
 	@Test

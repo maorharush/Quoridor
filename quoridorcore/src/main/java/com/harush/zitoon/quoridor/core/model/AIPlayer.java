@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.ui.model;
+package com.harush.zitoon.quoridor.core.model;
 /**
  *
  * Interface all AIPlayer classes must implement.

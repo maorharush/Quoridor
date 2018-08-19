@@ -1,11 +1,11 @@
-package com.harush.zitoon.quoridor.ui.model;
+package com.harush.zitoon.quoridor.core.model;
 
 import java.util.*;
 
 /**
  * Represents a single game session. A game session comprises of 1, 2 or 4 players.
- * @author Xenia Vanikaki
- * @author Denver Fernandes
+ * @author Moar Harush
+ * @author Moar Harush
  * @version 0.6
  */
 public class GameSession {
@@ -95,58 +95,7 @@ public class GameSession {
 	public RuleType getRuleType() {
 		return ruleType;
 	}	
-	
-	/**
-	 * Checks whether a move is valid.
-	 * @param current the current {@link Tile} the {@link Player} is at.
-	 * @param movingTo the {@link Tile} the {@link Player} wants to move to.
-	 * @throws IllegalArgumentException if the tile is null 
-	 * @return whether the move is valid
-	 */
-	public boolean isValidMove(Tile current, Tile movingTo) {
-		if(current == null | movingTo == null) {
-			throw new IllegalArgumentException("The tile cannot be null.");
-		}
-		int currentX = current.getX();
-		int currentY = current.getY();
-		int nextX = movingTo.getX();
-		int nextY = movingTo.getY();
-    	if(nextX >= board.getWidth() || nextY >= board.getHeight() || nextX < 0 || nextY < 0) { //Check if the new position is off the board
-    		return false;
-    	}		
-    	if(board.getTile(nextX, nextY).containsPawn()) {
-    		return false;
-    	} 
-    	if(nextX == currentX) {
-    		if(nextY == currentY - 1) { //going upwards
-    			if(board.containsWall(currentX, currentY, true)) {
-    				return false;
-    			}
-    			return true;
-    		}
-    		if(nextY == currentY + 1) { //going downwards
-    			if(board.containsWall(currentX, currentY+1, true)) {
-    				return false;
-    			}
-    			return true;    			
-    		}
-    	}
-    	if(nextY == currentY) {
-    		if(nextX == currentX - 1) { //going left
-    			if(board.containsWall(currentX-1, currentY, false)) {
-    				return false;
-    			}  		
-    			return true;
-    		}
-    		if(nextX == currentX + 1) { //going right
-    			if(board.containsWall(currentX, currentY, false)) {
-    				return false;
-    			}
-    			return true;
-    		}
-    	}
-    	return false;
-	}	
+
 	
 	/**
 	 * Sets the winner for this {@link GameSession}.

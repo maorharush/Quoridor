@@ -1,8 +1,8 @@
-package com.harush.zitoon.quoridor.ui.model;
+package com.harush.zitoon.quoridor.core.model;
 
 /**
  * Represents a move that has taken place during the game.
- * @author Denver Fernandes
+ * @author Moar Harush
  * @version 0.1
  */
 

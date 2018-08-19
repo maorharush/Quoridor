@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 /**
  * Handles actions that were made by the help view.
- * @author Denver Fernandes
+ * @author Moar Harush
  *
  */
 public class HelpController extends AbstractController implements Initializable {
