@@ -1,8 +1,7 @@
 package com.harush.zitoon.quoridor.ui.view;
 
-import com.harush.zitoon.quoridor.ui.model.Settings;
+import com.harush.zitoon.quoridor.core.model.Settings;
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

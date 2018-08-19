@@ -1,7 +1,7 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
-import com.harush.zitoon.quoridor.ui.model.RuleType;
-import com.harush.zitoon.quoridor.ui.model.Settings;
+import com.harush.zitoon.quoridor.core.model.RuleType;
+import com.harush.zitoon.quoridor.core.model.Settings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

@@ -1,7 +1,7 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
-import com.harush.zitoon.quoridor.ui.model.GameSession;
-import com.harush.zitoon.quoridor.ui.model.Player;
+import com.harush.zitoon.quoridor.core.model.GameSession;
+import com.harush.zitoon.quoridor.core.model.Player;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

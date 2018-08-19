@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
-import com.harush.zitoon.quoridor.ui.model.*;
+import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -43,7 +43,8 @@ public class SetupController extends AbstractController implements Initializable
 	private Button playBtn;
 	
 	private Color[] defaultColours;
-	private int colourIndex;	
+	private int colourIndex;
+	private Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
 	
 	/**
 	 * Action triggered by pressing the back button.
@@ -105,7 +106,7 @@ public class SetupController extends AbstractController implements Initializable
     	String hexColor = convertColour(colorPicker);
     	System.out.println(colorPicker.getValue().toString());
     	if(!name.getText().isEmpty() && !hexColor.isEmpty()) {
-    		Player player = new HumanPlayer(name.getText(), hexColor);
+    		Player player = new HumanPlayer(name.getText(), new PawnLogic(board), hexColor);
     		System.out.println(hexColor);
     		multiPlayerTable.getItems().add(player);
     		colourIndex++;
@@ -125,8 +126,8 @@ public class SetupController extends AbstractController implements Initializable
     @FXML
     private void on2PlayerBtn(ActionEvent action) {
     	List<Player> players = new ArrayList<>(2);
-    	Player player1 = new HumanPlayer("1" , "#663366");
-    	Player player2 = new HumanPlayer("2" , "#b3e6b3");
+    	Player player1 = new HumanPlayer("1" , new PawnLogic(board), "#663366");
+    	Player player2 = new HumanPlayer("2" , new PawnLogic(board), "#b3e6b3");
     	players.add(player1);
     	players.add(player2);
     	setupGame(players);  	
@@ -135,10 +136,10 @@ public class SetupController extends AbstractController implements Initializable
     @FXML
     private void on4PlayerBtn(ActionEvent action) {
     	List<Player> players = new ArrayList<>(2);
-    	Player player1 = new HumanPlayer("1" , "#663366");
-    	Player player2 = new HumanPlayer("2" , "#b3e6b3");
-    	Player player3 = new HumanPlayer("3" , "#334db3");
-    	Player player4 = new HumanPlayer("4" , "#ff6666");
+    	Player player1 = new HumanPlayer("1" , new PawnLogic(board),"#663366");
+    	Player player2 = new HumanPlayer("2" , new PawnLogic(board),"#b3e6b3");
+    	Player player3 = new HumanPlayer("3" , new PawnLogic(board),"#334db3");
+    	Player player4 = new HumanPlayer("4" , new PawnLogic(board),"#ff6666");
     	players.add(player1);
     	players.add(player2);
     	players.add(player3);
@@ -152,7 +153,6 @@ public class SetupController extends AbstractController implements Initializable
      */
     private void setupGame(List<Player> players) {
     	Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
-    	Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
 		new MainGame(stage, board, players);
     	stage.show();
     }

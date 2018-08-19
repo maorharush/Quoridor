@@ -2,9 +2,8 @@ package com.harush.zitoon.quoridor.ui;
 
 import static org.junit.Assert.*;
 
-import com.harush.zitoon.quoridor.ui.model.HumanPlayer;
-import com.harush.zitoon.quoridor.ui.model.Player;
-import com.harush.zitoon.quoridor.ui.model.Wall;
+
+import com.harush.zitoon.quoridor.core.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,11 +19,13 @@ public class WallTest {
 	private Wall otherWall;
 	private Player p1;
 	private Player p2;
+	private Board board;
 
 	@Before
-	public void setUp() throws Exception {
-		p1 = new HumanPlayer("Steve", "#ffffff");
-		p2 = new HumanPlayer("Austin", "#ffffff");
+	public void setUp() {
+		board = new Board();
+		p1 = new HumanPlayer("Steve", new PawnLogic(board), "#ffffff");
+		p2 = new HumanPlayer("Austin", new PawnLogic(board), "#ffffff");
 		wall = new Wall(4, 5, true, p1);
 		otherWall = new Wall(8, 9, false, p2);
 	}

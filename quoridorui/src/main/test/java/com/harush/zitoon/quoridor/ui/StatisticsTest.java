@@ -2,7 +2,7 @@ package com.harush.zitoon.quoridor.ui;
 
 import static org.junit.Assert.*;
 
-import com.harush.zitoon.quoridor.ui.model.Statistics;
+import com.harush.zitoon.quoridor.core.model.Statistics;
 import org.junit.Before;
 import org.junit.Test;
 

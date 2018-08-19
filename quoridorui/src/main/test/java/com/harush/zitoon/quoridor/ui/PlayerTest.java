@@ -2,24 +2,29 @@ package com.harush.zitoon.quoridor.ui;
 
 import static org.junit.Assert.*;
 
-import com.harush.zitoon.quoridor.ui.model.HumanPlayer;
-import com.harush.zitoon.quoridor.ui.model.Player;
+
+import com.harush.zitoon.quoridor.core.model.Board;
+import com.harush.zitoon.quoridor.core.model.HumanPlayer;
+import com.harush.zitoon.quoridor.core.model.PawnLogic;
+import com.harush.zitoon.quoridor.core.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 /**
  * Test for {@link Player} class, incorporates test for {@link HumanPlayer}.
- * @author Denver Fernandes
+ * @author Moar Harush
  *
  */
 public class PlayerTest {
 
 	private Player player;
 	private Player otherPlayer;
+	private Board board;
 	
 	@Before
 	public void setUp() {
-		player = new HumanPlayer("Roman Reigns", "#ffffff");
-		otherPlayer = new HumanPlayer("Sami Zayn", "#000000");
+		board = new Board();
+		player = new HumanPlayer("Roman Reigns", new PawnLogic(board), "#ffffff");
+		otherPlayer = new HumanPlayer("Sami Zayn", new PawnLogic(board), "#000000");
 	}
 
 	@Test

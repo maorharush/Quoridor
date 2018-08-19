@@ -1,7 +1,7 @@
 package com.harush.zitoon.quoridor.ui.view;
 
+import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.controller.StatsController;
-import com.harush.zitoon.quoridor.ui.model.*;
 import com.harush.zitoon.quoridor.ui.view.components.HorizontalWallComponent;
 import com.harush.zitoon.quoridor.ui.view.components.PawnComponent;
 import com.harush.zitoon.quoridor.ui.view.components.TileComponent;
@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainGame extends Application implements GameScreen {
+public class MainGame extends Application implements GameScreen, MainScreen {
     public static final int TILE_SIZE = Settings.getSingleton().getTileSize();
 
     private List<PawnComponent> pawnComponentList = new ArrayList<>(GameSession.MAX_PLAYERS);
@@ -49,11 +49,11 @@ public class MainGame extends Application implements GameScreen {
         currentTurnLabel = new Label();
         wallsLabel = new Label();
         showStage(stage, "resources/icons/favicon.png");
+        startGame();
     }
 
     @Override
     public void start(Stage primaryStage) {
-        //setupModel();
         showStage(primaryStage, "res/icons/favicon.png");
     }
 
@@ -72,9 +72,13 @@ public class MainGame extends Application implements GameScreen {
         tileBoard = new TileComponent[board.getWidth()][board.getHeight()];
         horizontalWalls = new HorizontalWallComponent[board.getWidth()][board.getHeight()];
         verticalWalls = new VerticalWallComponent[board.getWidth()][board.getHeight()];
-        turnIndex = 0;
+        currentPlayerIndex = 0;
         setupPawns();
 
+    }
+
+    private void startGame() {
+        gameSession.getPlayer(0).play();
     }
 
     private void showStage(Stage stage, String s) {
@@ -346,7 +350,8 @@ public class MainGame extends Application implements GameScreen {
      * @param pixel the pixel
      * @return a coordinate
      */
-    private int toBoard(double pixel) {
+    @Override
+    public int toBoard(double pixel) {
         return (int) (pixel + TILE_SIZE / 2) / TILE_SIZE;
     }
 
@@ -375,80 +380,69 @@ public class MainGame extends Application implements GameScreen {
      * @return the pawn component
      */
     private PawnComponent makePawn(PawnComponent.PawnType type, int x, int y, Player player) {
-        PawnComponent pawnComponent = new PawnComponent(type, x, y, player.getName(), player.getPawnColour());
-
-        pawnComponent.setOnMouseReleased(e -> {
-            int newX = toBoard(pawnComponent.getLayoutX());
-            int newY = toBoard(pawnComponent.getLayoutY());
-            Tile currentTile = new Tile(toBoard(pawnComponent.getOldX()), toBoard(pawnComponent.getOldY()));
-            Tile nextTile = new Tile(newX, newY);
-            if (gameSession.isValidMove(currentTile, nextTile) && isCurrentTurn(type)) {
-                System.out.println(type + " x:" + newX + " y:" + newY);
-                pawnComponent.move(newX, newY);
-                gameSession.getBoard().getTile(currentTile.getX(), currentTile.getY()).setContainsPawn(false);
-                gameSession.getBoard().getTile(nextTile.getX(), nextTile.getY()).setContainsPawn(true);
-                //Check if the pawn is in a winning position on the board
-                switch (type) {
-                    case RED:
-                        if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (newX == (width - 1) && newY == (0)) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                            if (newY == 0) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        }
-                        break;
-                    case WHITE:
-                        if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (newX == (0) && newY == (height - 1)) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                            if (newY == (height - 1)) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        }
-                        break;
-                    case BLUE:
-                        if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (newX == (width - 1) && newY == (height - 1)) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                            if (newX == 0) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        }
-                        break;
-                    case GREEN:
-                        if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (newX == 0 && newY == 0) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                            if (newX == (width - 1)) {
-                                gameSession.setWinner(gameSession.getPlayer(turnIndex));
-                                endGame(gameSession);
-                            }
-                        }
-                        break;
-                }
-                //update whose turn it is
-                updateTurn();
-            } else {
-                pawnComponent.reverseMove();
-            }
-        });
+        PawnComponent pawnComponent = new PawnComponent(this, type, x, y, player);
         return pawnComponent;
+    }
+
+    @Override
+    public void checkForWinnerAndUpdateTurn(PawnComponent.PawnType type, int newX, int newY) {
+        //Check if the pawn is in a winning position on the board
+        switch (type) {
+            case RED:
+                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
+                    if (newX == (width - 1) && newY == (0)) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
+                    if (newY == 0) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                }
+                break;
+            case WHITE:
+                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
+                    if (newX == (0) && newY == (height - 1)) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
+                    if (newY == (height - 1)) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                }
+                break;
+            case BLUE:
+                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
+                    if (newX == (width - 1) && newY == (height - 1)) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
+                    if (newX == 0) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                }
+                break;
+            case GREEN:
+                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
+                    if (newX == 0 && newY == 0) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
+                    if (newX == (width - 1)) {
+                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
+                        endGame(gameSession);
+                    }
+                }
+                break;
+        }
+        //update whose turn it is
+        updateTurn();
     }
 
     /**

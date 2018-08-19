@@ -2,12 +2,13 @@ package com.harush.zitoon.quoridor.ui;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
 
-import com.harush.zitoon.quoridor.ui.model.*;
+import com.harush.zitoon.quoridor.core.model.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * Test class for GameSession.java.
@@ -31,7 +32,7 @@ public class GameSessionTest {
 	public void setUp() throws Exception {
 		board = new Board();
 		ruleType = RuleType.STANDARD;
-		player = new HumanPlayer("TestPlayer", "#ffffff");
+		player = new HumanPlayer("TestPlayer", new PawnLogic(board), "#ffffff");
 		game = new GameSession(board, ruleType);
 		to = new Tile(0,0);
 		from = new Tile(0,1);
@@ -57,8 +58,8 @@ public class GameSessionTest {
 
 	@Test
 	public void testGetPlayer() {
-		Player player2 = new HumanPlayer("TestPlayer", "#ffffff");
-		Player player3 = new HumanPlayer("TestPlayer", "#ffffff");
+		Player player2 = new HumanPlayer("TestPlayer", new PawnLogic(board), "#ffffff");
+		Player player3 = new HumanPlayer("TestPlayer", new PawnLogic(board),"#ffffff");
 		game.addPlayer(player);
 		game.addPlayer(player2);
 		game.addPlayer(player3);		
@@ -77,14 +78,7 @@ public class GameSessionTest {
 	public void testGetMoves() {
 		assertEquals(0, moves.size());
 	}
-	
-	@Test
-	public void testIsValidMove() {		
-		Tile invalid = new Tile(0,2);
-		assertTrue(game.isValidMove(from, to));
-		assertTrue(game.isValidMove(from, invalid));
-		assertFalse(game.isValidMove(to, invalid));
-	}	
+
 
 	@Test
 	public void testGetRuleType() {
