@@ -74,8 +74,8 @@ public class AI extends Player {
      * @return child node of the generated tree of positions.
      */
     public Position getShortestPath(Board board, int pl) {
-        Queue<Position> q = new LinkedList<Position>();
-        LinkedList<Position> visited = new LinkedList<Position>();
+        Queue<Position> q = new LinkedList<>();
+        LinkedList<Position> visited = new LinkedList<>();
         Position current = board.positionOf(pl);
         
         boolean finished = false;
@@ -258,7 +258,7 @@ public class AI extends Player {
             Integer level, Integer alpha, Integer beta) {
         Integer p = players.remove(0);
         players.add(p);
-        int score = 0;
+        int score;
         
         if (level == depth) {
             return score(state, p);
@@ -266,7 +266,6 @@ public class AI extends Player {
             List<Position> moves = generateMoves(state);
             if (p.equals(max)) {
                 for (Position next : moves) {
-                    // System.out.println(next);
                     score = alphaBeta(players, max,
                             state.makeMove(next.toString()), level + 1, alpha,
                             beta);

@@ -26,19 +26,6 @@ public class PawnComponent extends StackPane {
     private Pawn pawn;
     private MainScreen mainScreen;
 
-
-    public PawnType getType() {
-        return type;
-    }
-
-    public double getOldX() {
-        return oldX;
-    }
-
-    public double getOldY() {
-        return oldY;
-    }
-
     public PawnComponent(MainScreen mainScreen, PawnType type, int x, int y, Player player) {
         this.type = type;
         this.color = player.getPawnColour();
@@ -89,26 +76,6 @@ public class PawnComponent extends StackPane {
         return isSuccess;
     }
 
-    private void drawLabels() {
-        if (Settings.getSingleton().isShowLabels()) {
-            Text text = new Text(playerName);
-            text.setTranslateX(8);
-            text.setTranslateY(-10);
-            text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
-            getChildren().add(text);
-        }
-    }
-
-    private void drawPawn() {
-        Circle ellipse = new Circle(TILE_SIZE * 0.3215);
-        ellipse.setFill(Color.web(color));
-        ellipse.setStroke(Color.BLACK);
-        ellipse.setStrokeWidth(TILE_SIZE * 0.03);
-        ellipse.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3125 * 2) / 2);
-        ellipse.setTranslateY((TILE_SIZE - TILE_SIZE * 0.26 * 2) / 2);
-        getChildren().addAll(ellipse);
-    }
-
     private boolean move(int x, int y) {
         if (!mainScreen.isCurrentTurn(type)) {
             System.out.println(String.format("Not player %s's turn", playerName));
@@ -131,11 +98,31 @@ public class PawnComponent extends StackPane {
         return true;
     }
 
+    private void drawPawn() {
+        Circle ellipse = new Circle(TILE_SIZE * 0.3215);
+        ellipse.setFill(Color.web(color));
+        ellipse.setStroke(Color.BLACK);
+        ellipse.setStrokeWidth(TILE_SIZE * 0.03);
+        ellipse.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3125 * 2) / 2);
+        ellipse.setTranslateY((TILE_SIZE - TILE_SIZE * 0.26 * 2) / 2);
+        getChildren().addAll(ellipse);
+    }
+
+    private void drawLabels() {
+        if (Settings.getSingleton().isShowLabels()) {
+            Text text = new Text(playerName);
+            text.setTranslateX(8);
+            text.setTranslateY(-10);
+            text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
+            getChildren().add(text);
+        }
+    }
+
     private void logCannotMoveErrMsg(String errMsg) {
         System.out.println(String.format("Moving player %s's pawn failed. Error message:[%s]", playerName, errMsg));
     }
 
-    public void reverseMove() {
+    private void reverseMove() {
         relocate(oldX, oldY);
     }
 

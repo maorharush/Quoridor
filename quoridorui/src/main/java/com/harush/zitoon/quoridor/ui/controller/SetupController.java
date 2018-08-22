@@ -121,7 +121,17 @@ public class SetupController extends AbstractController implements Initializable
     		playBtn.setDisable(true);
     	}
     	
-    } 
+    }
+
+    @FXML
+	private void on1PlayerBtn(ActionEvent actionEvent) {
+		List<Player> players = new ArrayList<>(2);
+		Player player1 = new HumanPlayer("1" , new PawnLogic(board), "#663366");
+		Player player2 = new DumbAIPlayer("2" , new PawnLogic(board), "#b3e6b3");
+		players.add(player1);
+		players.add(player2);
+		setupGame(players);
+	}
     
     @FXML
     private void on2PlayerBtn(ActionEvent action) {
@@ -130,7 +140,7 @@ public class SetupController extends AbstractController implements Initializable
     	Player player2 = new HumanPlayer("2" , new PawnLogic(board), "#b3e6b3");
     	players.add(player1);
     	players.add(player2);
-    	setupGame(players);  	
+    	setupGame(players);
     }
     
     @FXML
@@ -144,7 +154,7 @@ public class SetupController extends AbstractController implements Initializable
     	players.add(player2);
     	players.add(player3);
     	players.add(player4);
-    	setupGame(players);  	   	
+    	setupGame(players);
     } 
     
     /**
