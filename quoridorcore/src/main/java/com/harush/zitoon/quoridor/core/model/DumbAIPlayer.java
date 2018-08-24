@@ -20,12 +20,7 @@ public class DumbAIPlayer extends Player {
 		LogicResult logicResult;
 		do {
 
-			Random random = new Random();
-			int randX = random.nextInt(pawn.getX() + 2);
-			int randY = random.nextInt(pawn.getY() + 2);
-
-
-			logicResult = pawn.move(randX, randY);
+			logicResult = pawn.move(4, pawn.getY()+1);
 		} while (logicResult == null || !logicResult.isSuccess());
 
 	}
