@@ -16,7 +16,6 @@ public class GameSession extends Observable {
 	private RuleType ruleType;
 	private Player winner;
 	private int currentPlayerIndex = 0;
-	private PawnType[] pawnTypes = PawnType.values();
 	private int width = Settings.getSingleton().getBoardWidth();
 	private int height = Settings.getSingleton().getBoardHeight();
 	private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
@@ -192,6 +191,7 @@ public class GameSession extends Observable {
 	}
 
 	public void endGame() {
+		setChanged();
 		notifyObservers(this);
 	}
 
