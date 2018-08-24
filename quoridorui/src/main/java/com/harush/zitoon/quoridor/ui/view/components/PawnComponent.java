@@ -1,13 +1,15 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
 import com.harush.zitoon.quoridor.core.model.*;
-import com.harush.zitoon.quoridor.ui.view.MainScreen;
+import com.harush.zitoon.quoridor.ui.view.utils.UIUtils;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 
@@ -16,40 +18,23 @@ import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
  * Adapted from <a href="https://github.com/AlmasB/FXTutorials/blob/master/src/com/almasb/checkers/Piece.java">AlmasB</a>.
  */
 
-public class PawnComponent extends StackPane {
+public class PawnComponent extends StackPane implements Pawn {
 
-    private PawnType type;
     private double mouseX, mouseY;
-    private double oldX, oldY;
+    private double currentX, currentY;
     private String color;
     private String playerName;
     private Pawn pawn;
-    private MainScreen mainScreen;
 
+    public PawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
+        this.color = color;
+        this.playerName = playerName;
+        this.pawn = pawn;
 
-    public PawnType getType() {
-        return type;
-    }
+        LogicResult logicResult = spawn(x, y);
 
-    public double getOldX() {
-        return oldX;
-    }
-
-    public double getOldY() {
-        return oldY;
-    }
-
-    public PawnComponent(MainScreen mainScreen, PawnType type, int x, int y, Player player) {
-        this.type = type;
-        this.color = player.getPawnColour();
-        this.playerName = player.getName();
-        this.pawn = player.getPawn();
-        this.mainScreen = mainScreen;
-
-        boolean isSuccess = spawn(x, y);
-
-        if (!isSuccess) {
-            System.out.println(String.format("ERROR: Failed to spawn pawn in coordinate (%d,%d)", x, y));
+        if (!logicResult.isSuccess()) {
+            System.out.println(logicResult.getErrMsg());
             return;
         }
 
@@ -61,42 +46,62 @@ public class PawnComponent extends StackPane {
             mouseY = e.getSceneY();
         });
 
-        setOnMouseDragged(e -> relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY));
+        setOnMouseDragged(e -> relocate(e.getSceneX() - mouseX + currentX, e.getSceneY() - mouseY + currentY));
 
         setOnMouseReleased(e -> {
-            int newX = mainScreen.toBoard(getLayoutX());
-            int newY = mainScreen.toBoard(getLayoutY());
+            int newX = UIUtils.toBoardCoordinate(getLayoutX());
+            int newY = UIUtils.toBoardCoordinate(getLayoutY());
 
-            System.out.println(type + " x:" + newX + " y:" + newY);
-
-            boolean isMoveSuccess = move(newX, newY);
-            if (isMoveSuccess) {
-                mainScreen.checkForWinnerAndUpdateTurn(type, newX, newY);
-            }
+            move(newX, newY);
         });
     }
 
-    private boolean spawn(int x, int y) {
-        boolean isSuccess = pawn.spawn(x, y).isSuccess();
+    @Override
+    public LogicResult spawn(int x, int y) {
+        LogicResult logicResult = pawn.spawn(x, y);
 
-        if (isSuccess) {
+        if (logicResult.isSuccess()) {
 
-            oldX = x * TILE_SIZE;
-            oldY = y * TILE_SIZE;
-            relocate(oldX, oldY);
+            currentX = x * TILE_SIZE;
+            currentY = y * TILE_SIZE;
+            relocate(currentX, currentY);
         }
-
-        return isSuccess;
+        return logicResult;
     }
 
-    private void drawLabels() {
-        if (Settings.getSingleton().isShowLabels()) {
-            Text text = new Text(playerName);
-            text.setTranslateX(8);
-            text.setTranslateY(-10);
-            text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
-            getChildren().add(text);
+    @Override
+    public LogicResult move(int x, int y) {
+        int newX = x * TILE_SIZE;
+        int newY = y * TILE_SIZE;
+        relocate(newX, newY);
+
+        LogicResult logicResult = pawn.move(x, y);
+
+        if (!logicResult.isSuccess()) {
+            logCannotMoveErrMsg(logicResult.getErrMsg());
+            reverseMove();
+            return logicResult;
         }
+
+        currentX = newX;
+        currentY = newY;
+
+        return new LogicResult(true);
+    }
+
+    @Override
+    public PawnType getType() {
+        return pawn.getType();
+    }
+
+    @Override
+    public int getX() {
+        return pawn.getX();
+    }
+
+    @Override
+    public int getY() {
+        return pawn.getY();
     }
 
     private void drawPawn() {
@@ -109,38 +114,34 @@ public class PawnComponent extends StackPane {
         getChildren().addAll(ellipse);
     }
 
-    private boolean move(int x, int y) {
-        if (!mainScreen.isCurrentTurn(type)) {
-            System.out.println(String.format("Not player %s's turn", playerName));
-            reverseMove();
-            return false;
+    private void drawLabels() {
+        if (Settings.getSingleton().isShowLabels()) {
+            Text text = new Text(playerName);
+            text.setTranslateX(8);
+            text.setTranslateY(-10);
+            text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
+            getChildren().add(text);
         }
-
-        LogicResult logicResult = pawn.move(x, y);
-
-        if (!logicResult.isSuccess()) {
-            logCannotMoveErrMsg(logicResult.getErrMsg());
-            reverseMove();
-            return false;
-        }
-
-        oldX = x * TILE_SIZE;
-        oldY = y * TILE_SIZE;
-        relocate(oldX, oldY);
-
-        return true;
     }
 
     private void logCannotMoveErrMsg(String errMsg) {
         System.out.println(String.format("Moving player %s's pawn failed. Error message:[%s]", playerName, errMsg));
     }
 
-    public void reverseMove() {
-        relocate(oldX, oldY);
+    private void reverseMove() {
+        relocate(currentX, currentY);
     }
 
-    public enum PawnType {
-        RED, WHITE, GREEN, BLUE;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PawnComponent that = (PawnComponent) o;
+        return Objects.equals(pawn, that.pawn);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(pawn);
+    }
 }

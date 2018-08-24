@@ -8,18 +8,15 @@ public abstract class Player {
     private int walls;
     private Statistics stats;
     private String pawnColour;
-    private Pawn pawn;
+    protected Pawn pawn;
 
     /**
      * Creates a new Player by initialising its name and pawn
-     * Generates UUID
-     *
      * @param name       player name
      * @param pawn       player pawn
      * @param pawnColour color of the pawn
      */
     public Player(String name, Pawn pawn, String pawnColour) {
-        //Generate UUID
 
         //Initialise values.
         this.name = name;
