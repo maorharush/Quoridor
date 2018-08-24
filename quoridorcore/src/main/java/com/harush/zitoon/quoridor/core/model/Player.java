@@ -5,7 +5,7 @@ package com.harush.zitoon.quoridor.core.model;
  */
 public abstract class Player {
     private String name;
-    private int walls;
+    private int numWalls;
     private Statistics stats;
     private String pawnColour;
     protected Pawn pawn;
@@ -20,7 +20,7 @@ public abstract class Player {
 
         //Initialise values.
         this.name = name;
-        walls = Settings.getSingleton().getWalls();
+        numWalls = Settings.getSingleton().getWalls();
         this.stats = new Statistics();
         this.pawnColour = pawnColour;
         this.pawn = pawn;
@@ -42,8 +42,8 @@ public abstract class Player {
      *
      * @return the number of walls
      */
-    public int getWalls() {
-        return walls;
+    public int getNumWalls() {
+        return numWalls;
     }
 
     /**
@@ -52,11 +52,11 @@ public abstract class Player {
      * @throws IllegalStateException if the number of walls is below 0
      */
     public void decrementWalls() {
-        if (walls == 0) {
+        if (numWalls == 0) {
             throw new IllegalStateException("The number of walls cannot be decremented below 0.");
         }
-        System.out.println(name + ": " + walls + " walls left ");
-        walls--;
+        System.out.println(name + ": " + numWalls + " walls left ");
+        numWalls--;
     }
 
     /**
@@ -65,10 +65,10 @@ public abstract class Player {
      * @throws IllegalStateException if the number of walls are at maximum
      */
     public void incrementWalls() {
-        if (walls == Settings.getSingleton().getWalls()) {
+        if (numWalls == Settings.getSingleton().getWalls()) {
             throw new IllegalStateException("The number of walls are already at maximum.");
         }
-        walls++;
+        numWalls++;
     }
 
     public Pawn getPawn() {

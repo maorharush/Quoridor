@@ -102,7 +102,7 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
         currentTurnLabel.setText(gameSession.getCurrentPlayer().getName() + "'s turn");
         currentTurnLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
         currentTurnLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        wallsLabel.setText("Walls left: " + gameSession.getCurrentPlayer().getWalls());
+        wallsLabel.setText("Walls left: " + gameSession.getCurrentPlayer().getNumWalls());
         wallsLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
         wallsLabel.setTranslateY(50);
         panel.getChildren().addAll(currentTurnLabel, wallsLabel, button);
@@ -182,7 +182,7 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
                             System.out.println("You cannot place a wall here.");
                             return;
                         }
-                        if (gameSession.getCurrentPlayer().getWalls() == 0) {
+                        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
                             System.out.println("You do not have any walls left.");
                             return;
                         }
@@ -278,7 +278,7 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
                             System.out.println("You cannot place a wall here.");
                             return;
                         }
-                        if (gameSession.getCurrentPlayer().getWalls() == 0) {
+                        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
                             System.out.println("You do not have any walls left.");
                             return;
                         }
@@ -380,7 +380,7 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
     public void updateTurn(Player newTurnPlayer) {
         currentTurnLabel.setText(newTurnPlayer.getName() + "'s turn");
         currentTurnLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
-        wallsLabel.setText("Walls left: " + newTurnPlayer.getWalls());
+        wallsLabel.setText("Walls left: " + newTurnPlayer.getNumWalls());
         wallsLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
     }
 
