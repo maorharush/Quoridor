@@ -71,6 +71,7 @@ public class PawnLogic implements Pawn {
         return logicResult;
     }
 
+    //TODO improve / replace with getValidMoves + Handle special move above enemy pawn
     private boolean isValidMove(int currentX, int currentY, int nextX, int nextY) {
 
         if (nextX >= board.getWidth() || nextY >= board.getHeight() || nextX < 0 || nextY < 0) { //Check if the new position is off the board
