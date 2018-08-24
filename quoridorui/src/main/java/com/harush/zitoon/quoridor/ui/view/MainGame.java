@@ -21,19 +21,17 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MainGame extends Application implements GameScreen, MainScreen {
+public class MainGame extends Application implements GameScreen, MainScreen, Observer {
     public static final int TILE_SIZE = Settings.getSingleton().getTileSize();
 
-    private List<PawnComponent> pawnComponentList = new ArrayList<>(GameSession.MAX_PLAYERS);
+    private List<PawnComponent> pawnComponentList;
     private GameSession gameSession;
     private int height;
     private int width;
-    private PawnComponent.PawnType[] pawnTypes = PawnComponent.PawnType.values();
-    private int currentPlayerIndex;
-
     private TileComponent[][] tileBoard;
     private HorizontalWallComponent[][] horizontalWalls;
     private VerticalWallComponent[][] verticalWalls;
@@ -44,10 +42,14 @@ public class MainGame extends Application implements GameScreen, MainScreen {
     private Label currentTurnLabel;
     private Label wallsLabel;
 
-    public MainGame(Stage stage, Board board, List<Player> players) {
-        setupModel(board, players);
+    public MainGame(Stage stage, GameSession gameSession, List<PawnComponent> pawnComponentList) {
+        setupModel(gameSession.getBoard());
         currentTurnLabel = new Label();
         wallsLabel = new Label();
+        this.gameSession = gameSession;
+        gameSession.addObserver(this);
+        this.pawnComponentList = pawnComponentList;
+
         showStage(stage, "resources/icons/favicon.png");
         startGame();
     }
@@ -59,26 +61,20 @@ public class MainGame extends Application implements GameScreen, MainScreen {
 
     /**
      * Sets up the model.
-     *
      * @param board   the board
-     * @param players the player
      */
-    private void setupModel(Board board, List<Player> players) {
+    private void setupModel(Board board) {
         Settings settings = Settings.getSingleton();
-        setupGameSession(board, players, settings);
 
         height = settings.getBoardHeight();
         width = settings.getBoardWidth();
         tileBoard = new TileComponent[board.getWidth()][board.getHeight()];
         horizontalWalls = new HorizontalWallComponent[board.getWidth()][board.getHeight()];
         verticalWalls = new VerticalWallComponent[board.getWidth()][board.getHeight()];
-        currentPlayerIndex = 0;
-        setupPawns();
-
     }
 
     private void startGame() {
-        gameSession.getPlayer(0).play();
+        gameSession.startGame();
     }
 
     private void showStage(Stage stage, String s) {
@@ -87,13 +83,6 @@ public class MainGame extends Application implements GameScreen, MainScreen {
         stage.setTitle("Quoridor");
         stage.setScene(scene);
         stage.show();
-    }
-
-    private void setupGameSession(Board board, List<Player> players, Settings settings) {
-        gameSession = new GameSession(board, settings.getRuleType());
-        for (Player player : players) {
-            gameSession.addPlayer(player);
-        }
     }
 
     /**
@@ -110,11 +99,11 @@ public class MainGame extends Application implements GameScreen, MainScreen {
         });
         int offset = Settings.getSingleton().getBoardWidth();
         button.setTranslateY(150);
-        currentTurnLabel.setText(gameSession.getPlayer(currentPlayerIndex).getName() + "'s turn");
-        currentTurnLabel.setTextFill(Color.valueOf(gameSession.getPlayer(currentPlayerIndex).getPawnColour()));
+        currentTurnLabel.setText(gameSession.getCurrentPlayer().getName() + "'s turn");
+        currentTurnLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
         currentTurnLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        wallsLabel.setText("Walls left: " + gameSession.getPlayer(currentPlayerIndex).getWalls());
-        wallsLabel.setTextFill(Color.valueOf(gameSession.getPlayer(currentPlayerIndex).getPawnColour()));
+        wallsLabel.setText("Walls left: " + gameSession.getCurrentPlayer().getWalls());
+        wallsLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
         wallsLabel.setTranslateY(50);
         panel.getChildren().addAll(currentTurnLabel, wallsLabel, button);
         if (offset == 7) {
@@ -193,28 +182,28 @@ public class MainGame extends Application implements GameScreen, MainScreen {
                             System.out.println("You cannot place a wall here.");
                             return;
                         }
-                        if (gameSession.getPlayer(currentPlayerIndex).getWalls() == 0) {
+                        if (gameSession.getCurrentPlayer().getWalls() == 0) {
                             System.out.println("You do not have any walls left.");
                             return;
                         }
-                        gameSession.getBoard().setWall(thisX, thisY, false, true, gameSession.getPlayer(currentPlayerIndex));
-                        wall.setFill(Color.valueOf(gameSession.getPlayer(currentPlayerIndex).getPawnColour()));
+                        gameSession.getBoard().setWall(thisX, thisY, false, true, gameSession.getCurrentPlayer());
+                        wall.setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
                         System.out.println("1. Wall placed at X: " + thisX + " Y: " + thisY);
                         if (nextWallX < width) {
-                            gameSession.getBoard().setWall(nextWallX, nextWallY, false, false, gameSession.getPlayer(currentPlayerIndex));
-                            verticalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getPlayer(currentPlayerIndex).getPawnColour()));
+                            gameSession.getBoard().setWall(nextWallX, nextWallY, false, false, gameSession.getCurrentPlayer());
+                            verticalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
                             System.out.println("2. Wall placed at: X" + nextWallX + " " + nextWallY);
                         }
-                        gameSession.getPlayer(currentPlayerIndex).getStatistics().incrementWallsUsed();
-                        gameSession.getPlayer(currentPlayerIndex).decrementWalls();
-                        updateTurn();
+                        gameSession.getCurrentPlayer().getStatistics().incrementWallsUsed();
+                        gameSession.getCurrentPlayer().decrementWalls();
+                        gameSession.updateTurn();
                     } else if (e.isSecondaryButtonDown()) {
                         if (gameSession.getRuleType() == RuleType.CHALLENGE) {
                             if (!gameSession.getBoard().containsWall(thisX, thisY, false)) {
                                 System.out.println("No wall here");
                                 return;
                             }
-                            if (gameSession.getBoard().getWall(thisX, thisY, false).getPlacedBy() == gameSession.getPlayer(currentPlayerIndex)) {
+                            if (gameSession.getBoard().getWall(thisX, thisY, false).getPlacedBy() == gameSession.getCurrentPlayer()) {
                                 System.out.println("You cannot remove your own walls.");
                                 return;
                             }
@@ -234,7 +223,7 @@ public class MainGame extends Application implements GameScreen, MainScreen {
                             //gameSession.getBoard().getWall(thisX, thisY, false).getPlacedBy().getStatistics().decrementWallsUsed();
                             gameSession.getBoard().removeWall(thisX, thisY, false);
                             wall.setFill(Color.rgb(153, 217, 234, 0.8));
-                            updateTurn();
+                            gameSession.updateTurn();
                         } else {
                             System.out.println("You can only remove walls in a game with " + RuleType.CHALLENGE + " rules.");
                         }
@@ -289,28 +278,28 @@ public class MainGame extends Application implements GameScreen, MainScreen {
                             System.out.println("You cannot place a wall here.");
                             return;
                         }
-                        if (gameSession.getPlayer(currentPlayerIndex).getWalls() == 0) {
+                        if (gameSession.getCurrentPlayer().getWalls() == 0) {
                             System.out.println("You do not have any walls left.");
                             return;
                         }
-                        gameSession.getBoard().setWall(thisX, thisY, true, true, gameSession.getPlayer(currentPlayerIndex));
-                        wall.setFill(Color.valueOf(gameSession.getPlayer(currentPlayerIndex).getPawnColour()));
+                        gameSession.getBoard().setWall(thisX, thisY, true, true, gameSession.getCurrentPlayer());
+                        wall.setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
                         System.out.println("1. Wall placed at X: " + thisX + " Y: " + thisY);
                         if (nextWallX > 0 && nextWallX < width) {
-                            gameSession.getBoard().setWall(nextWallX, nextWallY, true, false, gameSession.getPlayer(currentPlayerIndex));
-                            horizontalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getPlayer(currentPlayerIndex).getPawnColour()));
+                            gameSession.getBoard().setWall(nextWallX, nextWallY, true, false, gameSession.getCurrentPlayer());
+                            horizontalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
                             System.out.println("2. Wall placed at: X" + nextWallX + " " + nextWallY);
                         }
-                        gameSession.getPlayer(currentPlayerIndex).getStatistics().incrementWallsUsed();
-                        gameSession.getPlayer(currentPlayerIndex).decrementWalls();
-                        updateTurn();
+                        gameSession.getCurrentPlayer().getStatistics().incrementWallsUsed();
+                        gameSession.getCurrentPlayer().decrementWalls();
+                        gameSession.updateTurn();
                     } else if (e.isSecondaryButtonDown()) {
                         if (gameSession.getRuleType() == RuleType.CHALLENGE) {
                             if (!gameSession.getBoard().containsWall(thisX, thisY, true)) {
                                 System.out.println("No wall here");
                                 return;
                             }
-                            if (gameSession.getBoard().getWall(thisX, thisY, true).getPlacedBy() == gameSession.getPlayer(currentPlayerIndex)) {
+                            if (gameSession.getBoard().getWall(thisX, thisY, true).getPlacedBy() == gameSession.getCurrentPlayer()) {
                                 System.out.println("You cannot remove your own walls.");
                                 return;
                             }
@@ -330,7 +319,7 @@ public class MainGame extends Application implements GameScreen, MainScreen {
                             //gameSession.getBoard().getWall(thisX, thisY, true).getPlacedBy().getStatistics().decrementWallsUsed();
                             gameSession.getBoard().removeWall(thisX, thisY, true);
                             wall.setFill(Color.rgb(153, 217, 234, 0.8));
-                            updateTurn();
+                            gameSession.updateTurn();
                         } else {
                             System.out.println("You can only remove walls in a game with " + RuleType.CHALLENGE + " rules.");
                         }
@@ -345,134 +334,12 @@ public class MainGame extends Application implements GameScreen, MainScreen {
     }
 
     /**
-     * Converts a pixel on the board to a coordinate.
-     *
-     * @param pixel the pixel
-     * @return a coordinate
-     */
-    @Override
-    public int toBoard(double pixel) {
-        return (int) (pixel + TILE_SIZE / 2) / TILE_SIZE;
-    }
-
-    /**
-     * Determines whether it is the current {@link Player player's} turn.
-     *
-     * @param type the type of pawn
-     * @return whether it is the the current turn
-     */
-    @Override
-    public boolean isCurrentTurn(PawnComponent.PawnType type) {
-        if (pawnTypes[currentPlayerIndex] == type) {
-            return true;
-        }
-        System.out.println("It is not your turn!");
-        return false;
-    }
-
-    /**
-     * Creates a new {@link PawnComponent}.
-     *
-     * @param type       the pawn type
-     * @param x          the starting x coordinate
-     * @param y          the starting y coordinate
-     * @param player     the player owning the pawn
-     * @return the pawn component
-     */
-    private PawnComponent makePawn(PawnComponent.PawnType type, int x, int y, Player player) {
-        PawnComponent pawnComponent = new PawnComponent(this, type, x, y, player);
-        return pawnComponent;
-    }
-
-    @Override
-    public void checkForWinnerAndUpdateTurn(PawnComponent.PawnType type, int newX, int newY) {
-        //Check if the pawn is in a winning position on the board
-        switch (type) {
-            case RED:
-                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                    if (newX == (width - 1) && newY == (0)) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                    if (newY == 0) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                }
-                break;
-            case WHITE:
-                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                    if (newX == (0) && newY == (height - 1)) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                    if (newY == (height - 1)) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                }
-                break;
-            case BLUE:
-                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                    if (newX == (width - 1) && newY == (height - 1)) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                    if (newX == 0) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                }
-                break;
-            case GREEN:
-                if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                    if (newX == 0 && newY == 0) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-                    if (newX == (width - 1)) {
-                        gameSession.setWinner(gameSession.getPlayer(currentPlayerIndex));
-                        endGame(gameSession);
-                    }
-                }
-                break;
-        }
-        //update whose turn it is
-        updateTurn();
-    }
-
-    /**
-     * Sets up all the pawns in the game.
-     */
-    private void setupPawns() {
-        int xStartingPositions[] = null;
-        int yStartingPositions[] = null;
-        //Starting positions for player 1, player 2, player 3, player 4 based on game type
-
-        if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-            xStartingPositions = new int[]{(0), (width - 1), (width - 1), 0};
-            yStartingPositions = new int[]{(height - 1), (0), (width - 1), 0};
-        } else if (gameSession.getRuleType() == RuleType.STANDARD) {
-            xStartingPositions = new int[]{(width / 2), (width / 2), (0), (width - 1)};
-            yStartingPositions = new int[]{(height - 1), (0), (height / 2), (height / 2)};
-        }
-        for (int i = 0; i < gameSession.getPlayers().size(); i++) {
-            //Loop through hardcoded starting positions and pawn types to assign to each player's pawn
-            PawnComponent pawn = makePawn(pawnTypes[i], xStartingPositions[i], yStartingPositions[i], gameSession.getPlayer(i));
-            pawnComponentList.add(pawn);
-        }
-    }
-
-    /**
      * Ends the game and displays the {@link Statistics}.
      *
      * @param gs the game session
      */
-    private void endGame(GameSession gs) {
+    @Override
+    public void endGame(GameSession gs) {
         try {
             Stage stage = (Stage) tileGroup.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/layouts/stats.fxml"));
@@ -509,22 +376,21 @@ public class MainGame extends Application implements GameScreen, MainScreen {
     /**
      * Updates the turn and updates appropriate labels.
      */
-    public void updateTurn() {
-        currentPlayerIndex = (currentPlayerIndex + 1) % gameSession.getPlayers().size(); // Increment player index for next turn
-
-        Player newTurnPlayer = gameSession.getPlayer(currentPlayerIndex);
-
-        newTurnPlayer.getStatistics().incrementTotalMoves();
-
-        System.out.println(newTurnPlayer.getName() + "'s turn");
-
+    @Override
+    public void updateTurn(Player newTurnPlayer) {
         currentTurnLabel.setText(newTurnPlayer.getName() + "'s turn");
         currentTurnLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
         wallsLabel.setText("Walls left: " + newTurnPlayer.getWalls());
         wallsLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
-
-        newTurnPlayer.play();
     }
 
-
+    @Override
+    public void update(Observable o, Object arg) {
+        if (arg instanceof Player) {
+            Player newTurnPlayer = (Player) arg;
+            updateTurn(newTurnPlayer);
+        } else if (arg instanceof GameSession) {
+            endGame((GameSession)arg);
+        }
+    }
 }

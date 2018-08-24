@@ -1,58 +1,75 @@
 package com.harush.zitoon.quoridor.core.model;
 
 
-import java.util.logging.Logger;
+import java.util.Objects;
 
 public class PawnLogic implements Pawn {
 
-    private static final Logger log = Logger.getLogger(PawnLogic.class.getSimpleName());
+    //private static final Logger log = Logger.getLogger(PawnLogic.class.getSimpleName());
 
-    private int x;
+    private int currentX;
 
-    private int y;
+    private int currentY;
 
     private Board board;
 
-    public PawnLogic(Board board) {
-        this.board = board;
+    private GameSession gameSession;
+
+    private PawnType type;
+
+    public PawnLogic(GameSession gameSession, PawnType type) {
+        this.board = gameSession.getBoard();
+        this.gameSession = gameSession;
+        this.type = type;
     }
 
     @Override
-    public LogicResult move(int x, int y) {
-        log.config(String.format("Moving to coordinate: (%d, %d)", x, y));
+    public LogicResult move(int newX, int newY) {
+        System.out.println(String.format("Moving to coordinate: (%d, %d)", newX, newY));
 
-        if (!isValidMove(this.x, this.y, x, y)) {
-            return createFailedLogicResult(String.format("Moving to: (%d, %d) is an invalid pawn move", x, y));
+        LogicResult isCurrentTurn = gameSession.isCurrentTurn(type);
+        if (!isCurrentTurn.isSuccess()) {
+            return isCurrentTurn;
         }
 
-        board.movePawn(this.x, this.y, x, y);
-        this.x = x;
-        this.y = y;
+        if (!isValidMove(this.currentX, this.currentY, newX, newY)) {
+            return createFailedLogicResult(String.format("Moving to: (%d, %d) is an invalid pawn move", newX, newY));
+        }
+
+        board.movePawn(this.currentX, this.currentY, newX, newY);
+        this.currentX = newX;
+        this.currentY = newY;
+
+        gameSession.checkForWinnerAndUpdateTurn(type, newX, newY);
 
         return new LogicResult(true);
     }
 
     @Override
-    public LogicResult spawn(int x, int y) {
-        LogicResult logicResult = board.movePawn(this.x, this.y, x, y);
-
-        if (logicResult.isSuccess()) {
-            this.x = x;
-            this.y = y;
-        }
-        return logicResult;
+    public PawnType getType() {
+        return type;
     }
 
     @Override
     public int getX() {
-        return x;
+        return currentX;
     }
 
     @Override
     public int getY() {
-        return y;
+        return currentY;
     }
 
+    @Override
+    public LogicResult spawn(int x, int y) {
+        LogicResult logicResult = board.movePawn(this.currentX, this.currentY, x, y);
+
+        if (logicResult.isSuccess()) {
+            this.currentX = x;
+            this.currentY = y;
+        }
+        return logicResult;
+    }
 
     private boolean isValidMove(int currentX, int currentY, int nextX, int nextY) {
 
@@ -64,31 +81,19 @@ public class PawnLogic implements Pawn {
         }
         if (nextX == currentX) {
             if (nextY == currentY - 1) { //going upwards
-                if (board.containsWall(currentX, currentY, true)) {
-                    return false;
-                }
-                return true;
+                return !board.containsWall(currentX, currentY, true);
             }
             if (nextY == currentY + 1) { //going downwards
-                if (board.containsWall(currentX, currentY + 1, true)) {
-                    return false;
-                }
-                return true;
+                return !board.containsWall(currentX, currentY + 1, true);
             }
         }
 
         if (nextY == currentY) {
             if (nextX == currentX - 1) { //going left
-                if (board.containsWall(currentX - 1, currentY, false)) {
-                    return false;
-                }
-                return true;
+                return !board.containsWall(currentX - 1, currentY, false);
             }
             if (nextX == currentX + 1) { //going right
-                if (board.containsWall(currentX, currentY, false)) {
-                    return false;
-                }
-                return true;
+                return !board.containsWall(currentX, currentY, false);
             }
         }
         return false;
@@ -96,5 +101,22 @@ public class PawnLogic implements Pawn {
 
     private LogicResult createFailedLogicResult(String errMsg) {
         return new LogicResult(false, errMsg);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PawnLogic pawnLogic = (PawnLogic) o;
+        return currentX == pawnLogic.currentX &&
+                currentY == pawnLogic.currentY &&
+                Objects.equals(board, pawnLogic.board) &&
+                Objects.equals(gameSession, pawnLogic.gameSession) &&
+                type == pawnLogic.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentX, currentY, board, gameSession, type);
     }
 }

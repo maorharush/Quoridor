@@ -7,6 +7,8 @@ public interface Pawn {
 
     LogicResult move(int x, int y);
 
+    PawnType getType();
+
     int getX();
 
     int getY();
