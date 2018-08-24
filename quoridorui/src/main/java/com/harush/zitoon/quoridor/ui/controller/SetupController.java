@@ -2,6 +2,7 @@ package com.harush.zitoon.quoridor.ui.controller;
 
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
+import com.harush.zitoon.quoridor.ui.view.components.PawnComponent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
