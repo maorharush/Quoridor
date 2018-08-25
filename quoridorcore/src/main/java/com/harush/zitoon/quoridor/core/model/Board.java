@@ -148,16 +148,17 @@ public class Board {
      List<Wall> wall= new ArrayList<>();
         for (int y=0;y<height;y++){
             for (int x=0;y<width;x++){
-                if(containsWall(x,y,true)){
-                    wall.add(getWall(x,y,true));
-                }
-                else if(containsWall(x,y,false))
-                {
-                    wall.add(getWall(x,y,false));
-                }
+                addWallIfExists(wall, y, x, true);
+                addWallIfExists(wall, y, x, false);
             }
         }
         return wall;
+    }
+
+    private void addWallIfExists(List<Wall> wall, int y, int x, boolean b) {
+        if (containsWall(x, y, b)) {
+            wall.add(getWall(x, y, b));
+        }
     }
 
     private void validateCoordinateThrowException(int x, int y) {
