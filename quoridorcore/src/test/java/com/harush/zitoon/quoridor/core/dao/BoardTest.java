@@ -24,7 +24,7 @@ public class BoardTest {
     }
 
     @Test
-    public void getAllWalls_success() {
+    public void getAllWalls3Walls_success() {
         HumanPlayer player1 = new HumanPlayer("Maor", pawn, "color");
         HumanPlayer player2 = new HumanPlayer("Maor2", pawn, "color2");
         HumanPlayer player3 = new HumanPlayer("Maor3", pawn, "color3");
@@ -45,6 +45,12 @@ public class BoardTest {
         Assert.assertEquals("Number of walls returned is not as expected", expectedWalls.size(), actualAllWalls.size());
 
         Assert.assertEquals(expectedWalls, actualAllWalls);
+    }
+
+    @Test
+    public void getAllWalls0Walls_success() {
+        List<Wall> actualWalls = board.getAllWalls();
+        Assert.assertEquals("The wall list was expected to be empty",0, actualWalls.size());
     }
 
 }
