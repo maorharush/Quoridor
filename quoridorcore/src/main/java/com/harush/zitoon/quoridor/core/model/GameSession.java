@@ -1,14 +1,15 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+
 import java.util.*;
 
 /**
  * Represents a single game session. A game session comprises of 1, 2 or 4 players.
- * @author Moar Harush
- * @author Moar Harush
+ * @author Maor Harush
  * @version 0.6
  */
-public class GameSession extends Observable {
+public class GameSession extends Observable{
 	
 	public static int MAX_PLAYERS = 4;
 	private Board board;
@@ -33,7 +34,7 @@ public class GameSession extends Observable {
 		this.ruleType = rule;
 	}
 
-	/**
+    /**
 	 * Gets the {@link Board} used in this session.
 	 * @return the board
 	 */
@@ -196,7 +197,7 @@ public class GameSession extends Observable {
 
 	/**
 	 * Determines whether it is the current {@link Player player's} turn.
-	 *
+	 * 	 *
 	 * @return whether it is the the current turn
 	 */
 	public LogicResult isCurrentTurn(PawnType pawnType) {

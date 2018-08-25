@@ -1,5 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a board filled with tiles.
  *
@@ -140,6 +143,21 @@ public class Board {
         } else {
             return verticalWalls[x][y];
         }
+    }
+    public List<Wall> getAllWall(){
+     List<Wall> wall= new ArrayList<>();
+        for (int y=0;y<height;y++){
+            for (int x=0;y<width;x++){
+                if(containsWall(x,y,true)){
+                    wall.add(getWall(x,y,true));
+                }
+                else if(containsWall(x,y,false))
+                {
+                    wall.add(getWall(x,y,false));
+                }
+            }
+        }
+        return wall;
     }
 
     private void validateCoordinateThrowException(int x, int y) {

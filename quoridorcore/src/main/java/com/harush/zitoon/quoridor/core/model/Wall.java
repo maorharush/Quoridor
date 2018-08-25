@@ -11,7 +11,17 @@ public class Wall {
 	private int y;
 	private boolean isFirst;
 	private Player placedBy;
-	
+	private char orientation;
+
+	public char getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(char orientation) {
+		this.orientation = orientation;
+	}
+
+
 	public Wall(int x, int y, boolean isFirst, Player placedBy) {
 		this.x = x;
 		this.y = y;
