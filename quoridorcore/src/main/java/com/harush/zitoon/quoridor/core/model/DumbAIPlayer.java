@@ -1,7 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import java.util.Random;
-
 /**
  * A very simple AI player.
  */
@@ -14,7 +12,14 @@ public class DumbAIPlayer extends Player {
     @Override
     public void play() {
         System.out.println("RANDOMLY SELECTING MOVE!!!! I AM DUMB AHHHHH");
-        pawn.move(4, pawn.getY() + 1);
+
+        LogicResult logicResult;
+        do {
+            logicResult = pawn.move(pawn.getX(), pawn.getY() + 1);
+            if (!logicResult.isSuccess()) {
+                logicResult = pawn.move(pawn.getX() + 1, pawn.getY());
+            }
+        } while(!logicResult.isSuccess());
     }
 
 }

@@ -2,7 +2,9 @@ package com.harush.zitoon.quoridor.ui.controller;
 
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
-import com.harush.zitoon.quoridor.ui.view.components.PawnComponent;
+import com.harush.zitoon.quoridor.ui.view.components.AIPawnComponent;
+import com.harush.zitoon.quoridor.ui.view.components.AbstractPawnComponent;
+import com.harush.zitoon.quoridor.ui.view.components.HumanPawnComponent;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,7 +69,7 @@ public class SetupController extends AbstractController implements Initializable
      */
     @FXML
     private void onPlayBtn(ActionEvent event) {
-        setupGame(multiPlayerTable.getItems());
+//        setupGame(multiPlayerTable.getItems());
     }
 
     /**
@@ -133,37 +135,52 @@ public class SetupController extends AbstractController implements Initializable
     private void on1PlayerBtn(ActionEvent actionEvent) {
         List<String> colors = getColors(2);
         List<String> playerNames = getPlayerNames(2);
-        List<PawnComponent> pawnComponents = makePawnComponents(colors, playerNames, getPawns(2));
         List<Player> players = new ArrayList<>(2);
-        Player player1 = new HumanPlayer(playerNames.get(0), pawnComponents.get(0), colors.get(0));
-        Player player2 = new DumbAIPlayer(playerNames.get(1), pawnComponents.get(1), colors.get(1));
+        List<Pawn> pawns = makePawns(2);
+
+        int height = Settings.getSingleton().getBoardHeight();
+        int width = Settings.getSingleton().getBoardWidth();
+
+        int[] xStartingPositions = getStartingPositionsX(width);
+        int[] yStartingPositions = getStartingPositionsY(height, width);
+
+        HumanPawnComponent humanPawnComponent = new HumanPawnComponent(xStartingPositions[0], yStartingPositions[0], colors.get(0), playerNames.get(0), pawns.get(0));
+        AIPawnComponent aiPawnComponent = new AIPawnComponent(xStartingPositions[1], yStartingPositions[1], colors.get(1), playerNames.get(1), pawns.get(1));
+
+        Player player1 = new HumanPlayer(playerNames.get(0), humanPawnComponent, colors.get(0));
+        Player player2 = new DumbAIPlayer(playerNames.get(1), aiPawnComponent, colors.get(1));
         players.add(player1);
         players.add(player2);
-        setupGame(players);
+
+        List<AbstractPawnComponent> pawnComponents = new ArrayList<>();
+        pawnComponents.add(humanPawnComponent);
+        pawnComponents.add(aiPawnComponent);
+
+        setupGame(players, pawnComponents);
     }
 
     @FXML
     private void on2PlayerBtn(ActionEvent action) {
-        List<Player> players = new ArrayList<>(2);
-        Player player1 = new HumanPlayer("1", new PawnLogic(gameSession, pawnTypes[0]), "#663366");
-        Player player2 = new HumanPlayer("2", new PawnLogic(gameSession, pawnTypes[1]), "#b3e6b3");
-        players.add(player1);
-        players.add(player2);
-        setupGame(players);
+//        List<Player> players = new ArrayList<>(2);
+//        Player player1 = new HumanPlayer("1", new PawnLogic(gameSession, pawnTypes[0]), "#663366");
+//        Player player2 = new HumanPlayer("2", new PawnLogic(gameSession, pawnTypes[1]), "#b3e6b3");
+//        players.add(player1);
+//        players.add(player2);
+//        setupGame(players);
     }
 
     @FXML
     private void on4PlayerBtn(ActionEvent action) {
-        List<Player> players = new ArrayList<>(2);
-        Player player1 = new HumanPlayer("1", new PawnLogic(gameSession, pawnTypes[0]), "#663366");
-        Player player2 = new HumanPlayer("2", new PawnLogic(gameSession, pawnTypes[1]), "#b3e6b3");
-        Player player3 = new HumanPlayer("3", new PawnLogic(gameSession, pawnTypes[2]), "#334db3");
-        Player player4 = new HumanPlayer("4", new PawnLogic(gameSession, pawnTypes[3]), "#ff6666");
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-        players.add(player4);
-        setupGame(players);
+//        List<Player> players = new ArrayList<>(2);
+//        Player player1 = new HumanPlayer("1", new PawnLogic(gameSession, pawnTypes[0]), "#663366");
+//        Player player2 = new HumanPlayer("2", new PawnLogic(gameSession, pawnTypes[1]), "#b3e6b3");
+//        Player player3 = new HumanPlayer("3", new PawnLogic(gameSession, pawnTypes[2]), "#334db3");
+//        Player player4 = new HumanPlayer("4", new PawnLogic(gameSession, pawnTypes[3]), "#ff6666");
+//        players.add(player1);
+//        players.add(player2);
+//        players.add(player3);
+//        players.add(player4);
+//        setupGame(players);
     }
 
     /**
@@ -171,10 +188,9 @@ public class SetupController extends AbstractController implements Initializable
      *
      * @param players the players
      */
-    private void setupGame(List<Player> players) {
+    private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents) {
         setupGameSession(players);
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
-        List<PawnComponent> pawnComponents = makePawnComponents(getColors(players.size()), getPlayerNames(players.size()), getPawns(players.size()));
         new MainGame(stage, gameSession, pawnComponents);
         stage.show();
     }
@@ -225,39 +241,54 @@ public class SetupController extends AbstractController implements Initializable
     /**
      * Sets up all the pawns in the game.
      */
-    private List<PawnComponent> makePawnComponents(List<String> colors, List<String> playerNames, List<Pawn> pawns) {
-        List<PawnComponent> pawnComponentList = new ArrayList<>(GameSession.MAX_PLAYERS);
+    private List<AbstractPawnComponent> makePawnComponents(List<String> colors, List<String> playerNames, List<Pawn> pawns) {
+        List<AbstractPawnComponent> pawnComponentList = new ArrayList<>(GameSession.MAX_PLAYERS);
         int height = Settings.getSingleton().getBoardHeight();
         int width = Settings.getSingleton().getBoardWidth();
-        int xStartingPositions[] = null;
-        int yStartingPositions[] = null;
         //Starting positions for player 1, player 2, player 3, player 4 based on game type
 
-        if (this.gameSession.getRuleType() == RuleType.CHALLENGE) {
-            xStartingPositions = new int[]{(0), (width - 1), (width - 1), 0};
-            yStartingPositions = new int[]{(height - 1), (0), (width - 1), 0};
-        } else if (this.gameSession.getRuleType() == RuleType.STANDARD) {
-            xStartingPositions = new int[]{(width / 2), (width / 2), (0), (width - 1)};
-            yStartingPositions = new int[]{(height - 1), (0), (height / 2), (height / 2)};
-        }
+        int[] xStartingPositions = getStartingPositionsX(width);
+        int[] yStartingPositions = getStartingPositionsY(height, width);
+
         for (int i = 0; i < playerNames.size(); i++) {
             //Loop through hardcoded starting positions and pawn types to assign to each player's pawn
-            PawnComponent pawn = makePawnComponent(xStartingPositions[i], yStartingPositions[i], colors.get(i), playerNames.get(i), pawns.get(i));
+            AbstractPawnComponent pawn = makePawnComponent(xStartingPositions[i], yStartingPositions[i], colors.get(i), playerNames.get(i), pawns.get(i));
             pawnComponentList.add(pawn);
         }
 
         return pawnComponentList;
     }
 
+    private int[] getStartingPositionsY(int height, int width) {
+        int[] yStartingPositions = null;
+        if (this.gameSession.getRuleType() == RuleType.CHALLENGE) {
+            yStartingPositions = new int[]{(height - 1), (0), (width - 1), 0};
+        } else if (this.gameSession.getRuleType() == RuleType.STANDARD) {
+            yStartingPositions = new int[]{(height - 1), (0), (height / 2), (height / 2)};
+        }
+        return yStartingPositions;
+    }
+
+    private int[] getStartingPositionsX(int width) {
+        int xStartingPositions[] = null;
+        if (this.gameSession.getRuleType() == RuleType.CHALLENGE) {
+            xStartingPositions = new int[]{(0), (width - 1), (width - 1), 0};
+        } else if (this.gameSession.getRuleType() == RuleType.STANDARD) {
+            xStartingPositions = new int[]{(width / 2), (width / 2), (0), (width - 1)};
+        }
+        return xStartingPositions;
+    }
+
     /**
-     * Creates a new {@link PawnComponent}.
+     * Creates a new {@link AbstractPawnComponent}.
      *
      * @param x    the starting x coordinate
      * @param y    the starting y coordinate
      * @return the pawn component
      */
-    private PawnComponent makePawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
-        return new PawnComponent(x, y, color, playerName, pawn);
+    private AbstractPawnComponent makePawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
+//        return new AbstractPawnComponent(x, y, color, playerName, pawn);
+        return null;
     }
 
     private List<String> getColors(int numColors) {
@@ -278,7 +309,7 @@ public class SetupController extends AbstractController implements Initializable
         return playerNames;
     }
 
-    private List<Pawn> getPawns(int numPawns) {
+    private List<Pawn> makePawns(int numPawns) {
         List<Pawn> pawns = new ArrayList<>(numPawns);
         for (int i = 0; i < numPawns; i++) {
             pawns.add(new PawnLogic(gameSession, pawnTypes[i]));
