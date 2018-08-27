@@ -3,10 +3,11 @@ package com.harush.zitoon.quoridor.ui.view;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.controller.StatsController;
 import com.harush.zitoon.quoridor.ui.view.components.HorizontalWallComponent;
-import com.harush.zitoon.quoridor.ui.view.components.PawnComponent;
+import com.harush.zitoon.quoridor.ui.view.components.AbstractPawnComponent;
 import com.harush.zitoon.quoridor.ui.view.components.TileComponent;
 import com.harush.zitoon.quoridor.ui.view.components.VerticalWallComponent;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -28,7 +29,7 @@ import java.util.Observer;
 public class MainGame extends Application implements GameScreen, MainScreen, Observer {
     public static final int TILE_SIZE = Settings.getSingleton().getTileSize();
 
-    private List<PawnComponent> pawnComponentList;
+    private List<AbstractPawnComponent> pawnComponentList;
     private GameSession gameSession;
     private int height;
     private int width;
@@ -42,7 +43,7 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
     private Label currentTurnLabel;
     private Label wallsLabel;
 
-    public MainGame(Stage stage, GameSession gameSession, List<PawnComponent> pawnComponentList) {
+    public MainGame(Stage stage, GameSession gameSession, List<AbstractPawnComponent> pawnComponentList) {
         setupModel(gameSession.getBoard());
         currentTurnLabel = new Label();
         wallsLabel = new Label();
@@ -378,10 +379,12 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
      */
     @Override
     public void updateTurn(Player newTurnPlayer) {
-        currentTurnLabel.setText(newTurnPlayer.getName() + "'s turn");
-        currentTurnLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
-        wallsLabel.setText("Walls left: " + newTurnPlayer.getWalls());
-        wallsLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
+        Platform.runLater(() -> {
+            currentTurnLabel.setText(newTurnPlayer.getName() + "'s turn");
+            currentTurnLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
+            wallsLabel.setText("Walls left: " + newTurnPlayer.getWalls());
+            wallsLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
+        });
     }
 
     @Override

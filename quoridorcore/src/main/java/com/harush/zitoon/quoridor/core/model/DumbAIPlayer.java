@@ -1,28 +1,34 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import java.util.Random;
-
 /**
- * 
  * A very simple AI player.
- *
  */
 public class DumbAIPlayer extends Player {
 
-	public DumbAIPlayer(String name, Pawn pawn, String pawnColour) {
-		super(name, pawn, pawnColour);
-	}
+    public DumbAIPlayer(String name, Pawn pawn, String pawnColour) {
+        super(name, pawn, pawnColour);
+    }
 
-	@Override
-	public void play() {
-		System.out.println("RANDOMLY SELECTING MOVE!!!! I AM DUMB AHHHHH");
+    @Override
+    public void play() {
 
-		LogicResult logicResult;
-		do {
+        System.out.println("I am dumb AI... `Thinking`...");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Done thinking, now moving...");
 
-			logicResult = pawn.move(4, pawn.getY()+1);
-		} while (logicResult == null || !logicResult.isSuccess());
 
-	}
+
+        LogicResult logicResult;
+        do {
+            logicResult = pawn.move(pawn.getX(), pawn.getY() + 1);
+            if (!logicResult.isSuccess()) {
+                logicResult = pawn.move(pawn.getX() + 1, pawn.getY());
+            }
+        } while(!logicResult.isSuccess());
+    }
 
 }
