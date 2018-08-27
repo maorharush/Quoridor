@@ -11,7 +11,16 @@ public class DumbAIPlayer extends Player {
 
     @Override
     public void play() {
-        System.out.println("RANDOMLY SELECTING MOVE!!!! I AM DUMB AHHHHH");
+
+        System.out.println("I am dumb AI... `Thinking`...");
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Done thinking, now moving...");
+
+
 
         LogicResult logicResult;
         do {
