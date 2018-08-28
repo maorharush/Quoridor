@@ -29,7 +29,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
         return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (resultSet, i) -> {
             GameRecDBO gameRecDBO = new GameRecDBO();
 
-            String cur_col = resultSet.getString("cur_col");
+
             String fence_orien = resultSet.getString("fence_orien");
 
             gameRecDBO.setGame_id(resultSet.getInt("game_id"));
