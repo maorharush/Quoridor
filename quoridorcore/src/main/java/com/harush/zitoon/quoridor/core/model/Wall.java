@@ -1,5 +1,7 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.Objects;
+
 /**
  * Represents a wall in the game.
  * @author Moar Harush
@@ -60,5 +62,21 @@ public class Wall {
 	public Player getPlacedBy() {
 		return placedBy;
 	}
-		
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Wall wall = (Wall) o;
+		return x == wall.x &&
+				y == wall.y &&
+				isFirst == wall.isFirst &&
+				orientation == wall.orientation &&
+				Objects.equals(placedBy, wall.placedBy);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y, isFirst, placedBy, orientation);
+	}
 }

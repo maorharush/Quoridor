@@ -144,20 +144,21 @@ public class Board {
             return verticalWalls[x][y];
         }
     }
-    public List<Wall> getAllWall(){
-     List<Wall> wall= new ArrayList<>();
-        for (int y=0;y<height;y++){
-            for (int x=0;y<width;x++){
-                addWallIfExists(wall, y, x, true);
-                addWallIfExists(wall, y, x, false);
+
+    public List<Wall> getAllWalls() {
+        List<Wall> walls = new ArrayList<>();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                addWallIfExists(walls, y, x, true);
+                addWallIfExists(walls, y, x, false);
             }
         }
-        return wall;
+        return walls;
     }
 
-    private void addWallIfExists(List<Wall> wall, int y, int x, boolean b) {
-        if (containsWall(x, y, b)) {
-            wall.add(getWall(x, y, b));
+    private void addWallIfExists(List<Wall> wall, int y, int x, boolean isHorizontal) {
+        if (containsWall(x, y, isHorizontal)) {
+            wall.add(getWall(x, y, isHorizontal));
         }
     }
 

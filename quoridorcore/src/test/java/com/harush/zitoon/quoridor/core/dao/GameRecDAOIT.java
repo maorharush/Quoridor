@@ -41,11 +41,11 @@ public class GameRecDAOIT {
 
         GameRecDBO gameRecDBO = new GameRecDBO();
         gameRecDBO.setGame_id(1);
-        gameRecDBO.setCur_row(1);
-        gameRecDBO.setCur_col('h');
-        gameRecDBO.setFence_col(-1);
+        gameRecDBO.setPawn_y(1);
+        gameRecDBO.setPawn_x('h');
+        gameRecDBO.setWall_x(-1);
         gameRecDBO.setFence_orien(null);
-        gameRecDBO.setFence_row(-1);
+        gameRecDBO.setWall_y(-1);
         dbos.add(gameRecDBO);
         return dbos;
     }

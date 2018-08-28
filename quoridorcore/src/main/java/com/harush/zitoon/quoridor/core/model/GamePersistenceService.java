@@ -2,7 +2,7 @@ package com.harush.zitoon.quoridor.core.model;
 
 public interface GamePersistenceService {
 
-    void saveGame(GameSession gameSession);
+    void saveTurn(GameSession gameSession);
 
     GameSession loadGame();
 }

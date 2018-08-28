@@ -13,24 +13,24 @@ public class GamePersistenceServiceImpl implements GamePersistenceService{
         this.dao = dao;
     }
 
-    //TODO Change to saveTurn
+
     @Override
-    public void saveGame(GameSession gameSession){
+    public void saveTurn(GameSession gameSession){
         GameRecDBO recorder = new GameRecDBO();
         Board board = gameSession.getBoard();
         List<Player> players= gameSession.getPlayers();
-        List<Wall> wall = board.getAllWall();
+        List<Wall> wall = board.getAllWalls();
         List<GameRecDBO> recordedList = new ArrayList<>();
         int sizeOfplayersList = players.size();
         int sizeOfWallsList = wall.size();
 
-     while(sizeOfplayersList>=2 || sizeOfWallsList>=0){
+     while(sizeOfplayersList>=0 || sizeOfWallsList>=0){
          recorder.setGame_id(1);//maybe getMaxGameID()?
-         recorder.setPlayer_id(sizeOfplayersList);
-         recorder.setCur_col((char)players.get(sizeOfplayersList).pawn.getX());
-         recorder.setCur_row(players.get(sizeOfplayersList).pawn.getY());
-         recorder.setFence_col(wall.get(sizeOfWallsList).getX());
-         recorder.setFence_row(wall.get(sizeOfWallsList).getY());
+         recorder.setPlayer_name(sizeOfplayersList);
+         recorder.setPawn_x(players.get(sizeOfplayersList).pawn.getX());
+         recorder.setPawn_y(players.get(sizeOfplayersList).pawn.getY());
+         recorder.setWall_x(wall.get(sizeOfWallsList).getX());
+         recorder.setWall_y(wall.get(sizeOfWallsList).getY());
          recorder.setFence_orien(wall.get(sizeOfWallsList).getOrientation());
          recordedList.add(recorder);
          sizeOfplayersList--;

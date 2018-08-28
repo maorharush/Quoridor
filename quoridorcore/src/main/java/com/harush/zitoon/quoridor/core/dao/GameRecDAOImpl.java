@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -34,11 +33,11 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
             String fence_orien = resultSet.getString("fence_orien");
 
             gameRecDBO.setGame_id(resultSet.getInt("game_id"));
-            gameRecDBO.setPlayer_id(resultSet.getInt("player_id"));
-            gameRecDBO.setCur_col(cur_col == null ? null : cur_col.charAt(0));
-            gameRecDBO.setCur_row(resultSet.getInt("cur_row"));
-            gameRecDBO.setFence_col(resultSet.getInt("fence_col"));
-            gameRecDBO.setFence_row(resultSet.getInt("fence_row"));
+            gameRecDBO.setPlayer_name(resultSet.getInt("player_name"));
+            gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
+            gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
+            gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
+            gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
             gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
             return gameRecDBO;
         });
