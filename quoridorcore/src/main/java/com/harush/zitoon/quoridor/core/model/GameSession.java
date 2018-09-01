@@ -198,7 +198,7 @@ public class GameSession extends Observable {
 	/**
 	 * Determines whether it is the current {@link Player player's} turn.
 	 *
-	 * @return whether it is the the current turn
+	 * @return whether it is the current player's turn
 	 */
 	public LogicResult isCurrentTurn(PawnType pawnType) {
 
