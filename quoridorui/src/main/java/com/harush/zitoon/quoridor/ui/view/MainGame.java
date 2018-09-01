@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MainGame extends Application implements GameScreen, MainScreen, Observer {
+public class MainGame extends Application implements GameScreen, Observer {
     public static final int TILE_SIZE = Settings.getSingleton().getTileSize();
 
     private final VerticalWallComponent[][] verticalWalls;
@@ -62,7 +62,8 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
 
     /**
      * Sets up the model.
-     * @param board   the board
+     *
+     * @param board the board
      */
     private void setupModel(Board board) {
         Settings settings = Settings.getSingleton();
@@ -245,24 +246,23 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
 
     /**
      * Ends the game and displays the {@link Statistics}.
-     *
-     * @param gs the game session
      */
-    @Override
-    public void endGame(GameSession gs) {
-        try {
-            Stage stage = (Stage) tileGroup.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/layouts/stats.fxml"));
-            Scene scene = new Scene(loader.load());
-            StatsController controller = loader.getController();
-            controller.setGameSession(gs);
-            stage.setTitle("Quoridor");
-            stage.getIcons().add(new Image("resources/icons/favicon.png"));
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void endGame() {
+        Platform.runLater(() -> {
+            try {
+                Stage stage = (Stage) tileGroup.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/layouts/stats.fxml"));
+                Scene scene = new Scene(loader.load());
+                StatsController controller = loader.getController();
+                controller.setGameSession(gameSession);
+                stage.setTitle("Quoridor");
+                stage.getIcons().add(new Image("resources/icons/favicon.png"));
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -286,7 +286,6 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
     /**
      * Updates the turn and updates appropriate labels.
      */
-    @Override
     public void updateTurn(Player newTurnPlayer) {
         Platform.runLater(() -> {
             currentTurnLabel.setText(newTurnPlayer.getName() + "'s turn");
@@ -302,7 +301,7 @@ public class MainGame extends Application implements GameScreen, MainScreen, Obs
             Player newTurnPlayer = (Player) arg;
             updateTurn(newTurnPlayer);
         } else if (arg instanceof GameSession) {
-            endGame((GameSession)arg);
+            endGame();
         }
     }
 }
