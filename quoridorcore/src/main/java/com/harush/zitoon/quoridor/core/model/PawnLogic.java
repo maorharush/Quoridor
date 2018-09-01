@@ -25,17 +25,21 @@ public class PawnLogic implements Pawn {
 
     @Override
     public LogicResult move(int newX, int newY) {
-        System.out.println(String.format("Moving to coordinate: (%d, %d)", newX, newY));
+        String currentPlayerName = gameSession.getCurrentPlayer().getName();
 
         LogicResult isCurrentTurn = gameSession.isCurrentTurn(type);
         if (!isCurrentTurn.isSuccess()) {
+            System.out.println(isCurrentTurn.getErrMsg());
             return isCurrentTurn;
         }
 
         if (!isValidMove(this.currentX, this.currentY, newX, newY)) {
-            return createFailedLogicResult(String.format("Moving to: (%d, %d) is an invalid pawn move", newX, newY));
+            String errMsg = String.format("%s failed to move pawn to (%d, %d): Invalid pawn move", currentPlayerName, newX, newY);
+            System.out.println(errMsg);
+            return createFailedLogicResult(errMsg);
         }
 
+        System.out.println(String.format("%s is moving pawn to (%d, %d)", currentPlayerName, newX, newY));
         board.movePawn(this.currentX, this.currentY, newX, newY);
         this.currentX = newX;
         this.currentY = newY;

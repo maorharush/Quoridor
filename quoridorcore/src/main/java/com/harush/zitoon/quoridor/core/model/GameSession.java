@@ -206,7 +206,7 @@ public class GameSession extends Observable {
 			return new LogicResult(true);
 		}
 
-		return new LogicResult(false, String.format("It is not player %s's turn!", pawnType2PlayerMap.get(pawnType).getName()));
+		return new LogicResult(false, String.format("It is not %s's turn!", pawnType2PlayerMap.get(pawnType).getName()));
 	}
 
 	public void updateTurn() {

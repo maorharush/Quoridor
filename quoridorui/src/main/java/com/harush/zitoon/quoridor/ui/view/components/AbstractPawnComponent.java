@@ -66,7 +66,7 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         movePawnTask.setOnSucceeded((workerStateEvent) -> {
             LogicResult logicResult = (LogicResult)workerStateEvent.getSource().getValue();
             if (!logicResult.isSuccess()) {
-                logCannotMoveErrMsg(logicResult.getErrMsg());
+                // Can display error message returned from logic layer in UI here by logicResult.getErrMsg();
                 reverseMove();
                 return;
             }
@@ -112,10 +112,6 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
             text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
             getChildren().add(text);
         }
-    }
-
-    private void logCannotMoveErrMsg(String errMsg) {
-        System.out.println(String.format("Moving player %s's pawn failed. Error message:[%s]", playerName, errMsg));
     }
 
     private void reverseMove() {

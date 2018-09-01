@@ -10,8 +10,8 @@ package com.harush.zitoon.quoridor.core.model;
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer(String name, Pawn pawn, String pawnColour) {
-		super(name, pawn, pawnColour);
+	public HumanPlayer(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls, String pawnColour) {
+		super(name, pawn, verticalWalls, horizontalWalls, pawnColour);
 	}
 
 	@Override

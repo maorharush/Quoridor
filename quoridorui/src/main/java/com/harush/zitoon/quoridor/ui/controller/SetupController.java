@@ -1,19 +1,9 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
-import com.harush.zitoon.quoridor.core.model.Board;
-import com.harush.zitoon.quoridor.core.model.DumbAIPlayer;
-import com.harush.zitoon.quoridor.core.model.GameSession;
-import com.harush.zitoon.quoridor.core.model.HumanPlayer;
-import com.harush.zitoon.quoridor.core.model.Pawn;
-import com.harush.zitoon.quoridor.core.model.PawnLogic;
-import com.harush.zitoon.quoridor.core.model.PawnType;
-import com.harush.zitoon.quoridor.core.model.Player;
-import com.harush.zitoon.quoridor.core.model.RuleType;
-import com.harush.zitoon.quoridor.core.model.Settings;
+import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
-import com.harush.zitoon.quoridor.ui.view.components.AIPawnComponent;
-import com.harush.zitoon.quoridor.ui.view.components.AbstractPawnComponent;
-import com.harush.zitoon.quoridor.ui.view.components.HumanPawnComponent;
+import com.harush.zitoon.quoridor.ui.view.components.*;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +62,7 @@ public class SetupController extends AbstractController implements Initializable
   private int width = Settings.getSingleton().getBoardWidth();
   private int height = Settings.getSingleton().getBoardHeight();
   private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
+  private VerticalWallComponent[][] multiPlayerVerticalWallComponents = makeVerticalWallComponents();
   private int[] xStartingPositions = getStartingPositionsX(width);
   private int[] yStartingPositions = getStartingPositionsY(height, width);
 
@@ -93,7 +84,7 @@ public class SetupController extends AbstractController implements Initializable
    */
   @FXML
   private void onPlayBtn(ActionEvent event) {
-    setupGame(multiPlayerTable.getItems(), multiPlayerPawnComponents);
+    setupGame(multiPlayerTable.getItems(), multiPlayerPawnComponents, multiPlayerVerticalWallComponents);
   }
 
   /**
@@ -142,7 +133,9 @@ public class SetupController extends AbstractController implements Initializable
       HumanPawnComponent humanPawnComponent = makeHumanPawnComponent(xStartingPositions[playerIndex], yStartingPositions[playerIndex],
           hexColor, playerName, makePawn(pawnTypes[playerIndex]));
       multiPlayerPawnComponents.add(humanPawnComponent);
-      Player player = new HumanPlayer(playerName, humanPawnComponent, hexColor);
+
+      //TODO Mor: implement makeHumanHorizontalWallsComponents() and call instead of null
+      Player player = new HumanPlayer(playerName, humanPawnComponent, makeVerticalWallComponents(), null, hexColor);
       System.out.println(hexColor);
       multiPlayerTable.getItems().add(player);
       playerIndex++;
@@ -174,8 +167,10 @@ public class SetupController extends AbstractController implements Initializable
     AIPawnComponent aiPawnComponent = new AIPawnComponent(xStartingPositions[1], yStartingPositions[1], colors[1], aiPlayerName,
         pawns.get(1));
 
-    Player player1 = new HumanPlayer(humanPlayerName, humanPawnComponent, colors[0]);
-    Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, colors[1]);
+    //TODO Mor: implement makeHumanHorizontalWallsComponents() and call instead of null
+    VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
+    Player player1 = new HumanPlayer(humanPlayerName, humanPawnComponent, verticalWallComponents, null, colors[0]);
+    Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, null, colors[1]);
     players.add(player1);
     players.add(player2);
 
@@ -183,7 +178,7 @@ public class SetupController extends AbstractController implements Initializable
     pawnComponents.add(humanPawnComponent);
     pawnComponents.add(aiPawnComponent);
 
-    setupGame(players, pawnComponents);
+    setupGame(players, pawnComponents, verticalWallComponents);
   }
 
   @FXML
@@ -193,8 +188,9 @@ public class SetupController extends AbstractController implements Initializable
     List<String> playerNames = readPlayersNamesFromUser(numPlayers);
     List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, makePawns(numPlayers));
     List<Player> players = makePlayers(numPlayers, playerNames, pawnComponents);
+    VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
 
-    setupGame(players, pawnComponents);
+    setupGame(players, pawnComponents, verticalWallComponents);
   }
 
   @FXML
@@ -204,8 +200,24 @@ public class SetupController extends AbstractController implements Initializable
     List<String> playerNames = readPlayersNamesFromUser(numPlayers);
     List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, makePawns(numPlayers));
     List<Player> players = makePlayers(numPlayers, playerNames, pawnComponents);
+    VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
 
-    setupGame(players, pawnComponents);
+    setupGame(players, pawnComponents, verticalWallComponents);
+  }
+
+  private VerticalWallComponent[][] makeVerticalWallComponents() {
+    final VerticalWallComponent[][] verticalWalls = new VerticalWallComponent[width][height];
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+//        if (x == (width - 1)) {
+//          continue;
+//        }
+        VerticalWallComponent wall = new VerticalWallComponent(x, y, verticalWalls, gameSession, new VerticalWallLogic(x, y, gameSession));
+        verticalWalls[x][y] = wall;
+      }
+    }
+
+    return verticalWalls;
   }
 
   /**
@@ -213,11 +225,11 @@ public class SetupController extends AbstractController implements Initializable
    *
    * @param players the players
    */
-  private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents) {
+  private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents, VerticalWallComponent[][] verticalWallComponents) {
     setupGameSession(players);
     Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
     centerStage(stage, width, height);
-    new MainGame(stage, gameSession, pawnComponents);
+    new MainGame(stage, gameSession, pawnComponents, verticalWallComponents);
     stage.show();
   }
 
@@ -355,6 +367,7 @@ public class SetupController extends AbstractController implements Initializable
   }
 
   private HumanPlayer makeHumanPlayer(String playerName, Pawn pawn, int playerIndex) {
-    return new HumanPlayer(playerName, pawn, colors[playerIndex]);
+    //TODO Mor: implement makeHumanHorizontalWallsComponents() and call instead of null
+    return new HumanPlayer(playerName, pawn, makeVerticalWallComponents(), null, colors[playerIndex]);
   }
 }

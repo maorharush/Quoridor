@@ -8,7 +8,9 @@ public abstract class Player {
     private int walls;
     private Statistics stats;
     private String pawnColour;
-    protected Pawn pawn;
+    protected final Wall[][] verticalWalls;
+    protected final Wall[][] horizontalWalls;
+    protected final Pawn pawn;
 
     /**
      * Creates a new Player by initialising its name and pawn
@@ -16,10 +18,12 @@ public abstract class Player {
      * @param pawn       player pawn
      * @param pawnColour color of the pawn
      */
-    public Player(String name, Pawn pawn, String pawnColour) {
+    public Player(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls, String pawnColour) {
 
         //Initialise values.
         this.name = name;
+        this.verticalWalls = verticalWalls;
+        this.horizontalWalls = horizontalWalls;
         walls = Settings.getSingleton().getWalls();
         this.stats = new Statistics();
         this.pawnColour = pawnColour;
@@ -55,8 +59,8 @@ public abstract class Player {
         if (walls == 0) {
             throw new IllegalStateException("The number of walls cannot be decremented below 0.");
         }
-        System.out.println(name + ": " + walls + " walls left ");
         walls--;
+        System.out.println(String.format("%s has %d walls left", name, walls));
     }
 
     /**

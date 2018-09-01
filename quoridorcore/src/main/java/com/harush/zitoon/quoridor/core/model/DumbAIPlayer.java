@@ -1,12 +1,14 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.Random;
+
 /**
  * A very simple AI player.
  */
 public class DumbAIPlayer extends Player {
 
-    public DumbAIPlayer(String name, Pawn pawn, String pawnColour) {
-        super(name, pawn, pawnColour);
+    public DumbAIPlayer(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls, String pawnColour) {
+        super(name, pawn, verticalWalls, horizontalWalls, pawnColour);
     }
 
     @Override
@@ -20,15 +22,27 @@ public class DumbAIPlayer extends Player {
         }
         System.out.println("Done thinking, now moving...");
 
+        boolean shouldMovePawn = decideMovePawnRandomly();
 
+        if (shouldMovePawn) {
+            System.out.println("Moving pawn");
+            pawn.move(pawn.getX(), pawn.getY() + 1);
+        } else {
+            Random random = new Random();
+            final int width = random.nextInt(verticalWalls.length);
+            final int height = random.nextInt(verticalWalls[0].length);
 
-        LogicResult logicResult;
-        do {
-            logicResult = pawn.move(pawn.getX(), pawn.getY() + 1);
-            if (!logicResult.isSuccess()) {
-                logicResult = pawn.move(pawn.getX() + 1, pawn.getY());
-            }
-        } while(!logicResult.isSuccess());
+            int randX = random.nextInt(width);
+            int randY = random.nextInt(height);
+
+            verticalWalls[randX][randY].placeWall();
+        }
+    }
+
+    private boolean decideMovePawnRandomly() {
+        Random random = new Random();
+        int randNum = random.nextInt(100);
+        return randNum % 2 == 0;
     }
 
 }
