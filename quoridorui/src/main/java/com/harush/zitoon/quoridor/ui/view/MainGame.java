@@ -101,10 +101,10 @@ public class MainGame extends Application implements GameScreen, Observer {
         int offset = Settings.getSingleton().getBoardWidth();
         button.setTranslateY(150);
         currentTurnLabel.setText(gameSession.getCurrentPlayer().getName() + "'s turn");
-        currentTurnLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
+        currentTurnLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
         currentTurnLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        wallsLabel.setText("Walls left: " + gameSession.getCurrentPlayer().getWalls());
-        wallsLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
+        wallsLabel.setText("Walls left: " + gameSession.getCurrentPlayer().getNumWalls());
+        wallsLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
         wallsLabel.setTranslateY(50);
         panel.getChildren().addAll(currentTurnLabel, wallsLabel, button);
         if (offset == 7) {
@@ -189,16 +189,16 @@ public class MainGame extends Application implements GameScreen, Observer {
                             System.out.println("You cannot place a wall here.");
                             return;
                         }
-                        if (gameSession.getCurrentPlayer().getWalls() == 0) {
+                        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
                             System.out.println("You do not have any walls left.");
                             return;
                         }
                         gameSession.getBoard().setWall(thisX, thisY, true, true, gameSession.getCurrentPlayer());
-                        wall.setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
+                        wall.setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
                         System.out.println("1. Wall placed at X: " + thisX + " Y: " + thisY);
                         if (nextWallX > 0 && nextWallX < width) {
                             gameSession.getBoard().setWall(nextWallX, nextWallY, true, false, gameSession.getCurrentPlayer());
-                            horizontalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawnColour()));
+                            horizontalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
                             System.out.println("2. Wall placed at: X" + nextWallX + " " + nextWallY);
                         }
                         gameSession.getCurrentPlayer().getStatistics().incrementWallsUsed();
@@ -286,12 +286,13 @@ public class MainGame extends Application implements GameScreen, Observer {
     /**
      * Updates the turn and updates appropriate labels.
      */
-    public void updateTurn(Player newTurnPlayer) {
+    private void updateTurn(Player newTurnPlayer) {
         Platform.runLater(() -> {
+            String playerColor = newTurnPlayer.getPawn().getType().getHexColor();
             currentTurnLabel.setText(newTurnPlayer.getName() + "'s turn");
-            currentTurnLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
-            wallsLabel.setText("Walls left: " + newTurnPlayer.getWalls());
-            wallsLabel.setTextFill(Color.valueOf(newTurnPlayer.getPawnColour()));
+            currentTurnLabel.setTextFill(Color.valueOf(playerColor));
+            wallsLabel.setText("Walls left: " + newTurnPlayer.getNumWalls());
+            wallsLabel.setTextFill(Color.valueOf(playerColor));
         });
     }
 

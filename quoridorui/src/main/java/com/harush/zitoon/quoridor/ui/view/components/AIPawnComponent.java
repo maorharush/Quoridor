@@ -9,8 +9,8 @@ import com.harush.zitoon.quoridor.core.model.Pawn;
 
 public class AIPawnComponent extends AbstractPawnComponent {
 
-    public AIPawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
-        super(x, y, color, playerName, pawn);
+    public AIPawnComponent(int x, int y, String playerName, Pawn pawn) {
+        super(x, y, playerName, pawn);
     }
 
 }

@@ -76,7 +76,7 @@ public class SettingsController extends AbstractController implements Initializa
 		}
 		
 		//Set number of walls setting
-		settings.setWalls(wallBox.getValue());
+		settings.setNumWalls(wallBox.getValue());
 		//Set show label
 		settings.setShowLabels(indicateLabel.isSelected());
 		//Set show ghost trails
@@ -118,7 +118,7 @@ public class SettingsController extends AbstractController implements Initializa
 		ruleBox.setItems(ruleList);	
 		
 		ObservableList<Integer> wallList = FXCollections.observableArrayList(8, 9, 10, 11, 12, 13, 14);
-		wallBox.setValue(settings.getWalls());
+		wallBox.setValue(settings.getNumWalls());
 		wallBox.setItems(wallList);
 		
 		ObservableList<String> boardList = FXCollections.observableArrayList("7x7", "9x9", "11x11");

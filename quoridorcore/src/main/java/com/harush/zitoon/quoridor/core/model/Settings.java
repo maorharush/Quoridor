@@ -10,7 +10,7 @@ public class Settings {
 	private static Settings instance = null;
 	
 	private RuleType ruleType;
-	private int walls;
+	private int numWalls;
 	private boolean showLabels;
 	private boolean showTrail;
 	private int boardWidth;
@@ -47,7 +47,7 @@ public class Settings {
 	public void reset() {
 		setRuleType(RuleType.STANDARD);
 		//Set number of walls setting
-		setWalls(10);
+		setNumWalls(10);
 		//Set show label
 		setShowLabels(true);
 		//Set show ghost trails
@@ -71,16 +71,16 @@ public class Settings {
 	 * Gets the number of {@link Wall walls}.
 	 * @return the number of walls.
 	 */
-	public int getWalls() {
-		return walls;
+	public int getNumWalls() {
+		return numWalls;
 	}
 
 	/**
 	 * Sets the number of {@link Wall walls}.
-	 * @param walls the number of walls
+	 * @param numWalls the number of walls
 	 */
-	public void setWalls(int walls) {
-		this.walls = walls;
+	public void setNumWalls(int numWalls) {
+		this.numWalls = numWalls;
 	}
 
 	/**

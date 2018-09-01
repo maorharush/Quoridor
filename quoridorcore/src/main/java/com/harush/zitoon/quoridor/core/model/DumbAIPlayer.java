@@ -7,8 +7,8 @@ import java.util.Random;
  */
 public class DumbAIPlayer extends Player {
 
-    public DumbAIPlayer(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls, String pawnColour) {
-        super(name, pawn, verticalWalls, horizontalWalls, pawnColour);
+    public DumbAIPlayer(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
+        super(name, pawn, verticalWalls, horizontalWalls);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 
 	@Override
 	public LogicResult placeWall() {
-		final String currentPlayerPawnColour = gameSession.getCurrentPlayer().getPawnColour();
+		final String playerColor = gameSession.getCurrentPlayer().getPawn().getType().getHexColor();
 		PlaceWallTask placeWallTask = new PlaceWallTask(wall);
 		placeWallTask.setOnSucceeded((workerStateEvent) -> {
 			LogicResult logicResult = (LogicResult) workerStateEvent.getSource().getValue();
@@ -58,8 +58,8 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 				// Can display error message returned from logic layer in UI here by logicResult.getErrMsg();
 				return;
 			}
-			setFill(Color.valueOf(currentPlayerPawnColour));
-			verticalWalls[currentX][currentY + 1].setFill(Color.valueOf(currentPlayerPawnColour));
+			setFill(Color.valueOf(playerColor));
+			verticalWalls[currentX][currentY + 1].setFill(Color.valueOf(playerColor));
 		});
 
 		new Thread(placeWallTask).start();

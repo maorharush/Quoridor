@@ -23,12 +23,10 @@ import javafx.scene.text.Text;
 public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
     double currentX, currentY;
-    private String color;
     private String playerName;
     private Pawn pawn;
 
-    public AbstractPawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
-        this.color = color;
+    AbstractPawnComponent(int x, int y, String playerName, Pawn pawn) {
         this.playerName = playerName;
         this.pawn = pawn;
 
@@ -96,7 +94,7 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
     private void drawPawn() {
         Circle ellipse = new Circle(TILE_SIZE * 0.3215);
-        ellipse.setFill(Color.web(color));
+        ellipse.setFill(Color.web(pawn.getType().getHexColor()));
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(TILE_SIZE * 0.03);
         ellipse.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3125 * 2) / 2);

@@ -1,7 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import javafx.scene.paint.Color;
-
 public class VerticalWallLogic implements Wall {
 
     private GameSession gameSession;
@@ -36,7 +34,7 @@ public class VerticalWallLogic implements Wall {
                 gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
-        if (currentPlayer.getWalls() == 0) {
+        if (currentPlayer.getNumWalls() == 0) {
             return new LogicResult(false, "You do not have any walls left.");
         }
         gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);

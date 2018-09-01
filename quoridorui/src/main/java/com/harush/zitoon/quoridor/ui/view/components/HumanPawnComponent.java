@@ -12,8 +12,8 @@ public class HumanPawnComponent extends AbstractPawnComponent {
 
     private double mouseX, mouseY;
 
-    public HumanPawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
-        super(x, y, color, playerName, pawn);
+    public HumanPawnComponent(int x, int y, String playerName, Pawn pawn) {
+        super(x, y, playerName, pawn);
 
         setOnMousePressed(e -> {
             mouseX = e.getSceneX();
