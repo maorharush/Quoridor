@@ -17,6 +17,8 @@ public class PawnLogic implements Pawn {
 
     private PawnType type;
 
+    private Coordinate initialCoordinate;
+
     public PawnLogic(GameSession gameSession, PawnType type) {
         this.board = gameSession.getBoard();
         this.gameSession = gameSession;
@@ -25,22 +27,26 @@ public class PawnLogic implements Pawn {
 
     @Override
     public LogicResult move(int newX, int newY) {
-        System.out.println(String.format("Moving to coordinate: (%d, %d)", newX, newY));
+        String currentPlayerName = gameSession.getCurrentPlayer().getName();
 
         LogicResult isCurrentTurn = gameSession.isCurrentTurn(type);
         if (!isCurrentTurn.isSuccess()) {
+            System.out.println(isCurrentTurn.getErrMsg());
             return isCurrentTurn;
         }
 
         if (!isValidMove(this.currentX, this.currentY, newX, newY)) {
-            return createFailedLogicResult(String.format("Moving to: (%d, %d) is an invalid pawn move", newX, newY));
+            String errMsg = String.format("%s failed to move pawn to (%d, %d): Invalid pawn move", currentPlayerName, newX, newY);
+            System.out.println(errMsg);
+            return createFailedLogicResult(errMsg);
         }
 
+        System.out.println(String.format("%s is moving pawn to (%d, %d)", currentPlayerName, newX, newY));
         board.movePawn(this.currentX, this.currentY, newX, newY);
         this.currentX = newX;
         this.currentY = newY;
 
-        gameSession.checkForWinnerAndUpdateTurn(type, newX, newY);
+        gameSession.checkForWinnerAndUpdateTurn();
 
         return new LogicResult(true);
     }
@@ -61,12 +67,23 @@ public class PawnLogic implements Pawn {
     }
 
     @Override
+    public Coordinate getInitialCoordinate() {
+        return initialCoordinate;
+    }
+
+    @Override
+    public Coordinate getCurrentCoordinate() {
+        return new Coordinate(currentX, currentY);
+    }
+
+    @Override
     public LogicResult spawn(int x, int y) {
         LogicResult logicResult = board.movePawn(this.currentX, this.currentY, x, y);
 
         if (logicResult.isSuccess()) {
             this.currentX = x;
             this.currentY = y;
+            initialCoordinate = new Coordinate(x, y);
         }
         return logicResult;
     }

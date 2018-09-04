@@ -5,25 +5,36 @@ package com.harush.zitoon.quoridor.core.model;
  */
 public abstract class Player {
     private String name;
-    private int walls;
+    private int numWalls;
     private Statistics stats;
-    private String pawnColour;
+    protected Wall[][] verticalWalls;
+    protected Wall[][] horizontalWalls;
     protected Pawn pawn;
+
+    /**
+     *
+     * @param name      player name
+     * @param pawn      player pawn
+     */
+    public Player(String name, Pawn pawn) {
+        this.name = name;
+        this.pawn = pawn;
+        this.stats = new Statistics();
+        numWalls = Settings.getSingleton().getNumWalls();
+    }
 
     /**
      * Creates a new Player by initialising its name and pawn
      * @param name       player name
      * @param pawn       player pawn
-     * @param pawnColour color of the pawn
      */
-    public Player(String name, Pawn pawn, String pawnColour) {
-
-        //Initialise values.
+    public Player(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
         this.name = name;
-        walls = Settings.getSingleton().getWalls();
+        this.verticalWalls = verticalWalls;
+        this.horizontalWalls = horizontalWalls;
         this.stats = new Statistics();
-        this.pawnColour = pawnColour;
         this.pawn = pawn;
+        numWalls = Settings.getSingleton().getNumWalls();
     }
 
     public abstract void play();
@@ -42,8 +53,8 @@ public abstract class Player {
      *
      * @return the number of walls
      */
-    public int getWalls() {
-        return walls;
+    public int getNumWalls() {
+        return numWalls;
     }
 
     /**
@@ -52,11 +63,11 @@ public abstract class Player {
      * @throws IllegalStateException if the number of walls is below 0
      */
     public void decrementWalls() {
-        if (walls == 0) {
+        if (numWalls == 0) {
             throw new IllegalStateException("The number of walls cannot be decremented below 0.");
         }
-        System.out.println(name + ": " + walls + " walls left ");
-        walls--;
+        numWalls--;
+        System.out.println(String.format("%s has %d walls left", name, numWalls));
     }
 
     /**
@@ -65,10 +76,10 @@ public abstract class Player {
      * @throws IllegalStateException if the number of walls are at maximum
      */
     public void incrementWalls() {
-        if (walls == Settings.getSingleton().getWalls()) {
+        if (numWalls == Settings.getSingleton().getNumWalls()) {
             throw new IllegalStateException("The number of walls are already at maximum.");
         }
-        walls++;
+        numWalls++;
     }
 
     public Pawn getPawn() {
@@ -83,15 +94,4 @@ public abstract class Player {
     public Statistics getStatistics() {
         return stats;
     }
-
-    /**
-     * Gets this player's Pawn {@Colour}
-     *
-     * @return the colour
-     */
-    public String getPawnColour() {
-        return pawnColour;
-    }
-
-
 }

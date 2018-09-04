@@ -44,7 +44,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <Text layoutX="456.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The aim of the game is to reach any of your oponent's far side tiles" wrappingWidth="133.99999737739563">
+      <Text layoutX="456.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The aim of the game is to reach any of your opponent's far side tiles" wrappingWidth="133.99999737739563">
          <font>
             <Font size="11.0" />
          </font></Text>
@@ -62,7 +62,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Text>
-      <Text layoutX="456.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Walls can be placed by clicking a gap between tiles. No players can move past a wall. Using 'Challenge' rules, players can remove oponnents walls by right clicking their walls" wrappingWidth="141.99999514222145">
+      <Text layoutX="456.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Walls can be placed by clicking a gap between tiles. No players can move past a wall. Using 'Challenge' rules, players can remove opponents' walls by right clicking their walls" wrappingWidth="141.99999514222145">
          <font>
             <Font size="11.0" />
          </font></Text>

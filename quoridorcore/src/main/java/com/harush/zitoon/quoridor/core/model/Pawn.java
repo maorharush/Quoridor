@@ -12,4 +12,8 @@ public interface Pawn {
     int getX();
 
     int getY();
+
+    Coordinate getInitialCoordinate();
+
+    Coordinate getCurrentCoordinate();
 }

@@ -4,14 +4,14 @@ package com.harush.zitoon.quoridor.core.model;
  * This class creates a new Human Player object.
  * @author Moar Harush
  * @version 0.3
- * Last implemented: 19/11/2015
+ * Last implemented: 01/09/2018
  */
 
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer(String name, Pawn pawn, String pawnColour) {
-		super(name, pawn, pawnColour);
+	public HumanPlayer(String name, Pawn pawn) {
+		super(name, pawn);
 	}
 
 	@Override
