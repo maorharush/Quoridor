@@ -17,6 +17,8 @@ public class PawnLogic implements Pawn {
 
     private PawnType type;
 
+    private Coordinate initialCoordinate;
+
     public PawnLogic(GameSession gameSession, PawnType type) {
         this.board = gameSession.getBoard();
         this.gameSession = gameSession;
@@ -65,12 +67,23 @@ public class PawnLogic implements Pawn {
     }
 
     @Override
+    public Coordinate getInitialCoordinate() {
+        return initialCoordinate;
+    }
+
+    @Override
+    public Coordinate getCurrentCoordinate() {
+        return new Coordinate(currentX, currentY);
+    }
+
+    @Override
     public LogicResult spawn(int x, int y) {
         LogicResult logicResult = board.movePawn(this.currentX, this.currentY, x, y);
 
         if (logicResult.isSuccess()) {
             this.currentX = x;
             this.currentY = y;
+            initialCoordinate = new Coordinate(x, y);
         }
         return logicResult;
     }
