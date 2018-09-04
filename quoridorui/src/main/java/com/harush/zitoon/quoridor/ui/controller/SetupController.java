@@ -63,6 +63,7 @@ public class SetupController extends AbstractController implements Initializable
     private int height = Settings.getSingleton().getBoardHeight();
     private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
     private VerticalWallComponent[][] multiPlayerVerticalWallComponents = makeVerticalWallComponents();
+    private HorizontalWallComponent[][] multiPlayerHorizontalWallComponents = makeHorizontalWallComponents();
     private int[] xStartingPositions = getStartingPositionsX(width);
     private int[] yStartingPositions = getStartingPositionsY(height, width);
 
@@ -84,7 +85,7 @@ public class SetupController extends AbstractController implements Initializable
      */
     @FXML
     private void onPlayBtn(ActionEvent event) {
-        setupGame(multiPlayerTable.getItems(), multiPlayerPawnComponents, multiPlayerVerticalWallComponents);
+        setupGame(multiPlayerTable.getItems(), multiPlayerPawnComponents, multiPlayerVerticalWallComponents, multiPlayerHorizontalWallComponents);
     }
 
     /**
@@ -165,8 +166,10 @@ public class SetupController extends AbstractController implements Initializable
         AIPawnComponent aiPawnComponent = new AIPawnComponent(xStartingPositions[1], yStartingPositions[1], aiPlayerName, pawns.get(1));
 
         VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
+        HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
+
         Player player1 = new HumanPlayer(humanPlayerName, pawns.get(0));
-        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, null);
+        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
         players.add(player1);
         players.add(player2);
 
@@ -174,7 +177,7 @@ public class SetupController extends AbstractController implements Initializable
         pawnComponents.add(humanPawnComponent);
         pawnComponents.add(aiPawnComponent);
 
-        setupGame(players, pawnComponents, verticalWallComponents);
+        setupGame(players, pawnComponents, verticalWallComponents, horizontalWallComponents);
     }
 
     @FXML
@@ -185,8 +188,9 @@ public class SetupController extends AbstractController implements Initializable
         List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, makePawns(numPlayers));
         List<Player> players = makePlayers(numPlayers, playerNames);
         VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
+        HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
 
-        setupGame(players, pawnComponents, verticalWallComponents);
+        setupGame(players, pawnComponents, verticalWallComponents, horizontalWallComponents);
     }
 
     @FXML
@@ -197,17 +201,15 @@ public class SetupController extends AbstractController implements Initializable
         List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, makePawns(numPlayers));
         List<Player> players = makePlayers(numPlayers, playerNames);
         VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
+        HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
 
-        setupGame(players, pawnComponents, verticalWallComponents);
+        setupGame(players, pawnComponents, verticalWallComponents, horizontalWallComponents);
     }
 
     private VerticalWallComponent[][] makeVerticalWallComponents() {
         final VerticalWallComponent[][] verticalWalls = new VerticalWallComponent[width][height];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-//        if (x == (width - 1)) {
-//          continue;
-//        }
                 VerticalWallComponent wall = new VerticalWallComponent(x, y, verticalWalls, gameSession, new VerticalWallLogic(x, y, gameSession));
                 verticalWalls[x][y] = wall;
             }
@@ -216,16 +218,28 @@ public class SetupController extends AbstractController implements Initializable
         return verticalWalls;
     }
 
+    private HorizontalWallComponent[][] makeHorizontalWallComponents() {
+        final HorizontalWallComponent[][] horizontalWalls = new HorizontalWallComponent[width][height];
+        for (int y = 1; y < height; y++) { //TODO Mor: y = 1 for some reason make sure it's OK
+            for (int x = 0; x < width; x++) {
+                HorizontalWallComponent wall = new HorizontalWallComponent(x, y, horizontalWalls, gameSession, new HorizontalWallLogic(x, y, gameSession));
+                horizontalWalls[x][y] = wall;
+            }
+        }
+
+        return horizontalWalls;
+    }
+
     /**
      * Sets up a game with {@link Player players}
      *
      * @param players the players
      */
-    private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents, VerticalWallComponent[][] verticalWallComponents) {
+    private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
         setupGameSession(players);
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
         centerStage(stage, width, height);
-        new MainGame(stage, gameSession, pawnComponents, verticalWallComponents);
+        new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
         stage.show();
     }
 

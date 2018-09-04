@@ -29,6 +29,7 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 	private Wall wall;
 
 	public VerticalWallComponent(int x, int y, VerticalWallComponent[][] verticalWalls, GameSession gameSession, Wall wall) {
+
 		this.currentX = x;
 		this.currentY = y;
 		this.gameSession = gameSession;
@@ -39,9 +40,9 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 		this.nextWallY = currentY + 1;
 
 
-		setOnMouseEntered(e -> setWallColor(width, height, nextWallY, Color.valueOf("bbbbbb")));
+		setOnMouseEntered(e -> setWallColor(Color.valueOf("bbbbbb")));
 
-		setOnMouseExited(e -> setWallColor(width, height, nextWallY, Color.rgb(153, 217, 234, 0.8)));
+		setOnMouseExited(e -> setWallColor(Color.rgb(153, 217, 234, 0.8)));
 
 		setOnMousePressed(this::onMousePressed);
 
@@ -56,6 +57,7 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 			LogicResult logicResult = (LogicResult) workerStateEvent.getSource().getValue();
 			if (!logicResult.isSuccess()) {
 				// Can display error message returned from logic layer in UI here by logicResult.getErrMsg();
+				System.out.println(logicResult.getErrMsg());
 				return;
 			}
 			setFill(Color.valueOf(playerColor));
@@ -110,19 +112,19 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 		}
 	}
 
-	private void setWallColor(int width, int height, int nextWallY, Color color) {
+	private void setWallColor(Color color) {
 		if (currentX == (width - 1)) {
 			return;
 		}
 		if (nextWallY > 0 && nextWallY < height) {
-			if (doesBoardContainWall(currentX, nextWallY)) {
+			if (doesBoardContainWall()) {
 				setFill(color);
 				verticalWalls[currentX][nextWallY].setFill(color);
 			}
 		}
 	}
 
-	private boolean doesBoardContainWall(int currentX, int nextWallY) {
+	private boolean doesBoardContainWall() {
 		return !gameSession.getBoard().containsWall(currentX, currentY, false) && !gameSession.getBoard().containsWall(currentX, nextWallY, false);
 	}
 

@@ -40,9 +40,10 @@ public class MainGame extends Application implements GameScreen, Observer {
     private Label currentTurnLabel;
     private Label wallsLabel;
 
-    public MainGame(Stage stage, GameSession gameSession, List<AbstractPawnComponent> pawnComponentList, VerticalWallComponent[][] verticalWalls) {
+    public MainGame(Stage stage, GameSession gameSession, List<AbstractPawnComponent> pawnComponentList, VerticalWallComponent[][] verticalWalls, HorizontalWallComponent[][] horizontalWalls) {
         setupModel(gameSession.getBoard());
 
+        this.horizontalWalls = horizontalWalls;
         this.verticalWalls = verticalWalls;
         this.currentTurnLabel = new Label();
         this.wallsLabel = new Label();
@@ -135,6 +136,7 @@ public class MainGame extends Application implements GameScreen, Observer {
                 tileGroup.getChildren().add(tile);
             }
         }
+
         //Add vertical walls to the board
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -143,103 +145,12 @@ public class MainGame extends Application implements GameScreen, Observer {
         }
 
         //Add horizontal walls to the board
-        for (int y = 0; y < height; y++) {
+        for (int y = 1; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                if (y == 0) {
-                    continue;
-                }
-                HorizontalWallComponent wall = new HorizontalWallComponent(x, y);
-                horizontalWalls[x][y] = wall;
-                final int thisX = x;
-                final int thisY = y;
-                int nextWallX = x + 1;
-                int nextWallY = y;
-
-                wall.setOnMouseEntered(e -> {
-                    if (nextWallX > 0 && nextWallX < width) {
-                        if (!gameSession.getBoard().containsWall(thisX, thisY, true) && !gameSession.getBoard().containsWall(nextWallX, nextWallY, true)) {
-                            wall.setFill(Color.valueOf("bbbbbb"));
-                            horizontalWalls[nextWallX][nextWallY].setFill(Color.valueOf("bbbbbb"));
-                        }
-                    }
-
-                });
-                wall.setOnMouseExited(e -> {
-
-                    if (nextWallX > 0 && nextWallX < width) {
-                        if (!gameSession.getBoard().containsWall(thisX, thisY, true) && !gameSession.getBoard().containsWall(nextWallX, nextWallY, true)) {
-                            wall.setFill(Color.rgb(153, 217, 234, 0.8));
-                            horizontalWalls[nextWallX][nextWallY].setFill(Color.rgb(153, 217, 234, 0.8));
-                        }
-                    }
-                });
-                wall.setOnMousePressed(e -> {
-                    if (nextWallX > width) { //A horizontal wall cannot be placed at the very top of the board
-                        return;
-                    }
-
-                    if (thisX == width) { //A horizontal wall cannot be placed at the very edge of the board
-                        System.out.println("You cannot place a wall here.");
-                        return;
-                    }
-
-                    if (e.isPrimaryButtonDown()) {
-                        if (gameSession.getBoard().containsWall(thisX, thisY, true) ||
-                                gameSession.getBoard().containsWall(nextWallX, nextWallY, true)) {
-                            System.out.println("You cannot place a wall here.");
-                            return;
-                        }
-                        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
-                            System.out.println("You do not have any walls left.");
-                            return;
-                        }
-                        gameSession.getBoard().setWall(thisX, thisY, true, true, gameSession.getCurrentPlayer());
-                        wall.setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
-                        System.out.println("1. Wall placed at X: " + thisX + " Y: " + thisY);
-                        if (nextWallX > 0 && nextWallX < width) {
-                            gameSession.getBoard().setWall(nextWallX, nextWallY, true, false, gameSession.getCurrentPlayer());
-                            horizontalWalls[nextWallX][nextWallY].setFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
-                            System.out.println("2. Wall placed at: X" + nextWallX + " " + nextWallY);
-                        }
-                        gameSession.getCurrentPlayer().getStatistics().incrementWallsUsed();
-                        gameSession.getCurrentPlayer().decrementWalls();
-                        gameSession.updateTurn();
-                    } else if (e.isSecondaryButtonDown()) {
-                        if (gameSession.getRuleType() == RuleType.CHALLENGE) {
-                            if (!gameSession.getBoard().containsWall(thisX, thisY, true)) {
-                                System.out.println("No wall here");
-                                return;
-                            }
-                            if (gameSession.getBoard().getWall(thisX, thisY, true).getPlacedBy() == gameSession.getCurrentPlayer()) {
-                                System.out.println("You cannot remove your own walls.");
-                                return;
-                            }
-                            if (gameSession.getBoard().getWall(thisX, thisY, true).getIsFirst()) {
-                                if (nextWallX >= 0 && nextWallX <= width) {
-                                    horizontalWalls[nextWallX][nextWallY].setFill(Color.rgb(153, 217, 234, 0.8));
-                                    gameSession.getBoard().removeWall(nextWallX, nextWallY, true);
-                                }
-                            } else {
-                                int previousWallX = nextWallX - 2;
-                                if (previousWallX >= 0 && nextWallX <= width) {
-                                    horizontalWalls[previousWallX][nextWallY].setFill(Color.rgb(153, 217, 234, 0.8));
-                                    gameSession.getBoard().removeWall(previousWallX, nextWallY, true);
-                                }
-                            }
-                            gameSession.getBoard().getWall(thisX, thisY, true).getPlacedBy().incrementWalls();
-                            //gameSession.getBoard().getWall(thisX, thisY, true).getPlacedBy().getStatistics().decrementWallsUsed();
-                            gameSession.getBoard().removeWall(thisX, thisY, true);
-                            wall.setFill(Color.rgb(153, 217, 234, 0.8));
-                            gameSession.updateTurn();
-                        } else {
-                            System.out.println("You can only remove walls in a game with " + RuleType.CHALLENGE + " rules.");
-                        }
-                    }
-
-                });
-                horizontalWallGroup.getChildren().add(wall);
+                horizontalWallGroup.getChildren().add(horizontalWalls[x][y]);
             }
         }
+
         pawnGroup.getChildren().addAll(pawnComponentList);
         return root;
     }

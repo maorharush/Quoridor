@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
-public class VerticalWallLogic implements Wall {
+public class HorizontalWallLogic implements Wall {
 
     private GameSession gameSession;
 
@@ -12,7 +12,7 @@ public class VerticalWallLogic implements Wall {
 
     private int height;
 
-    public VerticalWallLogic(int x, int y, GameSession gameSession) {
+    public HorizontalWallLogic(int x, int y, GameSession gameSession) {
         this.gameSession = gameSession;
         this.currentX = x;
         this.currentY = y;
@@ -22,16 +22,20 @@ public class VerticalWallLogic implements Wall {
 
     @Override
     public LogicResult placeWall() {
-        int nextWallY = currentY + 1;
+        int nextWallX = currentX + 1;
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
 
-        if (currentX == width || nextWallY == height) {
-            return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
+        if (nextWallX > width) {
+            return new LogicResult(false, "A horizontal wall cannot be placed at the very top of the board");
         }
 
-        if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
-                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
+        if (currentX == width) {
+            return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
+        }
+
+        if (gameSession.getBoard().containsWall(currentX, currentY, true) ||
+                gameSession.getBoard().containsWall(nextWallX, currentY, true)) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
 
@@ -39,13 +43,14 @@ public class VerticalWallLogic implements Wall {
             return new LogicResult(false, "You do not have any walls left.");
         }
 
-        gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
+        gameSession.getBoard().setWall(currentX, currentY, true, true, currentPlayer);
         System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
 
-        if (currentX < width) {
-            gameSession.getBoard().setWall(currentX, nextWallY, false, false, currentPlayer);
-            System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, currentX, nextWallY));
+        if (nextWallX > 0 && nextWallX < width) {
+            gameSession.getBoard().setWall(nextWallX, currentY, true, false, currentPlayer);
+            System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, nextWallX, currentY));
         }
+
         currentPlayer.getStatistics().incrementWallsUsed();
         currentPlayer.decrementWalls();
         gameSession.updateTurn();
