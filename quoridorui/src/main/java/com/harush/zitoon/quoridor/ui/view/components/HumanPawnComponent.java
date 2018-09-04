@@ -1,5 +1,6 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
+import com.harush.zitoon.quoridor.core.model.Coordinate;
 import com.harush.zitoon.quoridor.core.model.Pawn;
 import com.harush.zitoon.quoridor.ui.view.utils.UIUtils;
 
@@ -29,5 +30,4 @@ public class HumanPawnComponent extends AbstractPawnComponent {
             move(newX, newY);
         });
     }
-
 }

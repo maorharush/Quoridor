@@ -13,9 +13,9 @@ import static org.mockito.Mockito.when;
 
 public class WinnerDeciderTest {
 
-    private static final int BOARD_WIDTH = 9;
+    private static final int BOARD_WIDTH = 8;
 
-    private static final int BOARD_HEIGHT = 9;
+    private static final int BOARD_HEIGHT = 8;
 
     private static WinnerDecider winnerDecider;
 

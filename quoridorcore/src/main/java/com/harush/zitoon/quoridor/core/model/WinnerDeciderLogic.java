@@ -7,9 +7,9 @@ import java.util.Map;
 
 public class WinnerDeciderLogic implements WinnerDecider {
 
-    private static final int BOARD_WIDTH = Settings.getSingleton().getBoardWidth();
+    private static final int BOARD_WIDTH = Settings.getSingleton().getBoardWidth() - 1;
 
-    private static final int BOARD_HEIGHT = Settings.getSingleton().getBoardHeight();
+    private static final int BOARD_HEIGHT = Settings.getSingleton().getBoardHeight() - 1;
 
     private static final Map<Coordinate, List<Coordinate>> initialCoordinate2WinningRowMap = new HashMap<Coordinate, List<Coordinate>>() {{
         put(new Coordinate(0, BOARD_HEIGHT / 2), getVerticalRow(BOARD_WIDTH));      // Pawn started on the left
@@ -17,8 +17,6 @@ public class WinnerDeciderLogic implements WinnerDecider {
         put (new Coordinate(BOARD_WIDTH / 2, BOARD_HEIGHT), getHorizontalRow(0));   // Pawn started on the bottom
         put(new Coordinate(BOARD_WIDTH / 2, 0), getHorizontalRow(BOARD_HEIGHT));    // Pawn started on the top
     }};
-
-
 
     @Override
     public boolean isWinner(Player player) {
@@ -31,7 +29,7 @@ public class WinnerDeciderLogic implements WinnerDecider {
 
     private static List<Coordinate> getVerticalRow(int x) {
         List<Coordinate> verticalRow = new ArrayList<>();
-        for (int y = 0; y < BOARD_HEIGHT; y++) {
+        for (int y = 0; y < BOARD_HEIGHT + 1; y++) {
             Coordinate coordinate = new Coordinate(x, y);
             verticalRow.add(coordinate);
         }
@@ -40,7 +38,7 @@ public class WinnerDeciderLogic implements WinnerDecider {
 
     private static List<Coordinate> getHorizontalRow(int y) {
         List<Coordinate> horizontalRow = new ArrayList<>();
-        for (int x = 0; x < BOARD_WIDTH; x++) {
+        for (int x = 0; x < BOARD_WIDTH + 1; x++) {
             Coordinate coordinate = new Coordinate(x, y);
             horizontalRow.add(coordinate);
         }

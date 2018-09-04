@@ -2,10 +2,7 @@ package com.harush.zitoon.quoridor.ui.view.components;
 
 import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 
-import com.harush.zitoon.quoridor.core.model.LogicResult;
-import com.harush.zitoon.quoridor.core.model.Pawn;
-import com.harush.zitoon.quoridor.core.model.PawnType;
-import com.harush.zitoon.quoridor.core.model.Settings;
+import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
 import java.util.Objects;
 import javafx.scene.layout.StackPane;
@@ -22,8 +19,8 @@ import javafx.scene.text.Text;
 
 public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
-    double currentX, currentY;
     private String playerName;
+    double currentX, currentY;
     private Pawn pawn;
 
     AbstractPawnComponent(int x, int y, String playerName, Pawn pawn) {
@@ -65,6 +62,7 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
             LogicResult logicResult = (LogicResult)workerStateEvent.getSource().getValue();
             if (!logicResult.isSuccess()) {
                 // Can display error message returned from logic layer in UI here by logicResult.getErrMsg();
+                System.out.println(logicResult.getErrMsg());
                 reverseMove();
                 return;
             }
@@ -92,6 +90,29 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         return pawn.getY();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractPawnComponent that = (AbstractPawnComponent) o;
+        return Objects.equals(pawn, that.pawn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pawn);
+    }
+
+    @Override
+    public Coordinate getInitialCoordinate() {
+        return pawn.getInitialCoordinate();
+    }
+
+    @Override
+    public Coordinate getCurrentCoordinate() {
+        return pawn.getCurrentCoordinate();
+    }
+
     private void drawPawn() {
         Circle ellipse = new Circle(TILE_SIZE * 0.3215);
         ellipse.setFill(Color.web(pawn.getType().getHexColor()));
@@ -114,18 +135,5 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
     private void reverseMove() {
         relocate(currentX, currentY);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AbstractPawnComponent that = (AbstractPawnComponent) o;
-        return Objects.equals(pawn, that.pawn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pawn);
     }
 }

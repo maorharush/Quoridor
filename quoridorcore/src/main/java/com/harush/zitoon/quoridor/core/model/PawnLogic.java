@@ -46,7 +46,7 @@ public class PawnLogic implements Pawn {
         this.currentX = newX;
         this.currentY = newY;
 
-        gameSession.checkForWinnerAndUpdateTurn(type, newX, newY);
+        gameSession.checkForWinnerAndUpdateTurn();
 
         return new LogicResult(true);
     }

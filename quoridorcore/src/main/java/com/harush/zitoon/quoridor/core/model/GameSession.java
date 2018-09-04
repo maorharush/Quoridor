@@ -19,6 +19,7 @@ public class GameSession extends Observable {
 	private int width = Settings.getSingleton().getBoardWidth();
 	private int height = Settings.getSingleton().getBoardHeight();
 	private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
+	private WinnerDecider winnerDecider;
 	
 	/**
 	 * A {@link Stack} was chosen to store all the moves as an undo function can be 
@@ -26,11 +27,12 @@ public class GameSession extends Observable {
 	 */
 	private Deque<Move> moves;
 
-	public GameSession(Board board, RuleType rule) {
+	public GameSession(Board board, RuleType rule, WinnerDecider winnerDecider) {
 		this.board = board;
 		this.players = new ArrayList<>();
 		this.moves = new ArrayDeque<>();
 		this.ruleType = rule;
+		this.winnerDecider = winnerDecider;
 	}
 
 	/**
@@ -126,67 +128,73 @@ public class GameSession extends Observable {
 		return getPlayer(currentPlayerIndex);
 	}
 
-	public void checkForWinnerAndUpdateTurn(PawnType type, int newX, int newY) {
+	public void checkForWinnerAndUpdateTurn() {
 		//Check if the pawn is in a winning position on the board
-		checkForWinner(type, newX, newY);
+		checkForWinner();
 		//update whose turn it is
 		updateTurn();
 	}
 
-	public void checkForWinner(PawnType type, int newX, int newY) {
-		switch (type) {
-			case RED:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == (width - 1) && newY == (0)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newY == 0) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
-			case WHITE:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == (0) && newY == (height - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newY == (height - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
-			case BLUE:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == (width - 1) && newY == (height - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newX == 0) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
-			case GREEN:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == 0 && newY == 0) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newX == (width - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
+	public void checkForWinner() {
+//		switch (type) {
+//			case RED:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == (width - 1) && newY == (0)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newY == 0) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//			case WHITE:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == (0) && newY == (height - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newY == (height - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//			case BLUE:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == (width - 1) && newY == (height - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newX == 0) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//			case GREEN:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == 0 && newY == 0) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newX == (width - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//		}
+		Player currentPlayer = getCurrentPlayer();
+		boolean isWinner = winnerDecider.isWinner(currentPlayer);
+		if (isWinner) {
+			setWinner(currentPlayer);
+			endGame();
 		}
 	}
 

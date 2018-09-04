@@ -58,7 +58,7 @@ public class SetupController extends AbstractController implements Initializable
     private int playerIndex;
     private Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
     private PawnType[] pawnTypes = PawnType.values();
-    private GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType());
+    private GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), new WinnerDeciderLogic());
     private int width = Settings.getSingleton().getBoardWidth();
     private int height = Settings.getSingleton().getBoardHeight();
     private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
@@ -169,7 +169,8 @@ public class SetupController extends AbstractController implements Initializable
         HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
 
         Player player1 = new HumanPlayer(humanPlayerName, pawns.get(0));
-        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+//        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+        Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
         players.add(player1);
         players.add(player2);
 
@@ -220,7 +221,7 @@ public class SetupController extends AbstractController implements Initializable
 
     private HorizontalWallComponent[][] makeHorizontalWallComponents() {
         final HorizontalWallComponent[][] horizontalWalls = new HorizontalWallComponent[width][height];
-        for (int y = 1; y < height; y++) { //TODO Mor: y = 1 for some reason make sure it's OK
+        for (int y = 1; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 HorizontalWallComponent wall = new HorizontalWallComponent(x, y, horizontalWalls, gameSession, new HorizontalWallLogic(x, y, gameSession));
                 horizontalWalls[x][y] = wall;
