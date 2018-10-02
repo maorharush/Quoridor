@@ -186,8 +186,9 @@ public class SetupController extends AbstractController implements Initializable
         int numPlayers = 2;
 
         List<String> playerNames = readPlayersNamesFromUser(numPlayers);
-        List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, makePawns(numPlayers));
-        List<Player> players = makePlayers(numPlayers, playerNames);
+        List<Pawn> pawns = makePawns(numPlayers);
+        List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, pawns);
+        List<Player> players = makePlayers(numPlayers, playerNames, pawns);
         VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
         HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
 
@@ -199,8 +200,9 @@ public class SetupController extends AbstractController implements Initializable
         int numPlayers = 4;
 
         List<String> playerNames = readPlayersNamesFromUser(numPlayers);
-        List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, makePawns(numPlayers));
-        List<Player> players = makePlayers(numPlayers, playerNames);
+        List<Pawn> pawns = makePawns(numPlayers);
+        List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, pawns);
+        List<Player> players = makePlayers(numPlayers, playerNames, pawns);
         VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
         HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
 
@@ -304,10 +306,10 @@ public class SetupController extends AbstractController implements Initializable
         return textInputDialog;
     }
 
-    private List<Player> makePlayers(int numPlayers, List<String> playerNames) {
+    private List<Player> makePlayers(int numPlayers, List<String> playerNames, List<Pawn> pawns) {
         List<Player> players = new ArrayList<>(numPlayers);
         for (int i = 0; i < numPlayers; i++) {
-            HumanPlayer humanPlayer = makeHumanPlayer(playerNames.get(i), makePawn(pawnTypes[i]));
+            HumanPlayer humanPlayer = makeHumanPlayer(playerNames.get(i), pawns.get(i));
             players.add(humanPlayer);
         }
         return players;
