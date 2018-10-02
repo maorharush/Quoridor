@@ -42,7 +42,7 @@ public class HorizontalWallComponent extends Rectangle implements Wall {
 		this.height = gameSession.getBoard().getHeight();
 		this.wall = wall;
 
-		setOnMouseEntered(e -> setWallColor(Color.valueOf("bbbbbb")));
+		setOnMouseEntered(e -> setWallColor(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor())));
 
 		setOnMouseExited(e -> setWallColor(Color.rgb(153, 217, 234, 0.8)));
 
