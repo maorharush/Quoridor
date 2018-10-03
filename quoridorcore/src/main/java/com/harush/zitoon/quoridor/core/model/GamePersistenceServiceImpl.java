@@ -5,6 +5,9 @@ import java.util.List;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
+/**
+ *   represent a save\load game handler
+ */
 public class GamePersistenceServiceImpl implements GamePersistenceService{
 
     private GameRecDAO dao;
@@ -16,23 +19,24 @@ public class GamePersistenceServiceImpl implements GamePersistenceService{
 
     @Override
     public void saveTurn(GameSession gameSession){
-        GameRecDBO recorder = new GameRecDBO();
+        GameRecDBO gameRecord = new GameRecDBO();
         Board board = gameSession.getBoard();
         List<Player> players= gameSession.getPlayers();
-        List<Wall> wall = board.getAllWalls();
+        List<Wall> walls = board.getAllWalls();
         List<GameRecDBO> recordedList = new ArrayList<>();
         int sizeOfplayersList = players.size();
-        int sizeOfWallsList = wall.size();
+        int sizeOfWallsList = walls.size();
 
      while(sizeOfplayersList>=0 || sizeOfWallsList>=0){
-         recorder.setGame_id(1);//maybe getMaxGameID()?
-         recorder.setPlayer_name(sizeOfplayersList);
-         recorder.setPawn_x(players.get(sizeOfplayersList).pawn.getX());
-         recorder.setPawn_y(players.get(sizeOfplayersList).pawn.getY());
-         recorder.setWall_x(wall.get(sizeOfWallsList).getX());
-         recorder.setWall_y(wall.get(sizeOfWallsList).getY());
-         recorder.setFence_orien(wall.get(sizeOfWallsList).getOrientation());
-         recordedList.add(recorder);
+         //TODO find a solution to manage game_id
+         gameRecord.setGame_id(1);//maybe getMaxGameID()?
+         gameRecord.setPlayer_name(players.get(sizeOfplayersList).getName());
+         gameRecord.setPawn_x(players.get(sizeOfplayersList).pawn.getX());
+         gameRecord.setPawn_y(players.get(sizeOfplayersList).pawn.getY());
+         gameRecord.setWall_x(walls.get(sizeOfWallsList).getX());
+         gameRecord.setWall_y(walls.get(sizeOfWallsList).getY());
+         gameRecord.setFence_orien(walls.get(sizeOfWallsList).getOrientation());
+         recordedList.add(gameRecord);
          sizeOfplayersList--;
          sizeOfWallsList--;
      }

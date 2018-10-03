@@ -5,7 +5,7 @@ import java.util.Objects;
 //TODO All below changes must be changed in tables + DAO
 public class GameRecDBO extends DBO {
     private int game_id;
-    private int player_name;
+    private String player_name;
     private int pawn_x;
     private int pawn_y;
     private int wall_x;
@@ -26,11 +26,11 @@ public class GameRecDBO extends DBO {
         return game_id;
     }
 
-    public int getPlayer_name() {
+    public String getPlayer_name() {
         return player_name;
     }
 
-    public void setPlayer_name(int player_name) {
+    public void setPlayer_name(String player_name) {
         this.player_name = player_name;
     }
 
