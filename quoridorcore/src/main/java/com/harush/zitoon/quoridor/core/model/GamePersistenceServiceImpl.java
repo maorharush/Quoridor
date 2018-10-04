@@ -29,13 +29,20 @@ public class GamePersistenceServiceImpl implements GamePersistenceService{
 
      while(sizeOfplayersList>=0 || sizeOfWallsList>=0){
          //TODO find a solution to manage game_id
-         gameRecord.setGame_id(1);//maybe getMaxGameID()?
-         gameRecord.setPlayer_name(players.get(sizeOfplayersList).getName());
-         gameRecord.setPawn_x(players.get(sizeOfplayersList).pawn.getX());
-         gameRecord.setPawn_y(players.get(sizeOfplayersList).pawn.getY());
-         gameRecord.setWall_x(walls.get(sizeOfWallsList).getX());
-         gameRecord.setWall_y(walls.get(sizeOfWallsList).getY());
-         gameRecord.setFence_orien(walls.get(sizeOfWallsList).getOrientation());
+         gameRecord.setGame_id(1);//maybe getMaxGameID()? mabye let the gameSession give assigne the gameId
+
+         if (sizeOfplayersList>=0){
+             gameRecord.setPlayer_name(players.get(sizeOfplayersList).getName());
+             gameRecord.setPawn_x(players.get(sizeOfplayersList).pawn.getX());
+             gameRecord.setPawn_y(players.get(sizeOfplayersList).pawn.getY());
+         }
+
+
+         if(sizeOfWallsList>=0){
+             gameRecord.setWall_x(walls.get(sizeOfWallsList).getX());
+             gameRecord.setWall_y(walls.get(sizeOfWallsList).getY());
+             gameRecord.setFence_orien(walls.get(sizeOfWallsList).getOrientation());
+         }
          recordedList.add(gameRecord);
          sizeOfplayersList--;
          sizeOfWallsList--;
@@ -48,5 +55,6 @@ public class GamePersistenceServiceImpl implements GamePersistenceService{
 
         return null;
     }
+
 
 }

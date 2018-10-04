@@ -1,5 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
 import java.util.*;
@@ -20,7 +21,7 @@ public class GameSession extends Observable{
 	private int width = Settings.getSingleton().getBoardWidth();
 	private int height = Settings.getSingleton().getBoardHeight();
 	private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
-	
+
 	/**
 	 * A {@link Stack} was chosen to store all the moves as an undo function can be 
 	 * implemented in the practise mode. 
@@ -32,6 +33,7 @@ public class GameSession extends Observable{
 		this.players = new ArrayList<>();
 		this.moves = new ArrayDeque<>();
 		this.ruleType = rule;
+
 	}
 
     /**
@@ -78,7 +80,7 @@ public class GameSession extends Observable{
 
 	/**
 	 * Adds a {@link Move} to the move list.
-	 * @param move
+	 * @param move the pawn
 	 * @return true if the move was successful
 	 */
 	public boolean addMove(Move move) {
