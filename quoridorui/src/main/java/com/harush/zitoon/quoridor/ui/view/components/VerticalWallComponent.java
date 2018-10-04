@@ -40,7 +40,7 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 		this.nextWallY = currentY + 1;
 
 
-		setOnMouseEntered(e -> setWallColor(Color.valueOf("bbbbbb")));
+		setOnMouseEntered(e -> setWallColor(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor())));
 
 		setOnMouseExited(e -> setWallColor(Color.rgb(153, 217, 234, 0.8)));
 
