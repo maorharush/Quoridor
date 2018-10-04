@@ -11,6 +11,7 @@ import java.util.List;
 
 public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
 
+
     public GameRecDAOImpl() {
         jdbcTemplate = new JdbcTemplate(DataSourceProvider.getDataSource());
         createTable();
@@ -42,6 +43,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
             return gameRecDBO;
         });
     }
+
 
     @Override
     public void deleteAll() {

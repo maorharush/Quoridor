@@ -50,7 +50,6 @@ public class GamePersistenceServiceImpl implements GamePersistenceService{
     @Override
     public GameSession loadGame() {
 
-
         return null;
     }
 
