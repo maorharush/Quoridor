@@ -54,6 +54,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"game_recorder\" ( `game_id` INTEGER, `player_id` INTEGER, `cur_col` TEXT, `cur_row` INTEGER, `fence_col` TEXT, `fence_row` INTEGER, `fence_orien` TEXT, FOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE, PRIMARY KEY(`game_id`) )");
     }
 
+    @Override
     public int getMaxID() {
         Integer maxID = jdbcTemplate.<Integer>queryForObject("SELECT game_id FROM " + TABLE_NAME + " ORDER BY id DESC LIMIT 1", Integer.class);
         if (maxID == null) {

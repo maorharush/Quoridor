@@ -13,6 +13,8 @@ public interface DAO<T extends DBO> {
 
     //int delete(List<T> dbos);
 
+    <ID> List<T> getRows(String columnName, ID id);
+
     List<T> getAll();
 
     void deleteAll();

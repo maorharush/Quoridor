@@ -51,6 +51,13 @@ public class GameSession extends Observable {
 		this.winnerDecider = winnerDecider;
 		this.game_id=DAO.getMaxID();
 	}
+	/**
+	 * get the game id
+	 * @return Integer
+	 */
+	public int getGame_id() {
+		return game_id;
+	}
 
     /**
 	 * Gets the {@link Board} used in this session.
