@@ -33,7 +33,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
             String fence_orien = resultSet.getString("fence_orien");
 
             gameRecDBO.setGame_id(resultSet.getInt("game_id"));
-            gameRecDBO.setPlayer_name(resultSet.getInt("player_name"));
+            gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
             gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
             gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
             gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
@@ -51,4 +51,8 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
     private void createTable() {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"game_recorder\" ( `game_id` INTEGER, `player_id` INTEGER, `cur_col` TEXT, `cur_row` INTEGER, `fence_col` TEXT, `fence_row` INTEGER, `fence_orien` TEXT, FOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE, PRIMARY KEY(`game_id`) )");
     }
+    public int getMaxID(){
+        return  jdbcTemplate.queryForObject("SELECT * FROM "+TABLE_NAME+" ORDER BY id DESC LIMIT 1", int.class);
+    }
+
 }
