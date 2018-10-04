@@ -12,8 +12,8 @@ import java.util.List;
 public class Board {
 
     private Tile[][] tiles;
-    private Wall[][] horizontalWalls;
-    private Wall[][] verticalWalls;
+    private WallData[][] horizontalWallData;
+    private WallData[][] verticalWallData;
     private int height;
     private int width;
 
@@ -26,8 +26,8 @@ public class Board {
             throw new IllegalStateException("Height or width of the board cannot be even.");
         }
         this.tiles = new Tile[height][width];
-        this.horizontalWalls = new Wall[height][width];
-        this.verticalWalls = new Wall[height][width];
+        this.horizontalWallData = new WallData[height][width];
+        this.verticalWallData = new WallData[height][width];
         this.height = height;
         this.width = width;
         setTilePositions();
@@ -95,9 +95,9 @@ public class Board {
     public boolean containsWall(int x, int y, boolean isHorizontal) {
         validateCoordinate(x, y);
         if (isHorizontal) {
-            return horizontalWalls[x][y] != null;
+            return horizontalWallData[x][y] != null;
         } else {
-            return verticalWalls[x][y] != null;
+            return verticalWallData[x][y] != null;
         }
     }
 
@@ -120,9 +120,9 @@ public class Board {
         }
 
         if (isHorizontal) {
-            horizontalWalls[x][y] = new Wall(x, y, isFirst, placedBy);
+            horizontalWallData[x][y] = new WallData(x, y, isFirst, placedBy);
         } else {
-            verticalWalls[x][y] = new Wall(x, y, isFirst, placedBy);
+            verticalWallData[x][y] = new WallData(x, y, isFirst, placedBy);
         }
     }
 
@@ -135,13 +135,13 @@ public class Board {
      * @return the wall
      * @throws IllegalArgumentException if x or y is below 0
      */
-    public Wall getWall(int x, int y, boolean isHorizontal) {
+    public WallData getWall(int x, int y, boolean isHorizontal) {
         validateCoordinateThrowException(x, y);
 
         if (isHorizontal) {
-            return horizontalWalls[x][y];
+            return horizontalWallData[x][y];
         } else {
-            return verticalWalls[x][y];
+            return verticalWallData[x][y];
         }
     }
 
@@ -186,9 +186,9 @@ public class Board {
         }
 
         if (isHorizontal) {
-            horizontalWalls[x][y] = null;
+            horizontalWallData[x][y] = null;
         } else {
-            verticalWalls[x][y] = null;
+            verticalWallData[x][y] = null;
         }
     }
 

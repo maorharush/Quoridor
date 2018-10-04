@@ -11,7 +11,7 @@ import java.util.*;
  * @author Maor Harush
  * @version 0.6
  */
-public class GameSession extends Observable{
+public class GameSession extends Observable {
 	
 	public static int MAX_PLAYERS = 4;
 	private Board board;
@@ -35,16 +35,20 @@ public class GameSession extends Observable{
     }
 
     /**
-	 * A {@link Stack} was chosen to store all the moves as an undo function can be 
+	private WinnerDecider winnerDecider;
+
+	/**
+	 * A {@link Stack} was chosen to store all the moves as an undo function can be
 	 * implemented in the practise mode. 
 	 */
 	private Deque<Move> moves;
 
-	public GameSession(Board board, RuleType rule) {
+	public GameSession(Board board, RuleType rule, WinnerDecider winnerDecider) {
 		this.board = board;
 		this.players = new ArrayList<>();
 		this.moves = new ArrayDeque<>();
 		this.ruleType = rule;
+		this.winnerDecider = winnerDecider;
 		this.game_id=DAO.getMaxID();
 	}
 
@@ -141,67 +145,73 @@ public class GameSession extends Observable{
 		return getPlayer(currentPlayerIndex);
 	}
 
-	public void checkForWinnerAndUpdateTurn(PawnType type, int newX, int newY) {
+	public void checkForWinnerAndUpdateTurn() {
 		//Check if the pawn is in a winning position on the board
-		checkForWinner(type, newX, newY);
+		checkForWinner();
 		//update whose turn it is
 		updateTurn();
 	}
 
-	public void checkForWinner(PawnType type, int newX, int newY) {
-		switch (type) {
-			case RED:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == (width - 1) && newY == (0)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newY == 0) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
-			case WHITE:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == (0) && newY == (height - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newY == (height - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
-			case BLUE:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == (width - 1) && newY == (height - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newX == 0) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
-			case GREEN:
-				if (getRuleType() == RuleType.CHALLENGE) {
-					if (newX == 0 && newY == 0) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				} else if (getRuleType() == RuleType.STANDARD) {
-					if (newX == (width - 1)) {
-						setWinner(getCurrentPlayer());
-						endGame();
-					}
-				}
-				break;
+	public void checkForWinner() {
+//		switch (type) {
+//			case RED:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == (width - 1) && newY == (0)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newY == 0) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//			case WHITE:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == (0) && newY == (height - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newY == (height - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//			case BLUE:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == (width - 1) && newY == (height - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newX == 0) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//			case GREEN:
+//				if (getRuleType() == RuleType.CHALLENGE) {
+//					if (newX == 0 && newY == 0) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				} else if (getRuleType() == RuleType.STANDARD) {
+//					if (newX == (width - 1)) {
+//						setWinner(getCurrentPlayer());
+//						endGame();
+//					}
+//				}
+//				break;
+//		}
+		Player currentPlayer = getCurrentPlayer();
+		boolean isWinner = winnerDecider.isWinner(currentPlayer);
+		if (isWinner) {
+			setWinner(currentPlayer);
+			endGame();
 		}
 	}
 
@@ -212,8 +222,8 @@ public class GameSession extends Observable{
 
 	/**
 	 * Determines whether it is the current {@link Player player's} turn.
-	 * 	 *
-	 * @return whether it is the the current turn
+	 *
+	 * @return whether it is the current player's turn
 	 */
 	public LogicResult isCurrentTurn(PawnType pawnType) {
 
@@ -221,7 +231,7 @@ public class GameSession extends Observable{
 			return new LogicResult(true);
 		}
 
-		return new LogicResult(false, String.format("It is not player %s's turn!", pawnType2PlayerMap.get(pawnType).getName()));
+		return new LogicResult(false, String.format("It is not %s's turn!", pawnType2PlayerMap.get(pawnType).getName()));
 	}
 
 	public void updateTurn() {

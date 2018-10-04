@@ -35,21 +35,21 @@
 //
 //	@Test
 //	public void testGetWalls() {
-//		assertEquals(10, player.getWalls());
-//		assertEquals(10, otherPlayer.getWalls());
+//		assertEquals(10, player.getNumWalls());
+//		assertEquals(10, otherPlayer.getNumWalls());
 //		player.decrementWalls();
-//		assertEquals(9, player.getWalls());
+//		assertEquals(9, player.getNumWalls());
 //		otherPlayer.decrementWalls();
 //		otherPlayer.decrementWalls();
-//		assertEquals(8, otherPlayer.getWalls());
+//		assertEquals(8, otherPlayer.getNumWalls());
 //	}
 //
 //	@Test
 //	public void testDecrementWalls() {
 //		player.decrementWalls();
 //		otherPlayer.decrementWalls();
-//		assertEquals(9, player.getWalls());
-//		assertEquals(9, otherPlayer.getWalls());
+//		assertEquals(9, player.getNumWalls());
+//		assertEquals(9, otherPlayer.getNumWalls());
 //
 //	}
 //
@@ -60,8 +60,8 @@
 //		otherPlayer.decrementWalls();
 //		player.incrementWalls();
 //		otherPlayer.incrementWalls();
-//		assertEquals(10, player.getWalls());
-//		assertEquals(10, otherPlayer.getWalls());
+//		assertEquals(10, player.getNumWalls());
+//		assertEquals(10, otherPlayer.getNumWalls());
 //	}
 //
 //	@Test
@@ -72,8 +72,8 @@
 //
 //	@Test
 //	public void testGetPawnColour() {
-//		assertEquals("#ffffff", player.getPawnColour());
-//		assertEquals("#000000", otherPlayer.getPawnColour());
+//		assertEquals("#ffffff", player.getPawnColor());
+//		assertEquals("#000000", otherPlayer.getPawnColor());
 //	}
 //
 //}
