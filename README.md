@@ -1,4 +1,8 @@
 Quoridor
 ========
 
-Java Quoridor implementation for cs2911 12s2
+Java Quoridor implementation
+
+Authors:
+* Maor Harush
+* Zitoon

@@ -7,8 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test class for Tile.java.
- * @author Anas Khan
+ * Test class for Tile.java.*
  * @version 0.1
  */
 

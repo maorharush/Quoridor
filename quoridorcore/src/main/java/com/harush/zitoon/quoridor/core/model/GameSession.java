@@ -206,6 +206,7 @@ public class GameSession extends Observable{
 	}
 
 	public void endGame() {
+		setChanged();
 		notifyObservers(this);
 	}
 

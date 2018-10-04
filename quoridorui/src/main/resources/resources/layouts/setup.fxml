@@ -19,25 +19,25 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="226.0" layoutY="122.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="2 Player Game" />
-                        <Button layoutX="226.0" layoutY="222.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="4 Player Game" />
-                        <Button layoutX="14.0" layoutY="286.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
+                         <Button layoutX="226.0" layoutY="33.0" mnemonicParsing="false" onAction="#on1PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="1 Player Game" />
+                         <Button layoutX="226.0" layoutY="122.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="2 Player Game" />
+                         <Button layoutX="226.0" layoutY="222.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="4 Player Game" />
+                         <Button layoutX="14.0" layoutY="286.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
                          <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                               <Image url="@/resources/layouts/images/setup/2.png" />
-                           </image>
-                        </ImageView>
+                             <image>
+                                <Image url="@/resources/layouts/images/setup/2.png" />
+                            </image>
+                         </ImageView>
                          <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                               <Image url="@/resources/layouts/images/setup/4.png" />
-                           </image>
-                        </ImageView>
+                             <image>
+                                <Image url="@/resources/layouts/images/setup/4.png" />
+                            </image>
+                         </ImageView>
                          <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
+                             <image>
                                 <Image url="@images/setup/ai.png" />
                             </image>
-                        </ImageView>
-                        <Button layoutX="226.0" layoutY="33.0" mnemonicParsing="false" onAction="#on1PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="1 Player Game" />
+                         </ImageView>
                      </children>
                   </AnchorPane>
               </content>

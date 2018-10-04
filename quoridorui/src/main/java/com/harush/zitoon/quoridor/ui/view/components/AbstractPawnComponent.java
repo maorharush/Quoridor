@@ -1,7 +1,13 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
-import com.harush.zitoon.quoridor.core.model.*;
-import com.harush.zitoon.quoridor.ui.view.utils.UIUtils;
+import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
+
+import com.harush.zitoon.quoridor.core.model.LogicResult;
+import com.harush.zitoon.quoridor.core.model.Pawn;
+import com.harush.zitoon.quoridor.core.model.PawnType;
+import com.harush.zitoon.quoridor.core.model.Settings;
+import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
+import java.util.Objects;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -9,24 +15,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import java.util.Objects;
-
-import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
-
 /**
  * Represents a Pawn within the main game screen.
  * Adapted from <a href="https://github.com/AlmasB/FXTutorials/blob/master/src/com/almasb/checkers/Piece.java">AlmasB</a>.
  */
 
-public class PawnComponent extends StackPane implements Pawn {
+public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
-    private double mouseX, mouseY;
-    private double currentX, currentY;
+    double currentX, currentY;
     private String color;
     private String playerName;
     private Pawn pawn;
 
-    public PawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
+    public AbstractPawnComponent(int x, int y, String color, String playerName, Pawn pawn) {
         this.color = color;
         this.playerName = playerName;
         this.pawn = pawn;
@@ -40,20 +41,6 @@ public class PawnComponent extends StackPane implements Pawn {
 
         drawPawn();
         drawLabels();
-
-        setOnMousePressed(e -> {
-            mouseX = e.getSceneX();
-            mouseY = e.getSceneY();
-        });
-
-        setOnMouseDragged(e -> relocate(e.getSceneX() - mouseX + currentX, e.getSceneY() - mouseY + currentY));
-
-        setOnMouseReleased(e -> {
-            int newX = UIUtils.toBoardCoordinate(getLayoutX());
-            int newY = UIUtils.toBoardCoordinate(getLayoutY());
-
-            move(newX, newY);
-        });
     }
 
     @Override
@@ -71,20 +58,23 @@ public class PawnComponent extends StackPane implements Pawn {
 
     @Override
     public LogicResult move(int x, int y) {
-        int newX = x * TILE_SIZE;
-        int newY = y * TILE_SIZE;
+        final int newX = x * TILE_SIZE;
+        final int newY = y * TILE_SIZE;
         relocate(newX, newY);
 
-        LogicResult logicResult = pawn.move(x, y);
+        MovePawnTask movePawnTask = new MovePawnTask(pawn, x, y);
+        movePawnTask.setOnSucceeded((workerStateEvent) -> {
+            LogicResult logicResult = (LogicResult)workerStateEvent.getSource().getValue();
+            if (!logicResult.isSuccess()) {
+                logCannotMoveErrMsg(logicResult.getErrMsg());
+                reverseMove();
+                return;
+            }
 
-        if (!logicResult.isSuccess()) {
-            logCannotMoveErrMsg(logicResult.getErrMsg());
-            reverseMove();
-            return logicResult;
-        }
-
-        currentX = newX;
-        currentY = newY;
+            currentX = newX;
+            currentY = newY;
+        });
+        new Thread(movePawnTask).start();
 
         return new LogicResult(true);
     }
@@ -136,7 +126,7 @@ public class PawnComponent extends StackPane implements Pawn {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PawnComponent that = (PawnComponent) o;
+        AbstractPawnComponent that = (AbstractPawnComponent) o;
         return Objects.equals(pawn, that.pawn);
     }
 

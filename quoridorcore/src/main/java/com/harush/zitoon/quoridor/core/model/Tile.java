@@ -3,7 +3,6 @@ package com.harush.zitoon.quoridor.core.model;
 /**
  * Represents a Tile on the {@link Board}
  * @author Moar Harush
- * @author Anas Khan
  * @version 0.3
  */
 public class Tile {
