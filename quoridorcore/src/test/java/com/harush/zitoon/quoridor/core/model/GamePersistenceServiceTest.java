@@ -97,7 +97,6 @@ public class GamePersistenceServiceTest {
         List<Player> actualPlayers = gameSession.getPlayers();
         Player winner = gameSession.getWinner();
 
-
         Assert.assertEquals(gameID, actualGameID);
         Assert.assertEquals(board, actualBoard);
         Assert.assertEquals(players, actualPlayers);

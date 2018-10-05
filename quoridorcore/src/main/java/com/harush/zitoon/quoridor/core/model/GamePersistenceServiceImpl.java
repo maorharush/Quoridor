@@ -39,7 +39,7 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
         GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), lastGameID, new WinnerDeciderLogic());
         List<Player> players = playerHistories.stream().map(PlayerHistory::getPlayer).collect(Collectors.toList());
         players.forEach(gameSession::addPlayer);
-        gameSession.checkForWinnerAndUpdateTurn();
+        //gameSession.checkForWinnerAndUpdateTurn();
         return gameSession;
     }
 
