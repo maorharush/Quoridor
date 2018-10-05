@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.dao.GameRecDAOImpl;
+import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 
 import java.util.*;
 
@@ -18,10 +18,7 @@ public class GameSession extends Observable {
     private RuleType ruleType;
     private Player winner;
     private int currentPlayerIndex = 0;
-    private int width = Settings.getSingleton().getBoardWidth();
-    private int height = Settings.getSingleton().getBoardHeight();
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
-    private GameRecDAOImpl DAO;
     private WinnerDecider winnerDecider;
     private int gameID;
 
@@ -35,13 +32,14 @@ public class GameSession extends Observable {
      */
     private Deque<Move> moves;
 
-    public GameSession(Board board, RuleType rule, WinnerDecider winnerDecider) {
+    //TODO MorManush: Pass gameRecDAO in constructor
+    public GameSession(Board board, RuleType rule, int gameID, WinnerDecider winnerDecider) {
         this.board = board;
         this.players = new ArrayList<>();
         this.moves = new ArrayDeque<>();
         this.ruleType = rule;
         this.winnerDecider = winnerDecider;
-        this.gameID = DAO.getMaxID();
+        this.gameID = gameID;
     }
 
     /**

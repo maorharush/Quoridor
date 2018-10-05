@@ -66,10 +66,6 @@ public class GameRecDBO extends DBO {
         this.wall_y = wall_y;
     }
 
-    public void setCur_row(char cur_row) {
-        this.pawn_y = cur_row;
-    }
-
     public Character getFence_orien() {
         return fence_orien;
     }

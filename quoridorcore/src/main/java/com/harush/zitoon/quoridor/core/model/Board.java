@@ -145,8 +145,8 @@ public class Board {
         }
     }
 
-    public List<Wall> getAllWalls() {
-        List<Wall> walls = new ArrayList<>();
+    public List<WallData> getAllWalls() {
+        List<WallData> walls = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 addWallIfExists(walls, y, x, true);
@@ -156,7 +156,7 @@ public class Board {
         return walls;
     }
 
-    private void addWallIfExists(List<Wall> wall, int y, int x, boolean isHorizontal) {
+    private void addWallIfExists(List<WallData> wall, int y, int x, boolean isHorizontal) {
         if (containsWall(x, y, isHorizontal)) {
             wall.add(getWall(x, y, isHorizontal));
         }

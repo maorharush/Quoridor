@@ -1,5 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Represents a Player in the game.
  */
@@ -93,5 +96,26 @@ public abstract class Player {
      */
     public Statistics getStatistics() {
         return stats;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return numWalls == player.numWalls &&
+                Objects.equals(name, player.name) &&
+                Objects.equals(stats, player.stats) &&
+                Arrays.equals(verticalWalls, player.verticalWalls) &&
+                Arrays.equals(horizontalWalls, player.horizontalWalls) &&
+                Objects.equals(pawn, player.pawn);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(name, numWalls, stats, pawn);
+        result = 31 * result + Arrays.hashCode(verticalWalls);
+        result = 31 * result + Arrays.hashCode(horizontalWalls);
+        return result;
     }
 }

@@ -30,7 +30,7 @@ public class PlayerAction2GameRecDBOConverterTest {
     @Test
     public void convertMovePawnAction_success() {
         when(player.getName()).thenReturn("testPlayer");
-        PlayerAction playerAction = new PlayerAction(PlayerActionType.MOVE_PAWN,4, 9, null, player);
+        PlayerAction playerAction = new PlayerAction(PlayerActionType.MOVE_PAWN, 4, 9, null, player);
 
         GameRecDBO expected = new GameRecDBO();
         expected.setPawn_x(4);
@@ -47,7 +47,7 @@ public class PlayerAction2GameRecDBOConverterTest {
     @Test
     public void convertPlaceWallAction_success() {
         when(player.getName()).thenReturn("testPlayer");
-        PlayerAction playerAction = new PlayerAction(PlayerActionType.PLACE_WALL,4, 9, 'h', player);
+        PlayerAction playerAction = new PlayerAction(PlayerActionType.PLACE_WALL, 4, 9, 'h', player);
 
         GameRecDBO expected = new GameRecDBO();
         expected.setPawn_x(-1);

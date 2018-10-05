@@ -31,11 +31,16 @@ public class PlayerDAOImpl extends BaseDAO implements PlayerDAO {
     }
 
     @Override
-    public void insert(List<PlayerDBO> dbos) {
+    public void insert(PlayerDBO... dbos) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         simpleJdbcInsert.withTableName(TABLE_NAME);
         SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(dbos);
         simpleJdbcInsert.executeBatch(batch);
+    }
+
+    @Override
+    public void insert(List<PlayerDBO> dbos) {
+        insert(dbos.toArray(new PlayerDBO[]{}));
     }
 
     @Override

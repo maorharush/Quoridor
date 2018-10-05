@@ -18,11 +18,16 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
     }
 
     @Override
-    public void insert(List<GameRecDBO> dbos) {
+    public void insert(GameRecDBO... dbos) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         simpleJdbcInsert.withTableName(TABLE_NAME);
         SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(dbos);
         simpleJdbcInsert.executeBatch(batch);
+    }
+
+    @Override
+    public void insert(List<GameRecDBO> dbos) {
+        insert(dbos.toArray(new GameRecDBO[]{}));
     }
 
     @Override
@@ -61,6 +66,16 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
             return -1;
         }
         return maxID;
+    }
+
+    @Override
+    public List<GameRecDBO> getGameRecords(int gameId) {
+        return null; //TODO MorManush : Implement
+    }
+
+    @Override
+    public List<GameRecDBO> getPlayerRecords(int gameId, String playerName) {
+        return null; //TODO MorManush : Implement
     }
 
 }
