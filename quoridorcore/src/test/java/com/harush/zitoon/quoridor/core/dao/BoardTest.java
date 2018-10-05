@@ -11,45 +11,39 @@ import java.util.List;
 
 public class BoardTest {
 
-    private static Board board;
 
     @Mock
     private Pawn pawn;
 
-
-    @BeforeClass
-    public static void beforeClass() {
-        board = new Board();
-
-    }
-
     @Test
     public void getAllWalls3Walls_success() {
-        HumanPlayer player1 = new HumanPlayer("Maor", pawn, "color");
-        HumanPlayer player2 = new HumanPlayer("Maor2", pawn, "color2");
-        HumanPlayer player3 = new HumanPlayer("Maor3", pawn, "color3");
+        Board board = new Board();
 
-        List<Wall> expectedWalls = new ArrayList<Wall>() {{
-            add(new Wall(0, 0, true, player1));
-            add(new Wall(1, 1, true, player2));
-            add(new Wall(2, 2, true, player3));
+        HumanPlayer player1 = new HumanPlayer("Maor", pawn);
+        HumanPlayer player2 = new HumanPlayer("Maor2", pawn);
+        HumanPlayer player3 = new HumanPlayer("Maor3", pawn);
+
+        List<WallData> expectedWalls = new ArrayList<WallData>() {{
+            add(new WallData(0, 0, true, player1));
+            add(new WallData(1, 1, true, player2));
+            add(new WallData(2, 2, true, player3));
         }};
 
         board.setWall(0, 0, true, true, player1);
         board.setWall(1, 1, true, true, player2);
         board.setWall(2, 2, true, true, player3);
 
-        List<Wall> actualAllWalls = board.getAllWalls();
+        List<WallData> actualAllWalls = board.getAllWalls();
 
 
         Assert.assertEquals("Number of walls returned is not as expected", expectedWalls.size(), actualAllWalls.size());
-
         Assert.assertEquals(expectedWalls, actualAllWalls);
     }
 
     @Test
     public void getAllWalls0Walls_success() {
-        List<Wall> actualWalls = board.getAllWalls();
+        Board board = new Board();
+        List<WallData> actualWalls = board.getAllWalls();
         Assert.assertEquals("The wall list was expected to be empty",0, actualWalls.size());
     }
 
