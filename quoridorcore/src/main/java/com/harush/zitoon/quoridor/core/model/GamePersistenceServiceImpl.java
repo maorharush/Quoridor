@@ -12,7 +12,7 @@ import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 public class GamePersistenceServiceImpl implements GamePersistenceService {
 
     private GameRecDAO gameRecDAO;
-    private PlayersFactory playersFactory;
+    private PlayersFactory playersFactory; //TODO Manush: Implement
 
     public GamePersistenceServiceImpl(GameRecDAO gameRecDAO, PlayersFactory playersFactory) {
         this.gameRecDAO = gameRecDAO;
@@ -32,7 +32,7 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
 
         while (sizeOfplayersList >= 0 || sizeOfWallsList >= 0) {
             //TODO find a solution to manage game_id
-            gameRecord.setGame_id(gameSession.getGame_id());
+            gameRecord.setGame_id(gameSession.getGameID());
             if (sizeOfplayersList >= 0) {
                 gameRecord.setPlayer_name(players.get(sizeOfplayersList).getName());
                 gameRecord.setPawn_x(players.get(sizeOfplayersList).pawn.getX());
@@ -51,24 +51,61 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
     }
 
 
-
     @Override
     public GameSession loadGame() {
         int lastGameID = gameRecDAO.getMaxID();
         List<GameRecDBO> recordedList = gameRecDAO.getGameRecords(lastGameID);
-
-        Board board = populateBoard(recordedList);
-        GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType());
-
         Set<String> playerNames = recordedList.stream().map(GameRecDBO::getPlayer_name).collect(Collectors.toSet());
         Map<String, List<GameRecDBO>> playerName2Moves = new HashMap<>();
+        //TODO Manush: Implement - gameRecDAO.getPlayerRecords(lastGameID, playerName)
         playerNames.forEach(playerName -> playerName2Moves.put(playerName, gameRecDAO.getPlayerRecords(lastGameID, playerName)));
 
         List<Player> players = getPlayers(playerName2Moves);
 
+        Board board = populateBoard(recordedList, players);
+        GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), new WinnerDeciderLogic());
+
         players.forEach(player -> gameSession.addPlayer(player));
 
         gameSession.checkForWinnerAndUpdateTurn();
+
+        return gameSession;
+    }
+
+    private Board populateBoard(List<GameRecDBO> recordedList, List<Player> players) {
+        Board board = new Board(Settings.getSingleton().getBoardWidth(), Settings.getSingleton().getBoardHeight());
+        populateBoardWithHorizontalWalls(board, recordedList, players);
+        populateBoardWithVerticalWalls(board, recordedList, players);
+        populateBoardWithPawns(board, recordedList);
+        return board;
+    }
+
+    private void populateBoardWithVerticalWalls(Board board, List<GameRecDBO> recordedList, List<Player> players) {
+        List<GameRecDBO> gameRecVWalls = recordedList.stream().filter(rec -> rec.getFence_orien() == 'v').collect(Collectors.toList());
+
+
+
+
+//        board.setWall(gameRecDBO.getWall_x(), gameRecDBO.getWall_y(), true, true, placedByPlayer);
+//        board.setWall(gameRecDBO.getWall_x() + 1, gameRecDBO.getWall_y(), true, false, placedByPlayer);
+    }
+
+    private void populateBoardWithHorizontalWalls(Board board, List<GameRecDBO> recordedList, List<Player> players) {
+        List<GameRecDBO> gameRecHWalls = recordedList.stream().filter(rec -> rec.getFence_orien() == 'h').collect(Collectors.toList());
+
+        for (GameRecDBO gameRecDBO : gameRecHWalls) {
+            Optional<Player> optionalPlayer = players.stream().filter(player -> player.getName().equals(gameRecDBO.getPlayer_name())).findAny();
+            if (!optionalPlayer.isPresent()) {
+                String errMsg = String.format("Can't find player that placed wall from player list:%s and game record:%s",
+                        Arrays.toString(players.toArray(new Player[]{})), gameRecDBO);
+                throw new RuntimeException(errMsg);
+            }
+
+            Player placedByPlayer = optionalPlayer.get();
+
+            board.setWall(gameRecDBO.getWall_x(), gameRecDBO.getWall_y(), false, true, placedByPlayer);
+            board.setWall(gameRecDBO.getWall_x(), gameRecDBO.getWall_y() + 1, false, false, placedByPlayer);
+        }
     }
 
     private List<Player> getPlayers(Map<String, List<GameRecDBO>> playerName2Moves) {
