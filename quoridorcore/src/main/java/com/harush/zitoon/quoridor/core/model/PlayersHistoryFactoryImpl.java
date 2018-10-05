@@ -69,7 +69,7 @@ public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
     }
 
     private PlayerHistory getPlayerHistory(int gameID, String playerName) {
-        List<GameRecDBO> moves = gameRecDAO.getPlayerRecords(gameID, playerName); //TODO Manush: Implement - gameRecDAO.getPlayerRecords(lastGameID, playerName)
+        List<GameRecDBO> moves = gameRecDAO.getPlayerRecords(gameID, playerName);
         int wallPlacements = getNumOfWallsPlacements(moves);
         int numWallsLeft = Settings.getSingleton().getNumWalls() - wallPlacements;
         int initPawnX = getInitPawnX(moves);

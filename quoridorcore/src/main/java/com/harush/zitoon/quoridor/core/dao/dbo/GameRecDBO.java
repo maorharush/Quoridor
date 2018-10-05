@@ -2,7 +2,6 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 
 import java.util.Objects;
 
-//TODO All below changes must be changed in tables + DAO
 public class GameRecDBO extends DBO {
     private int game_id;
     private String player_name;

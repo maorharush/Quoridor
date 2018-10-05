@@ -70,12 +70,44 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
 
     @Override
     public List<GameRecDBO> getGameRecords(int gameId) {
-        return null; //TODO MorManush : Implement
+
+
+            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME+ " where game_id="+gameId, (resultSet, i) -> {
+                GameRecDBO gameRecDBO = new GameRecDBO();
+
+
+                String fence_orien = resultSet.getString("fence_orien");
+
+                gameRecDBO.setGame_id(resultSet.getInt("game_id"));
+                gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
+                gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
+                gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
+                gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
+                gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
+                gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
+                return gameRecDBO;
+            });
+
     }
 
     @Override
     public List<GameRecDBO> getPlayerRecords(int gameId, String playerName) {
-        return null; //TODO MorManush : Implement
+
+            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME+"where game_id="+gameId+" and where player_name like %"+playerName+"%", (resultSet, i) -> {
+                GameRecDBO gameRecDBO = new GameRecDBO();
+
+
+                String fence_orien = resultSet.getString("fence_orien");
+
+                gameRecDBO.setGame_id(resultSet.getInt("game_id"));
+                gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
+                gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
+                gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
+                gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
+                gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
+                gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
+                return gameRecDBO;
+            });
     }
 
 }
