@@ -53,28 +53,9 @@ public class GamePersistenceServiceTest {
 
         when(gameRecDAO.getGameRecords(eq(gameID))).thenReturn(gameRecords);
 
-        Player player1 = Mockito.mock(Player.class);
-        Pawn pawn1 = Mockito.mock(Pawn.class);
-        when(player1.getName()).thenReturn("player1");
-        when(player1.getPawn()).thenReturn(pawn1);
-        when(player1.getStatistics()).thenReturn(new Statistics());
-        when(pawn1.getType()).thenReturn(PawnType.RED);
-        Coordinate coordinate1 = new Coordinate(4, 8);
-        when(pawn1.getCurrentCoordinate()).thenReturn(coordinate1);
-        when(pawn1.getInitialCoordinate()).thenReturn(coordinate1);
-
-        Player player2 = Mockito.mock(Player.class);
-        Pawn pawn2 = Mockito.mock(Pawn.class);
-        when(player2.getName()).thenReturn("player2");
-        when(player2.getPawn()).thenReturn(pawn2);
-        when(player2.getStatistics()).thenReturn(new Statistics());
-        when(pawn2.getType()).thenReturn(PawnType.GREEN);
-        Coordinate coordinate2 = new Coordinate(4, 0);
-        when(pawn2.getCurrentCoordinate()).thenReturn(coordinate2);
-        when(pawn2.getInitialCoordinate()).thenReturn(coordinate2);
-
+        Player player1 = getPlayerMock("player1", PawnType.RED, 8);
+        Player player2 = getPlayerMock("player2", PawnType.GREEN, 0);
         ArrayList<Player> players = Lists.newArrayList(player1, player2);
-
         Set<String> playerNames = Sets.newHashSet("player1", "player2");
 
         PlayerHistory playerHistory1 = new PlayerHistory(player1, Lists.newArrayList(gameRecDBO1));
@@ -102,6 +83,19 @@ public class GamePersistenceServiceTest {
         Assert.assertEquals(players, actualPlayers);
         Assert.assertNull(winner);
         Assert.assertEquals(player1, currentPlayer);
+    }
+
+    private Player getPlayerMock(String player12, PawnType red, int i) {
+        Player player1 = Mockito.mock(Player.class);
+        Pawn pawn1 = Mockito.mock(Pawn.class);
+        when(player1.getName()).thenReturn(player12);
+        when(player1.getPawn()).thenReturn(pawn1);
+        when(player1.getStatistics()).thenReturn(new Statistics());
+        when(pawn1.getType()).thenReturn(red);
+        Coordinate coordinate1 = new Coordinate(4, i);
+        when(pawn1.getCurrentCoordinate()).thenReturn(coordinate1);
+        when(pawn1.getInitialCoordinate()).thenReturn(coordinate1);
+        return player1;
     }
 
 }
