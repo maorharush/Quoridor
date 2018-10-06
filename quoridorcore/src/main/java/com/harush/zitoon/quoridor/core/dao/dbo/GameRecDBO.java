@@ -79,7 +79,7 @@ public class GameRecDBO extends DBO {
         if (o == null || getClass() != o.getClass()) return false;
         GameRecDBO that = (GameRecDBO) o;
         return game_id == that.game_id &&
-                player_name == that.player_name &&
+                player_name.equals(that.player_name) &&
                 pawn_y == that.pawn_y &&
                 wall_x == that.wall_x &&
                 wall_y == that.wall_y &&

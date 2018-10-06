@@ -1,6 +1,8 @@
 package com.harush.zitoon.quoridor.core.dao;
 
+import com.google.common.collect.Lists;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.model.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +10,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class GameRecDAOIT {
 
@@ -23,7 +28,7 @@ public class GameRecDAOIT {
     }
 
     @Test
-    public void insertGameRecords() {
+    public void insertGameRecords_success() {
         List<GameRecDBO> dbos = createGameRecDBOS();
         gameRecDAO.insert(dbos);
         List<GameRecDBO> returnedGameRecs = gameRecDAO.getAll();
@@ -34,6 +39,35 @@ public class GameRecDAOIT {
         GameRecDBO actual = returnedGameRecs.get(0);
 
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getSpecificGamesById_success() {
+        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player2", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(2, "player3", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(3, "player4", -1, -1, -1, -1, null);
+
+        gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4);
+
+        List<GameRecDBO> expectedGame1Records = Lists.newArrayList(gameRecDBO1, gameRecDBO2);
+
+        List<GameRecDBO> game1Records = gameRecDAO.getGameRecords(1);
+        List<GameRecDBO> game2Records = gameRecDAO.getGameRecords(2);
+        List<GameRecDBO> game3Records = gameRecDAO.getGameRecords(3);
+
+        Assert.assertNotNull(game1Records);
+        Assert.assertNotNull(game2Records);
+        Assert.assertNotNull(game3Records);
+
+        Assert.assertFalse(game1Records.isEmpty());
+        Assert.assertFalse(game2Records.isEmpty());
+        Assert.assertFalse(game3Records.isEmpty());
+
+        Assert.assertEquals(expectedGame1Records.size(), game1Records.size());
+        Assert.assertEquals(expectedGame1Records, game1Records);
+        Assert.assertEquals(gameRecDBO3, game2Records.get(0));
+        Assert.assertEquals(gameRecDBO4, game3Records.get(0));
     }
 
     private List<GameRecDBO> createGameRecDBOS() {

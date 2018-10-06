@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -33,19 +35,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
     @Override
     public List<GameRecDBO> getAll() {
         return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (resultSet, i) -> {
-            GameRecDBO gameRecDBO = new GameRecDBO();
-
-
-            String fence_orien = resultSet.getString("fence_orien");
-
-            gameRecDBO.setGame_id(resultSet.getInt("game_id"));
-            gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
-            gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
-            gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
-            gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
-            gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
-            gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
-            return gameRecDBO;
+            return getGameRecDBO(resultSet);
         });
     }
 
@@ -53,10 +43,6 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
     @Override
     public void deleteAll() {
         jdbcTemplate.execute("DELETE FROM " + TABLE_NAME);
-    }
-
-    private void createTable() {
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"game_recorder\" ( `game_id` INTEGER, `player_id` INTEGER, `cur_col` TEXT, `cur_row` INTEGER, `fence_col` TEXT, `fence_row` INTEGER, `fence_orien` TEXT, FOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE, PRIMARY KEY(`game_id`) )");
     }
 
     @Override
@@ -70,44 +56,40 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
 
     @Override
     public List<GameRecDBO> getGameRecords(int gameId) {
-
-
-            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME+ " where game_id="+gameId, (resultSet, i) -> {
-                GameRecDBO gameRecDBO = new GameRecDBO();
-
-
-                String fence_orien = resultSet.getString("fence_orien");
-
-                gameRecDBO.setGame_id(resultSet.getInt("game_id"));
-                gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
-                gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
-                gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
-                gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
-                gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
-                gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
-                return gameRecDBO;
-            });
+        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE game_id='" + gameId + "'", (resultSet, i) -> getGameRecDBO(resultSet));
 
     }
 
     @Override
     public List<GameRecDBO> getPlayerRecords(int gameId, String playerName) {
+        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE game_id='" + gameId + "' AND player_name='" + playerName + "'", (resultSet, i) -> getGameRecDBO(resultSet));
+    }
 
-            return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME+"where game_id="+gameId+" and where player_name like %"+playerName+"%", (resultSet, i) -> {
-                GameRecDBO gameRecDBO = new GameRecDBO();
+    private void createTable() {
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS `game_recorder` (\n" +
+                "\t`game_id`\tINTEGER,\n" +
+                "\t`player_name`\tINTEGER,\n" +
+                "\t`pawn_x`\tINTEGER,\n" +
+                "\t`pawn_y`\tINTEGER,\n" +
+                "\t`wall_x`\tINTEGER,\n" +
+                "\t`wall_y`\tINTEGER,\n" +
+                "\t`fence_orien`\tTEXT,\n" +
+                "\tFOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE,\n" +
+                "\tPRIMARY KEY(`game_id`,`player_name`)\n" +
+                ");");
+    }
 
-
-                String fence_orien = resultSet.getString("fence_orien");
-
-                gameRecDBO.setGame_id(resultSet.getInt("game_id"));
-                gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
-                gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
-                gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
-                gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
-                gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
-                gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
-                return gameRecDBO;
-            });
+    private GameRecDBO getGameRecDBO(ResultSet resultSet) throws SQLException {
+        GameRecDBO gameRecDBO = new GameRecDBO();
+        String fence_orien = resultSet.getString("fence_orien");
+        gameRecDBO.setGame_id(resultSet.getInt("game_id"));
+        gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
+        gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
+        gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
+        gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
+        gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
+        gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
+        return gameRecDBO;
     }
 
 }
