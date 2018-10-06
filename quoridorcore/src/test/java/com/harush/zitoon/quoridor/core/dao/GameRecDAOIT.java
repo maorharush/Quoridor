@@ -70,6 +70,32 @@ public class GameRecDAOIT {
         Assert.assertEquals(gameRecDBO4, game3Records.get(0));
     }
 
+    @Test
+    public void getAllPlayerRecords_success() {
+        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(1, "player2", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(1, "player2", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO5 = TestHelper.generateGameRecDBO(2, "player3", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO6 = TestHelper.generateGameRecDBO(2, "player4", -1, -1, -1, -1, null);
+
+        gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4, gameRecDBO5, gameRecDBO6);
+
+        List<GameRecDBO> player1Records = gameRecDAO.getPlayerRecords(1, "player1");
+        List<GameRecDBO> player4Records = gameRecDAO.getPlayerRecords(2, "player4");
+
+        ArrayList<GameRecDBO> expectedPlayer1Records = Lists.newArrayList(gameRecDBO1, gameRecDBO2);
+
+        Assert.assertNotNull(player1Records);
+        Assert.assertNotNull(player4Records);
+
+        Assert.assertFalse(player1Records.isEmpty());
+        Assert.assertFalse(player4Records.isEmpty());
+
+        Assert.assertEquals(expectedPlayer1Records, player1Records);
+        Assert.assertEquals(gameRecDBO6, player4Records.get(0));
+    }
+
     private List<GameRecDBO> createGameRecDBOS() {
         List<GameRecDBO> dbos = new ArrayList<>();
 

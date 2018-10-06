@@ -67,6 +67,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
 
     private void createTable() {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS `game_recorder` (\n" +
+                "\t`game_rec_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
                 "\t`game_id`\tINTEGER,\n" +
                 "\t`player_name`\tINTEGER,\n" +
                 "\t`pawn_x`\tINTEGER,\n" +
@@ -74,8 +75,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
                 "\t`wall_x`\tINTEGER,\n" +
                 "\t`wall_y`\tINTEGER,\n" +
                 "\t`fence_orien`\tTEXT,\n" +
-                "\tFOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE,\n" +
-                "\tPRIMARY KEY(`game_id`,`player_name`)\n" +
+                "\tFOREIGN KEY(`game_id`) REFERENCES `game_recorder`\n" +
                 ");");
     }
 

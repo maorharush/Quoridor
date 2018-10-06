@@ -79,17 +79,16 @@ public class GameRecDBO extends DBO {
         if (o == null || getClass() != o.getClass()) return false;
         GameRecDBO that = (GameRecDBO) o;
         return game_id == that.game_id &&
-                player_name.equals(that.player_name) &&
+                pawn_x == that.pawn_x &&
                 pawn_y == that.pawn_y &&
                 wall_x == that.wall_x &&
                 wall_y == that.wall_y &&
-                Objects.equals(pawn_x, that.pawn_x) &&
+                Objects.equals(player_name, that.player_name) &&
                 Objects.equals(fence_orien, that.fence_orien);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(game_id, player_name, pawn_x, pawn_y, wall_x, wall_y, fence_orien);
     }
 
