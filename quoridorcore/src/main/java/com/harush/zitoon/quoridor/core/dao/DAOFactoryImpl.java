@@ -9,12 +9,20 @@ public class DAOFactoryImpl implements DAOFactory {
 
     private Map<String, DAO> daoMap;
 
-    public DAOFactoryImpl() {
-        daoMap = new HashMap<String, DAO>() {{
-            put(GameRecDAO.TABLE_NAME, new GameRecDAOImpl());
-            put(GameDAO.TABLE_NAME, new GameDAOImpl());
-            put(PlayerDAO.TABLE_NAME, new PlayerDAOImpl());
-        }};
+    private static DAOFactoryImpl instance;
+
+    private DAOFactoryImpl() {
+        daoMap = new HashMap<>();
+        daoMap.put(GameRecDAO.TABLE_NAME, new GameRecDAOImpl());
+        daoMap.put(GameDAO.TABLE_NAME, new GameDAOImpl());
+        daoMap.put(PlayerDAO.TABLE_NAME, new PlayerDAOImpl());
+    }
+
+    public static DAOFactory instance() {
+        if (instance == null) {
+            instance = new DAOFactoryImpl();
+        }
+        return instance;
     }
 
     @Override
