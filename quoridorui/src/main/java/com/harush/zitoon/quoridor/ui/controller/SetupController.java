@@ -1,5 +1,6 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
+import com.harush.zitoon.quoridor.core.dao.GameRecDAOImpl;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.components.*;
@@ -58,7 +59,7 @@ public class SetupController extends AbstractController implements Initializable
     private int playerIndex;
     private Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
     private PawnType[] pawnTypes = PawnType.values();
-    private GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), gameRecDAO, new WinnerDeciderLogic());
+    private GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), new GameRecDAOImpl().getMaxID() + 1, new WinnerDeciderLogic());
     private int width = Settings.getSingleton().getBoardWidth();
     private int height = Settings.getSingleton().getBoardHeight();
     private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();

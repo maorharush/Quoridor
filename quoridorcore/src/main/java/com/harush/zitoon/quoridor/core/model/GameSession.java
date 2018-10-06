@@ -32,7 +32,6 @@ public class GameSession extends Observable {
      */
     private Deque<Move> moves;
 
-    //TODO MorManush: Pass gameRecDAO in constructor
     public GameSession(Board board, RuleType rule, int gameID, WinnerDecider winnerDecider) {
         this.board = board;
         this.players = new ArrayList<>();
