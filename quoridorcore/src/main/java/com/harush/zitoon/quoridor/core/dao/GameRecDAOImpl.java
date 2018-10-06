@@ -46,7 +46,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
     }
 
     @Override
-    public int getMaxID() {
+    public int getLastGameID() {
         Integer maxID = jdbcTemplate.<Integer>queryForObject("SELECT MAX(game_id) FROM " + TABLE_NAME, Integer.class);
         if (maxID == null) {
             return -1;

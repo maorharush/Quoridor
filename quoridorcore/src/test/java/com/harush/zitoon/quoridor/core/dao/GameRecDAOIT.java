@@ -97,7 +97,7 @@ public class GameRecDAOIT {
     }
 
     @Test
-    public void getMaxGameID_success() {
+    public void getLastGameID_success() {
 
         GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
         GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
@@ -108,7 +108,7 @@ public class GameRecDAOIT {
 
         gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4, gameRecDBO5, gameRecDBO6);
 
-        int maxID = gameRecDAO.getMaxID();
+        int maxID = gameRecDAO.getLastGameID();
         Assert.assertEquals(3, maxID);
     }
 

@@ -7,7 +7,7 @@ public interface GameRecDAO extends DAO<GameRecDBO> {
 
     String TABLE_NAME = "game_recorder";
 
-    int getMaxID();
+    int getLastGameID();
 
     List<GameRecDBO> getGameRecords(int gameId);
 

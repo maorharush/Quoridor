@@ -3,6 +3,7 @@ package com.harush.zitoon.quoridor.core.model;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.harush.zitoon.quoridor.core.dao.DAOFactoryImpl;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
@@ -31,12 +32,12 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
 
     @Override
     public GameSession loadGame() {
-        int lastGameID = gameRecDAO.getMaxID();
+        int lastGameID = gameRecDAO.getLastGameID();
         List<GameRecDBO> recordedList = gameRecDAO.getGameRecords(lastGameID);
         Set<String> playerNames = recordedList.stream().map(GameRecDBO::getPlayer_name).collect(Collectors.toSet());
         List<PlayerHistory> playerHistories = playersHistoryFactory.getPlayerHistories(lastGameID, playerNames);
         Board board = populateBoardUtil.populateBoard(playerHistories);
-        GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), lastGameID, new WinnerDeciderLogic());
+        GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), DAOFactoryImpl.instance(), new WinnerDeciderLogic());
         List<Player> players = playerHistories.stream().map(PlayerHistory::getPlayer).collect(Collectors.toList());
         players.forEach(gameSession::addPlayer);
         //gameSession.checkForWinnerAndUpdateTurn();

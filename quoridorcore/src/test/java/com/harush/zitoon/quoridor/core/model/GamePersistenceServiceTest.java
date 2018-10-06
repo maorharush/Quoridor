@@ -45,7 +45,7 @@ public class GamePersistenceServiceTest {
     public void loadGameAfterSpawn_success() {
         int gameID = 1;
 
-        when(gameRecDAO.getMaxID()).thenReturn(gameID);
+        when(gameRecDAO.getLastGameID()).thenReturn(gameID);
 
         GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(gameID, "player1", 4, 8, -1, -1, null);
         GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(gameID, "player2", 4, 0, -1, -1, null);
