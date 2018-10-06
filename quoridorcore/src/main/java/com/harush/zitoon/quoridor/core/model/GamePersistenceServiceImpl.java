@@ -3,7 +3,9 @@ package com.harush.zitoon.quoridor.core.model;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.harush.zitoon.quoridor.core.dao.DAOFactory;
 import com.harush.zitoon.quoridor.core.dao.DAOFactoryImpl;
+import com.harush.zitoon.quoridor.core.dao.GameDAO;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
@@ -12,13 +14,15 @@ import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
  */
 public class GamePersistenceServiceImpl implements GamePersistenceService {
 
+    private GameDAO gameDAO;
     private GameRecDAO gameRecDAO;
     private PlayersHistoryFactory playersHistoryFactory;
     private PlayerAction2GameRecDBOConverter playerAction2GameRecDBOConverter;
     private PopulateBoardUtil populateBoardUtil;
 
-    public GamePersistenceServiceImpl(GameRecDAO gameRecDAO, PopulateBoardUtil populateBoardUtil, PlayersHistoryFactory playersHistoryFactory, PlayerAction2GameRecDBOConverter playerAction2GameRecDBOConverter) {
-        this.gameRecDAO = gameRecDAO;
+    public GamePersistenceServiceImpl(DAOFactory daoFactory, PopulateBoardUtil populateBoardUtil, PlayersHistoryFactory playersHistoryFactory, PlayerAction2GameRecDBOConverter playerAction2GameRecDBOConverter) {
+        this.gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
+        this.gameRecDAO = daoFactory.getDAO(GameRecDAO.TABLE_NAME);
         this.populateBoardUtil = populateBoardUtil;
         this.playersHistoryFactory = playersHistoryFactory;
         this.playerAction2GameRecDBOConverter = playerAction2GameRecDBOConverter;
@@ -32,12 +36,13 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
 
     @Override
     public GameSession loadGame() {
-        int lastGameID = gameRecDAO.getLastGameID();
+        int lastGameID = gameDAO.getLastGameID();
         List<GameRecDBO> recordedList = gameRecDAO.getGameRecords(lastGameID);
         Set<String> playerNames = recordedList.stream().map(GameRecDBO::getPlayer_name).collect(Collectors.toSet());
         List<PlayerHistory> playerHistories = playersHistoryFactory.getPlayerHistories(lastGameID, playerNames);
         Board board = populateBoardUtil.populateBoard(playerHistories);
-        GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), DAOFactoryImpl.instance(), new WinnerDeciderLogic());
+        GameSession gameSession = new GameSession(lastGameID, board, Settings.getSingleton().getRuleType(), DAOFactoryImpl.instance(), new WinnerDeciderLogic());
+        gameSession.setGamePersistenceService(this);
         List<Player> players = playerHistories.stream().map(PlayerHistory::getPlayer).collect(Collectors.toList());
         players.forEach(gameSession::addPlayer);
         //gameSession.checkForWinnerAndUpdateTurn();

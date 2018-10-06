@@ -3,10 +3,8 @@ package com.harush.zitoon.quoridor.core.model;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
 
@@ -72,11 +70,16 @@ public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
         List<GameRecDBO> moves = gameRecDAO.getPlayerRecords(gameID, playerName);
         int wallPlacements = getNumOfWallsPlacements(moves);
         int numWallsLeft = Settings.getSingleton().getNumWalls() - wallPlacements;
+        PawnType pawnType = getPawnType(moves);
         int initPawnX = getInitPawnX(moves);
         int initPawnY = getInitPawnY(moves);
         int pawnX = getCurrentPawnX(moves);
         int pawnY = getCurrentPawnY(moves);
-        Player player = playersFactory.getPlayer(playerName, true, initPawnX, initPawnY, pawnX, pawnY, numWallsLeft);
+        Player player = playersFactory.getPlayer(playerName, pawnType, true, initPawnX, initPawnY, pawnX, pawnY, numWallsLeft);
         return new PlayerHistory(player, moves);
+    }
+
+    private PawnType getPawnType(List<GameRecDBO> moves) {
+        return moves.stream().map(rec -> PawnType.valueOf(rec.getPawn_type())).collect(Collectors.toCollection(LinkedList::new)).getFirst();
     }
 }

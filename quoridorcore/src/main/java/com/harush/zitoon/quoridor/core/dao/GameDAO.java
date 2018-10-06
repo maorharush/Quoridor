@@ -8,4 +8,6 @@ public interface GameDAO extends DAO<GameDBO> {
     String TABLE_NAME = "games";
 
     int getLastGameID();
+
+    void updateGameRecord(GameDBO gameDBO);
 }

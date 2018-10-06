@@ -3,12 +3,12 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 import java.util.Objects;
 
 public class PlayerDBO extends DBO {
-    private int player_id;
+    private Integer player_id;
     private String player_name;
     private String highest_score;
     private int is_AI;
 
-    public int getPlayer_id() {
+    public Integer getPlayer_id() {
         return player_id;
     }
 

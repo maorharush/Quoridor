@@ -10,6 +10,7 @@ public class GameRecDBO extends DBO {
     private int wall_x;
     private int wall_y;
     private Character fence_orien;
+    private String pawn_type;
 
     public boolean setGame_id(int game_id) {
         if (game_id < 0) {
@@ -84,12 +85,13 @@ public class GameRecDBO extends DBO {
                 wall_x == that.wall_x &&
                 wall_y == that.wall_y &&
                 Objects.equals(player_name, that.player_name) &&
-                Objects.equals(fence_orien, that.fence_orien);
+                Objects.equals(fence_orien, that.fence_orien) &&
+                Objects.equals(pawn_type, that.pawn_type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(game_id, player_name, pawn_x, pawn_y, wall_x, wall_y, fence_orien);
+        return Objects.hash(game_id, player_name, pawn_x, pawn_y, wall_x, wall_y, fence_orien, pawn_type);
     }
 
     @Override
@@ -102,5 +104,13 @@ public class GameRecDBO extends DBO {
                 ", wall_y=" + wall_y +
                 ", fence_orien=" + fence_orien +
                 '}';
+    }
+
+    public String getPawn_type() {
+        return pawn_type;
+    }
+
+    public void setPawn_type(String pawn_type) {
+        this.pawn_type = pawn_type;
     }
 }

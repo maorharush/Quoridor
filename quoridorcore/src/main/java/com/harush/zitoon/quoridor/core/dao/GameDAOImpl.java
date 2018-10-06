@@ -1,6 +1,7 @@
 package com.harush.zitoon.quoridor.core.dao;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
@@ -58,5 +59,10 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
             return -1;
         }
         return maxID;
+    }
+
+    @Override
+    public void updateGameRecord(GameDBO gameDBO) {
+        //TODO MorManush: Implement
     }
 }

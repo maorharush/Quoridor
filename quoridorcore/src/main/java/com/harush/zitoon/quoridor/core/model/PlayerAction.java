@@ -6,14 +6,14 @@ public class PlayerAction {
     private int x;
     private int y;
     private Character wall_orien;
+
     private Player player;
 
-    public PlayerAction(PlayerActionType playerActionType, int x, int y, Character wall_orien, Player player) {
+    public PlayerAction(PlayerActionType playerActionType, int x, int y, Character wall_orien) {
         this.playerActionType = playerActionType;
         this.x = x;
         this.y = y;
         this.wall_orien = wall_orien;
-        this.player = player;
     }
 
     public PlayerActionType getPlayerActionType() {
@@ -34,5 +34,9 @@ public class PlayerAction {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

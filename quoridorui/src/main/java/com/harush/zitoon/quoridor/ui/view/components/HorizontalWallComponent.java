@@ -1,9 +1,6 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
-import com.harush.zitoon.quoridor.core.model.GameSession;
-import com.harush.zitoon.quoridor.core.model.LogicResult;
-import com.harush.zitoon.quoridor.core.model.RuleType;
-import com.harush.zitoon.quoridor.core.model.Wall;
+import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.task.PlaceWallTask;
 import javafx.scene.input.MouseEvent;
@@ -38,8 +35,8 @@ public class HorizontalWallComponent extends Rectangle implements Wall {
 		this.nextWallX = x + 1;
 		this.gameSession = gameSession;
 		this.horizontalWalls = horizontalWalls;
-		this.width = gameSession.getBoard().getWidth();
-		this.height = gameSession.getBoard().getHeight();
+		this.width = Settings.getSingleton().getBoardWidth();
+		this.height = Settings.getSingleton().getBoardHeight();
 		this.wall = wall;
 
 		setOnMouseEntered(e -> setWallColor(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor())));
@@ -106,7 +103,7 @@ public class HorizontalWallComponent extends Rectangle implements Wall {
 			//gameSession.getBoard().getWall(currentX, currentY, true).getPlacedBy().getStatistics().decrementWallsUsed();
 			gameSession.getBoard().removeWall(currentX, currentY, true);
 			setFill(Color.rgb(153, 217, 234, 0.8));
-			gameSession.updateTurn();
+//			gameSession.updateTurn();
 		} else {
 			System.out.println("You can only remove walls in a game with " + RuleType.CHALLENGE + " rules.");
 		}

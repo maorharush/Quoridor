@@ -1,6 +1,11 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.dao.DAO;
+import com.harush.zitoon.quoridor.core.dao.DAOFactory;
+import com.harush.zitoon.quoridor.core.dao.GameDAO;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
+import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
 import java.util.*;
 
@@ -14,6 +19,7 @@ public class GameSession extends Observable {
 
     public static int MAX_PLAYERS = 4;
     private Board board;
+    private GamePersistenceService gamePersistenceService;
     private List<Player> players;
     private RuleType ruleType;
     private Player winner;
@@ -21,6 +27,7 @@ public class GameSession extends Observable {
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
     private int gameID;
+    private GameDAO gameDAO;
 
 
     /**
@@ -32,13 +39,14 @@ public class GameSession extends Observable {
      */
     private Deque<Move> moves;
 
-    public GameSession(Board board, RuleType rule, int gameID, WinnerDecider winnerDecider) {
+    public GameSession(int gameID, Board board, RuleType rule, DAOFactory daoFactory, WinnerDecider winnerDecider) {
         this.board = board;
         this.players = new ArrayList<>();
         this.moves = new ArrayDeque<>();
         this.ruleType = rule;
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
+        this.gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
     }
 
     /**
@@ -152,68 +160,14 @@ public class GameSession extends Observable {
         return getPlayer(currentPlayerIndex);
     }
 
-    public void checkForWinnerAndUpdateTurn() {
+    public void checkForWinnerAndUpdateTurn(PlayerAction playerAction) {
+        //update whose turn it is
+        updateTurn(playerAction);
         //Check if the pawn is in a winning position on the board
         checkForWinner();
-        //update whose turn it is
-        updateTurn();
     }
 
     public void checkForWinner() {
-//		switch (type) {
-//			case RED:
-//				if (getRuleType() == RuleType.CHALLENGE) {
-//					if (newX == (width - 1) && newY == (0)) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				} else if (getRuleType() == RuleType.STANDARD) {
-//					if (newY == 0) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				}
-//				break;
-//			case WHITE:
-//				if (getRuleType() == RuleType.CHALLENGE) {
-//					if (newX == (0) && newY == (height - 1)) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				} else if (getRuleType() == RuleType.STANDARD) {
-//					if (newY == (height - 1)) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				}
-//				break;
-//			case BLUE:
-//				if (getRuleType() == RuleType.CHALLENGE) {
-//					if (newX == (width - 1) && newY == (height - 1)) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				} else if (getRuleType() == RuleType.STANDARD) {
-//					if (newX == 0) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				}
-//				break;
-//			case GREEN:
-//				if (getRuleType() == RuleType.CHALLENGE) {
-//					if (newX == 0 && newY == 0) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				} else if (getRuleType() == RuleType.STANDARD) {
-//					if (newX == (width - 1)) {
-//						setWinner(getCurrentPlayer());
-//						endGame();
-//					}
-//				}
-//				break;
-//		}
         Player currentPlayer = getCurrentPlayer();
         boolean isWinner = winnerDecider.isWinner(currentPlayer);
         if (isWinner) {
@@ -224,6 +178,15 @@ public class GameSession extends Observable {
 
     public void endGame() {
         setChanged();
+
+        GameDBO gameDBO = new GameDBO();
+        gameDBO.setGame_id(gameID);
+        gameDBO.setEnd_date(System.currentTimeMillis());
+        gameDBO.setWinner(currentPlayerIndex); //TODO MorManush: What to set here ?
+        //gameDBO.setNum_of_moves(); //TODO MorManush: Collect number of moves and set here
+
+        gameDAO.updateGameRecord(gameDBO);
+
         notifyObservers(this);
     }
 
@@ -241,7 +204,9 @@ public class GameSession extends Observable {
         return new LogicResult(false, String.format("It is not %s's turn!", pawnType2PlayerMap.get(pawnType).getName()));
     }
 
-    public void updateTurn() {
+    public void updateTurn(PlayerAction playerAction) {
+        recordMove(playerAction);
+
         currentPlayerIndex = (currentPlayerIndex + 1) % getPlayers().size(); // Increment player index for next turn
         Player newTurnPlayer = getCurrentPlayer();
         newTurnPlayer.getStatistics().incrementTotalMoves();
@@ -251,5 +216,14 @@ public class GameSession extends Observable {
         notifyObservers(newTurnPlayer);
 
         newTurnPlayer.play();
+    }
+
+    private void recordMove(PlayerAction playerAction) {
+        playerAction.setPlayer(getCurrentPlayer());
+        gamePersistenceService.saveTurn(playerAction);
+    }
+
+    public void setGamePersistenceService(GamePersistenceService gamePersistenceService) {
+        this.gamePersistenceService = gamePersistenceService;
     }
 }

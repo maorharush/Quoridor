@@ -1,7 +1,10 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
-import com.harush.zitoon.quoridor.core.dao.GameRecDAOImpl;
+import com.harush.zitoon.quoridor.core.dao.*;
+import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 import com.harush.zitoon.quoridor.core.model.*;
+import com.harush.zitoon.quoridor.core.theirs.AI;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.components.*;
 
@@ -11,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.harush.zitoon.quoridor.ui.view.utils.PlayersFactoryImpl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,19 +58,26 @@ public class SetupController extends AbstractController implements Initializable
     private Button addPlayerBtn;
     @FXML
     private Button playBtn;
-
+    private int width = Settings.getSingleton().getBoardWidth();
+    private int height = Settings.getSingleton().getBoardHeight();
     private Color[] defaultColours;
     private int playerIndex;
     private Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
     private PawnType[] pawnTypes = PawnType.values();
-    private GameSession gameSession = new GameSession(board, Settings.getSingleton().getRuleType(), new GameRecDAOImpl().getMaxID() + 1, new WinnerDeciderLogic());
-    private int width = Settings.getSingleton().getBoardWidth();
-    private int height = Settings.getSingleton().getBoardHeight();
+    private DAOFactory daoFactory = DAOFactoryImpl.instance();
+    private GameDAO gameDAO = DAOFactoryImpl.instance().getDAO(GameDAO.TABLE_NAME);
+    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic());
+    private VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
+    private HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
     private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
     private VerticalWallComponent[][] multiPlayerVerticalWallComponents = makeVerticalWallComponents();
     private HorizontalWallComponent[][] multiPlayerHorizontalWallComponents = makeHorizontalWallComponents();
     private int[] xStartingPositions = getStartingPositionsX(width);
     private int[] yStartingPositions = getStartingPositionsY(height, width);
+
+    public SetupController() {
+        gameSession.setGamePersistenceService(getGamePersistenceService());
+    }
 
     /**
      * Action triggered by pressing the back button.
@@ -166,9 +177,6 @@ public class SetupController extends AbstractController implements Initializable
         HumanPawnComponent humanPawnComponent = new HumanPawnComponent(xStartingPositions[0], yStartingPositions[0], humanPlayerName, pawns.get(0));
         AIPawnComponent aiPawnComponent = new AIPawnComponent(xStartingPositions[1], yStartingPositions[1], aiPlayerName, pawns.get(1));
 
-        VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
-        HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
-
         Player player1 = new HumanPlayer(humanPlayerName, pawns.get(0));
 //        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
         Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
@@ -241,10 +249,37 @@ public class SetupController extends AbstractController implements Initializable
      */
     private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
         setupGameSession(players);
+        setupGameDB(gameSession);
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
         centerStage(stage, width, height);
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
         stage.show();
+    }
+
+    private void setupGameDB(GameSession gameSession) {
+        GameDAO gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
+        PlayerDAO playersDAO = daoFactory.getDAO(PlayerDAO.TABLE_NAME);
+
+        GameDBO gameDBO = new GameDBO();
+        gameDBO.setGame_id(gameSession.getGameID());
+        gameDBO.setStart_date(System.currentTimeMillis());
+        gameDAO.insert(gameDBO);
+
+        List<Player> players = gameSession.getPlayers();
+        List<PlayerDBO> playerDBOS = new ArrayList<>();
+        for (Player player : players) {
+            PlayerDBO playerDBO = new PlayerDBO();
+            if (player instanceof HumanPlayer) {
+                playerDBO.setIs_AI(0);
+            } else {
+                playerDBO.setIs_AI(1);
+            }
+
+            playerDBO.setPlayer_name(player.getName());
+            playerDBOS.add(playerDBO);
+        }
+
+        playersDAO.insert(playerDBOS);
     }
 
     /**
@@ -381,5 +416,12 @@ public class SetupController extends AbstractController implements Initializable
 
     private HumanPlayer makeHumanPlayer(String playerName, Pawn pawn) {
         return new HumanPlayer(playerName, pawn);
+    }
+
+    private GamePersistenceServiceImpl getGamePersistenceService() {
+        return new GamePersistenceServiceImpl(daoFactory,
+                new PopulateBoardUtilImpl(),
+                new PlayersHistoryFactoryImpl(daoFactory.getDAO(GameRecDAO.TABLE_NAME), new PlayersFactoryImpl(gameSession, verticalWallComponents, horizontalWallComponents) {}),
+                new PlayerAction2GameRecDBOConverterImpl());
     }
 }

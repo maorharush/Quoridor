@@ -16,8 +16,8 @@ public class VerticalWallLogic implements Wall {
         this.gameSession = gameSession;
         this.currentX = x;
         this.currentY = y;
-        this.width = gameSession.getBoard().getWidth();
-        this.height = gameSession.getBoard().getHeight();
+        this.width = Settings.getSingleton().getBoardWidth();
+        this.height = Settings.getSingleton().getBoardHeight();
     }
 
     @Override
@@ -48,7 +48,9 @@ public class VerticalWallLogic implements Wall {
         }
         currentPlayer.getStatistics().incrementWallsUsed();
         currentPlayer.decrementWalls();
-        gameSession.updateTurn();
+
+        PlayerAction playerAction = new PlayerAction(PlayerActionType.PLACE_WALL, currentX, currentY, 'v');
+        gameSession.updateTurn(playerAction);
 
         return new LogicResult(true);
     }
