@@ -96,6 +96,22 @@ public class GameRecDAOIT {
         Assert.assertEquals(gameRecDBO6, player4Records.get(0));
     }
 
+    @Test
+    public void getMaxGameID_success() {
+
+        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player1", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(1, "player2", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(1, "player2", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO5 = TestHelper.generateGameRecDBO(2, "player3", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO6 = TestHelper.generateGameRecDBO(3, "player4", -1, -1, -1, -1, null);
+
+        gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4, gameRecDBO5, gameRecDBO6);
+
+        int maxID = gameRecDAO.getMaxID();
+        Assert.assertEquals(3, maxID);
+    }
+
     private List<GameRecDBO> createGameRecDBOS() {
         List<GameRecDBO> dbos = new ArrayList<>();
 

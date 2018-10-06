@@ -34,11 +34,10 @@ public class MainMenu extends Application implements GameScreen {
 		}
 	}
 
-	
 	public static void main(String... args) {
 		launch(args);
 	}
-	
-	
-	
+
+
+
 }
