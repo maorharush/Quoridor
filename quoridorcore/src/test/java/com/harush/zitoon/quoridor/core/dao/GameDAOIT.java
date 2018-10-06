@@ -1,6 +1,7 @@
 package com.harush.zitoon.quoridor.core.dao;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
+import com.harush.zitoon.quoridor.core.model.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,11 +36,24 @@ public class GameDAOIT {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void getLastGameID_success() {
+
+        GameDBO gameDBO1 = TestHelper.generateGameDBO(1, 0, 12);
+        GameDBO gameDBO2 = TestHelper.generateGameDBO(2, 0, 12);
+        GameDBO gameDBO3 = TestHelper.generateGameDBO(3, 0, 12);
+
+        gameDAO.insert(gameDBO1, gameDBO2, gameDBO3);
+
+        int maxID = gameDAO.getLastGameID();
+        Assert.assertEquals(3, maxID);
+    }
+
     private List<GameDBO> createGameDBOS() {
         List<GameDBO> dbos = new ArrayList<>();
 
         GameDBO gameDBO = new GameDBO();
-        gameDBO.setGame_id("1");
+        gameDBO.setGame_id(1);
         gameDBO.setStart_date(System.currentTimeMillis());
         gameDBO.setEnd_date(System.currentTimeMillis() + 10*30);
         gameDBO.setNum_of_moves(32);

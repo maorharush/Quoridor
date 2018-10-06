@@ -1,5 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
 public abstract class TestHelper {
@@ -14,5 +15,15 @@ public abstract class TestHelper {
         gameRecDBO.setWall_y(wallY);
         gameRecDBO.setFence_orien(orientation);
         return gameRecDBO;
+    }
+
+    public static GameDBO generateGameDBO(int gameID, int winner, int num_of_moves) {
+        GameDBO gameDBO = new GameDBO();
+        gameDBO.setGame_id(gameID);
+        gameDBO.setWinner(winner);
+        gameDBO.setNum_of_moves(num_of_moves);
+        gameDBO.setStart_date(System.currentTimeMillis());
+        gameDBO.setEnd_date(System.currentTimeMillis());
+        return gameDBO;
     }
 }

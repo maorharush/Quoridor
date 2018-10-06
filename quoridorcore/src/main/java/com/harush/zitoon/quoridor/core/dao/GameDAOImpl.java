@@ -20,7 +20,7 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
     public List<GameDBO> getAll() {
         return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (resultSet, i) -> {
             GameDBO gameDBO = new GameDBO();
-            gameDBO.setGame_id(resultSet.getString("game_id"));
+            gameDBO.setGame_id(resultSet.getInt("game_id"));
             gameDBO.setWinner(resultSet.getInt("winner"));
             gameDBO.setNum_of_moves(resultSet.getInt("num_of_moves"));
             gameDBO.setStart_date(resultSet.getLong("start_date"));
@@ -51,4 +51,12 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"games\" ( `game_id` INTEGER PRIMARY KEY AUTOINCREMENT, `winner` INTEGER, `num_of_moves` INTEGER, `start_date` NUMERIC, `end_date` NUMERIC )");
     }
 
+    @Override
+    public int getLastGameID() {
+        Integer maxID = jdbcTemplate.<Integer>queryForObject("SELECT MAX(game_id) FROM " + TABLE_NAME, Integer.class);
+        if (maxID == null) {
+            return -1;
+        }
+        return maxID;
+    }
 }
