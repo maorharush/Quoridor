@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * doa factory provider, holding the different DOA's in its belly, and lets you reference those dynamically.
+ * A factory for DAOs - Holds the different DOAs and enables to get them by their corresponding table name
  */
 public class DAOFactoryImpl implements DAOFactory {
 
