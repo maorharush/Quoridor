@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * doa factory provider, holding the different DOA's in its belly, and lets you reference those dynamically.
+ */
 public class DAOFactoryImpl implements DAOFactory {
 
     private Map<String, DAO> daoMap;

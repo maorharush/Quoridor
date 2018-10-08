@@ -2,6 +2,9 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 
 import java.util.Objects;
 
+/**
+ * database object for whole game session, holds up summed data of hisoric games.
+ */
 public class GameDBO extends DBO {
     private int game_id;
     private int winner;

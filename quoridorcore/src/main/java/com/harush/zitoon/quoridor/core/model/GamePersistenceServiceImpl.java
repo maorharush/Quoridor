@@ -28,12 +28,20 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
         this.playerAction2GameRecDBOConverter = playerAction2GameRecDBOConverter;
     }
 
+    /**
+     * saves the current turn. to be initiated by gameSession prior to turn update.
+     * @param playerAction
+     */
     @Override
     public void saveTurn(PlayerAction playerAction) {
         GameRecDBO gameRecDBO = playerAction2GameRecDBOConverter.toGameRecDBO(playerAction);
         gameRecDAO.insert(gameRecDBO);
     }
 
+    /**
+     * load to latest turn on the last game.
+     * @return GameSession
+     */
     @Override
     public GameSession loadGame() {
         int lastGameID = gameDAO.getLastGameID();

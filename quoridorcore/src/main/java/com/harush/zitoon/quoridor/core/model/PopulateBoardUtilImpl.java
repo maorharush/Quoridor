@@ -6,8 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * represent worker class that filled up the board with recent saved game data.
+ */
 public class PopulateBoardUtilImpl implements PopulateBoardUtil {
 
+    /**
+     * init a board instance with logical walls, pawns.
+     * @param playerHistories
+     * @return Board
+     */
     @Override
     public Board populateBoard(List<PlayerHistory> playerHistories) {
         Board board = new Board(Settings.getSingleton().getBoardWidth(), Settings.getSingleton().getBoardHeight());
@@ -17,6 +25,11 @@ public class PopulateBoardUtilImpl implements PopulateBoardUtil {
         return board;
     }
 
+    /**
+     * populating the board with logical pawns.
+     * @param board new board
+     * @param playerHistories from DAO
+     */
     @Override
     public void populateBoardWithPawns(Board board, List<PlayerHistory> playerHistories) {
         for (PlayerHistory playerHistory : playerHistories) {
@@ -27,6 +40,11 @@ public class PopulateBoardUtilImpl implements PopulateBoardUtil {
         }
     }
 
+    /**
+     * populate the board with logical vertical walls.
+     * @param board new board
+     * @param playerHistories from DAO
+     */
     @Override
     public void populateBoardWithVerticalWalls(Board board, List<PlayerHistory> playerHistories) {
         for (PlayerHistory playerHistory : playerHistories) {
@@ -40,7 +58,11 @@ public class PopulateBoardUtilImpl implements PopulateBoardUtil {
             }
         }
     }
-
+    /**
+     * populate the board with logical horizontal walls.
+     * @param board new board
+     * @param playerHistories from DAO
+     */
     @Override
     public void populateBoardWithHorizontalWalls(Board board, List<PlayerHistory> playerHistories) {
         for (PlayerHistory playerHistory : playerHistories) {

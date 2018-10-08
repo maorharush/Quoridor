@@ -4,8 +4,14 @@ import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
 import static com.harush.zitoon.quoridor.core.model.PlayerActionType.MOVE_PAWN;
 
+/** converting players action from core to DBO
+ * used as independent class to operate with the core logic before database operation is been made.
+ */
 public class PlayerAction2GameRecDBOConverterImpl implements PlayerAction2GameRecDBOConverter {
     @Override
+    /**
+     * get the game record database object, to be used in saveGame();
+     */
     public GameRecDBO toGameRecDBO(PlayerAction playerAction) {
         GameRecDBO gameRecord = new GameRecDBO();
         gameRecord.setPlayer_name(playerAction.getPlayer().getName());

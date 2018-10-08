@@ -10,6 +10,9 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Data access object for a game instance.
+ */
 public class GameDAOImpl extends BaseDAO implements GameDAO {
 
     public GameDAOImpl() {
@@ -17,6 +20,10 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
         createTable();
     }
 
+    /**
+     * querying up from db for the all game's records.
+     * @return List of gameDBO.
+     */
     @Override
     public List<GameDBO> getAll() {
         return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (resultSet, i) -> {
@@ -30,6 +37,10 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
         });
     }
 
+    /**
+     * inserts a game instance record.
+     * @param dbos, a gameDBO objects. can be singular or listed.
+     */
     @Override
     public void insert(GameDBO... dbos) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -37,7 +48,10 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
         SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(dbos);
         simpleJdbcInsert.executeBatch(batch);
     }
-
+    /**
+     * ??
+     * @param dbos
+     */
     @Override
     public void insert(List<GameDBO> dbos) {
         insert(dbos.toArray(new GameDBO[]{}));

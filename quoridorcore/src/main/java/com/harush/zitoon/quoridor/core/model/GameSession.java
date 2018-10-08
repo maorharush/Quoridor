@@ -11,9 +11,6 @@ import java.util.*;
 
 /**
  * Represents a single game session. A game session comprises of 1, 2 or 4 players.
- *
- * @author Maor Harush
- * @version 0.6
  */
 public class GameSession extends Observable {
 

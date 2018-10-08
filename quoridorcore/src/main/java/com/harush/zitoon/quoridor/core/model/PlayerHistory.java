@@ -4,6 +4,9 @@ import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 
 import java.util.List;
 
+/**
+ * holds up the records of a game, by players.
+ */
 public class PlayerHistory {
 
     private Player player;

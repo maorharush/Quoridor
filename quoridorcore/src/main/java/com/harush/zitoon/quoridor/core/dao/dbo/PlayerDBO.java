@@ -2,6 +2,9 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 
 import java.util.Objects;
 
+/**
+ * player database object.
+ */
 public class PlayerDBO extends DBO {
     private Integer player_id;
     private String player_name;

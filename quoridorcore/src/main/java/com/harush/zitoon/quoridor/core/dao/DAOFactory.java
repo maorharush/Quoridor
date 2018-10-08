@@ -1,7 +1,7 @@
 package com.harush.zitoon.quoridor.core.dao;
 
 /**
- * Created by מאור סטודיו on 17/02/2018.
+ *
  */
 
 public interface DAOFactory {

@@ -2,6 +2,10 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 
 import java.util.Objects;
 
+/**
+ * specific game record database object.
+ *
+ */
 public class GameRecDBO extends DBO {
     private int game_id;
     private String player_name;

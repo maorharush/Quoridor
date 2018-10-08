@@ -2,8 +2,6 @@ package com.harush.zitoon.quoridor.core.model;
 
 /**
  * Represents a move that has taken place during the game.
- * @author Moar Harush
- * @version 0.1
  */
 
 public class Move {
