@@ -11,12 +11,14 @@ public class WallData {
 	
 	private int x;
 	private int y;
+	private boolean isHorizontal;
 	private boolean isFirst;
 	private Player placedBy;
 	
-	public WallData(int x, int y, boolean isFirst, Player placedBy) {
+	public WallData(int x, int y, boolean isHorizontal, boolean isFirst, Player placedBy) {
 		this.x = x;
 		this.y = y;
+		this.isHorizontal = isHorizontal;
 		this.isFirst = isFirst;
 		this.placedBy = placedBy;
 	}
@@ -53,6 +55,14 @@ public class WallData {
 		return placedBy;
 	}
 
+	public boolean isHorizontal() {
+		return isHorizontal;
+	}
+
+	public boolean isFirst() {
+		return isFirst;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -60,12 +70,13 @@ public class WallData {
 		WallData wallData = (WallData) o;
 		return x == wallData.x &&
 				y == wallData.y &&
+				isHorizontal == wallData.isHorizontal &&
 				isFirst == wallData.isFirst &&
 				Objects.equals(placedBy, wallData.placedBy);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(x, y, isFirst, placedBy);
+		return Objects.hash(x, y, isHorizontal, isFirst, placedBy);
 	}
 }

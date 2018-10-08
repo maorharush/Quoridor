@@ -1,7 +1,9 @@
 package com.harush.zitoon.quoridor.core.dao;
 
+import com.google.common.collect.Lists;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
+import com.harush.zitoon.quoridor.core.model.TestHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,29 +25,33 @@ public class PlayerDAOIT {
     }
 
     @Test
-    public void insertGameRecords() {
-        List<PlayerDBO> dbos = createPlayerDBOS();
+    public void insertGameRecords_success() {
+        PlayerDBO lordMor = TestHelper.generatePlayerDBO(1, "Lord Mor", false);
+        PlayerDBO aIPlayer = TestHelper.generatePlayerDBO(2, "AIPlayer", true);
+        List<PlayerDBO> dbos = Lists.newArrayList(lordMor, aIPlayer);
         playerDAO.insert(dbos);
         List<PlayerDBO> returnedPlayers = playerDAO.getAll();
 
+        Assert.assertNotNull(returnedPlayers);
         Assert.assertEquals("Size of players returned from DB was not as expected", dbos.size(), returnedPlayers.size());
-
-        PlayerDBO expected = dbos.get(0);
-        PlayerDBO actual = returnedPlayers.get(0);
-
-        Assert.assertEquals(expected, actual);
+        Assert.assertEquals(dbos, returnedPlayers);
     }
 
-    private List<PlayerDBO> createPlayerDBOS() {
-        List<PlayerDBO> dbos = new ArrayList<>();
+    @Test
+    public void getPlayerByName_success() {
+        PlayerDBO lordMor = TestHelper.generatePlayerDBO(1, "Lord Mor", false);
+        PlayerDBO aIPlayer = TestHelper.generatePlayerDBO(2, "AIPlayer", true);
+        List<PlayerDBO> dbos = Lists.newArrayList(lordMor, aIPlayer);
+        playerDAO.insert(dbos);
 
-        PlayerDBO playerDBO = new PlayerDBO();
-        playerDBO.setPlayer_id(1);
-        playerDBO.setHighest_score("3432");
-        playerDBO.setIs_AI(0);
-        playerDBO.setPlayer_name("Lord Mor");
-        dbos.add(playerDBO);
-        return dbos;
+        PlayerDBO returnedLordMor = playerDAO.getPlayer("Lord Mor");
+        PlayerDBO returnedAIPlayer = playerDAO.getPlayer("AIPlayer");
+
+        Assert.assertNotNull(returnedLordMor);
+        Assert.assertEquals(lordMor, returnedLordMor);
+
+        Assert.assertNotNull(returnedAIPlayer);
+        Assert.assertEquals(aIPlayer, returnedAIPlayer);
     }
 
 }

@@ -2,6 +2,10 @@ package com.harush.zitoon.quoridor.core.model;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class TestHelper {
 
@@ -25,5 +29,14 @@ public abstract class TestHelper {
         gameDBO.setStart_date(System.currentTimeMillis());
         gameDBO.setEnd_date(System.currentTimeMillis());
         return gameDBO;
+    }
+
+    public static PlayerDBO generatePlayerDBO(int playerID, String playerName, boolean isAI) {
+        PlayerDBO playerDBO = new PlayerDBO();
+        playerDBO.setPlayer_id(playerID);
+        playerDBO.setHighest_score("1111");
+        playerDBO.setIs_AI(isAI ? 1 : 0);
+        playerDBO.setPlayer_name(playerName);
+        return playerDBO;
     }
 }

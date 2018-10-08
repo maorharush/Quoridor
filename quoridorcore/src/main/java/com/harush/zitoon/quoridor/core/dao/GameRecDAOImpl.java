@@ -74,6 +74,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
                 "\t`pawn_y`\tINTEGER,\n" +
                 "\t`wall_x`\tINTEGER,\n" +
                 "\t`wall_y`\tINTEGER,\n" +
+                "\t`is_first`\tINTEGER,\n" +
                 "\t`fence_orien`\tTEXT,\n" +
                 "\tFOREIGN KEY(`game_id`) REFERENCES `game_recorder`\n" +
                 ");");
@@ -88,6 +89,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
         gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
         gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
         gameRecDBO.setWall_y(resultSet.getInt("wall_y"));
+        gameRecDBO.setIs_first(resultSet.getInt("is_first"));
         gameRecDBO.setFence_orien(fence_orien == null ? null : fence_orien.charAt(0));
         return gameRecDBO;
     }

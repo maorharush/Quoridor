@@ -13,6 +13,7 @@ public class GameRecDBO extends DBO {
     private int pawn_y;
     private int wall_x;
     private int wall_y;
+    private int is_first;
     private Character fence_orien;
     private String pawn_type;
 
@@ -24,6 +25,42 @@ public class GameRecDBO extends DBO {
         this.game_id = game_id;
 
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GameRecDBO that = (GameRecDBO) o;
+        return game_id == that.game_id &&
+                pawn_x == that.pawn_x &&
+                pawn_y == that.pawn_y &&
+                wall_x == that.wall_x &&
+                wall_y == that.wall_y &&
+                is_first == that.is_first &&
+                Objects.equals(player_name, that.player_name) &&
+                Objects.equals(fence_orien, that.fence_orien) &&
+                Objects.equals(pawn_type, that.pawn_type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(game_id, player_name, pawn_x, pawn_y, wall_x, wall_y, is_first, fence_orien, pawn_type);
+    }
+
+    @Override
+    public String toString() {
+        return "GameRecDBO{" +
+                "game_id=" + game_id +
+                ", player_name='" + player_name + '\'' +
+                ", pawn_x=" + pawn_x +
+                ", pawn_y=" + pawn_y +
+                ", wall_x=" + wall_x +
+                ", wall_y=" + wall_y +
+                ", is_first=" + is_first +
+                ", fence_orien=" + fence_orien +
+                ", pawn_type='" + pawn_type + '\'' +
+                '}';
     }
 
     public int getGame_id() {
@@ -78,36 +115,8 @@ public class GameRecDBO extends DBO {
         this.fence_orien = fence_orien;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        GameRecDBO that = (GameRecDBO) o;
-        return game_id == that.game_id &&
-                pawn_x == that.pawn_x &&
-                pawn_y == that.pawn_y &&
-                wall_x == that.wall_x &&
-                wall_y == that.wall_y &&
-                Objects.equals(player_name, that.player_name) &&
-                Objects.equals(fence_orien, that.fence_orien) &&
-                Objects.equals(pawn_type, that.pawn_type);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(game_id, player_name, pawn_x, pawn_y, wall_x, wall_y, fence_orien, pawn_type);
-    }
-
-    @Override
-    public String toString() {
-        return "GameRecDBO{" +
-                "game_id=" + game_id +
-                ", player_name=" + player_name +
-                ", pawn_x=" + pawn_x +
-                ", wall_x=" + wall_x +
-                ", wall_y=" + wall_y +
-                ", fence_orien=" + fence_orien +
-                '}';
+    public int getIs_first() {
+        return is_first;
     }
 
     public String getPawn_type() {
@@ -116,5 +125,9 @@ public class GameRecDBO extends DBO {
 
     public void setPawn_type(String pawn_type) {
         this.pawn_type = pawn_type;
+    }
+
+    public void setIs_first(int is_first) {
+        this.is_first = is_first;
     }
 }

@@ -24,9 +24,9 @@ public class BoardTest {
         HumanPlayer player3 = new HumanPlayer("Maor3", pawn);
 
         List<WallData> expectedWalls = new ArrayList<WallData>() {{
-            add(new WallData(0, 0, true, player1));
-            add(new WallData(1, 1, true, player2));
-            add(new WallData(2, 2, true, player3));
+            add(new WallData(0, 0, true, true, player1));
+            add(new WallData(1, 1, true, true, player2));
+            add(new WallData(2, 2, true, true, player3));
         }};
 
         board.setWall(0, 0, true, true, player1);

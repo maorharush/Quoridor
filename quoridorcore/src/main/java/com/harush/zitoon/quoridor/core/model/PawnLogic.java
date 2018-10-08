@@ -46,7 +46,7 @@ public class PawnLogic implements Pawn {
         this.currentX = newX;
         this.currentY = newY;
 
-        PlayerAction playerAction = new PlayerAction(PlayerActionType.MOVE_PAWN, currentX ,currentY, null);
+        PlayerAction playerAction = new PlayerAction(currentX ,currentY);
         gameSession.checkForWinnerAndUpdateTurn(playerAction);
 
         return new LogicResult(true);
@@ -75,6 +75,17 @@ public class PawnLogic implements Pawn {
     @Override
     public Coordinate getCurrentCoordinate() {
         return new Coordinate(currentX, currentY);
+    }
+
+    @Override
+    public void setInitialCoordinate(Coordinate initialCoordinate) {
+        this.initialCoordinate = initialCoordinate;
+    }
+
+    @Override
+    public void setCurrentCoordinate(Coordinate currentCoordinate) {
+        this.currentX = currentCoordinate.getX();
+        this.currentY = currentCoordinate.getY();
     }
 
     @Override

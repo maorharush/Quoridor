@@ -1,20 +1,22 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.dao.GameDAO;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
+import com.harush.zitoon.quoridor.core.dao.PlayerDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
 
-
     private GameRecDAO gameRecDAO;
-    private PlayersFactory playersFactory;
+    private PlayerDAO playerDAO;
 
-    public PlayersHistoryFactoryImpl(GameRecDAO gameRecDAO, PlayersFactory playersFactory) {
+    public PlayersHistoryFactoryImpl(GameRecDAO gameRecDAO, PlayerDAO playerDAO) {
         this.gameRecDAO = gameRecDAO;
-        this.playersFactory = playersFactory;
+        this.playerDAO = playerDAO;
     }
 
     @Override
@@ -26,6 +28,18 @@ public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
         }
         return playerHistories;
 
+    }
+
+    private PlayerHistory getPlayerHistory(int gameID, String playerName) {
+        PlayerDBO playerDBO = playerDAO.getPlayer(playerName);
+        List<GameRecDBO> moves = gameRecDAO.getPlayerRecords(gameID, playerName);
+        int numOfTotalMoves = moves.size();
+        List<WallData> wallPlacements = getWallPlacements(moves);
+        int numWallsLeft = Settings.getSingleton().getNumWalls() - wallPlacements.size();
+        PawnType pawnType = getPawnType(moves);
+        Coordinate initialPawnCoordinate = new Coordinate(getInitPawnX(moves), getInitPawnY(moves));
+        Coordinate currentPawnCoordinate = new Coordinate(getCurrentPawnX(moves), getCurrentPawnY(moves));
+        return new PlayerHistory(playerName, pawnType, wallPlacements, numWallsLeft, numOfTotalMoves, initialPawnCoordinate, currentPawnCoordinate, playerDBO.getIs_AI() == 1);
     }
 
     private int getCurrentPawnY(List<GameRecDBO> moves) {
@@ -62,21 +76,12 @@ public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
         return pawnSpawnGameRec.get().getPawn_x();
     }
 
-    private int getNumOfWallsPlacements(List<GameRecDBO> moves) {
-        return (int) moves.stream().filter(rec -> rec.getWall_x() != -1).count();
+    private List<WallData> getWallPlacements(List<GameRecDBO> moves) {
+        return moves.stream().map(rec -> rec.getWall_x() != -1 ? getWallData(rec) : null).collect(Collectors.toList());
     }
 
-    private PlayerHistory getPlayerHistory(int gameID, String playerName) {
-        List<GameRecDBO> moves = gameRecDAO.getPlayerRecords(gameID, playerName);
-        int wallPlacements = getNumOfWallsPlacements(moves);
-        int numWallsLeft = Settings.getSingleton().getNumWalls() - wallPlacements;
-        PawnType pawnType = getPawnType(moves);
-        int initPawnX = getInitPawnX(moves);
-        int initPawnY = getInitPawnY(moves);
-        int pawnX = getCurrentPawnX(moves);
-        int pawnY = getCurrentPawnY(moves);
-        Player player = playersFactory.getPlayer(playerName, pawnType, true, initPawnX, initPawnY, pawnX, pawnY, numWallsLeft);
-        return new PlayerHistory(player, moves);
+    private WallData getWallData(GameRecDBO rec) {
+        return new WallData(rec.getPawn_x(), rec.getPawn_y(), rec.getFence_orien() == 'h', rec.getIs_first() == 1, null);
     }
 
     private PawnType getPawnType(List<GameRecDBO> moves) {

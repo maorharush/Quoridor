@@ -10,19 +10,40 @@ public abstract class Player {
     private String name;
     private int numWalls;
     private Statistics stats;
+
+    private boolean isAI;
+
     protected Wall[][] verticalWalls;
     protected Wall[][] horizontalWalls;
     protected Pawn pawn;
+    public Player(String name, int numWalls, Statistics stats, boolean isAI, Pawn pawn) {
+        this.name = name;
+        this.numWalls = numWalls;
+        this.stats = stats;
+        this.isAI = isAI;
+        this.pawn = pawn;
+    }
+
+    public Player(String name, int numWalls, Statistics stats, boolean isAI, Wall[][] verticalWalls, Wall[][] horizontalWalls, Pawn pawn) {
+        this.name = name;
+        this.numWalls = numWalls;
+        this.stats = stats;
+        this.isAI = isAI;
+        this.verticalWalls = verticalWalls;
+        this.horizontalWalls = horizontalWalls;
+        this.pawn = pawn;
+    }
 
     /**
      *
      * @param name      player name
      * @param pawn      player pawn
      */
-    public Player(String name, Pawn pawn) {
+    public Player(String name, Pawn pawn, boolean isAI) {
         this.name = name;
         this.pawn = pawn;
         this.stats = new Statistics();
+        this.isAI = isAI;
         numWalls = Settings.getSingleton().getNumWalls();
     }
 
@@ -31,12 +52,13 @@ public abstract class Player {
      * @param name       player name
      * @param pawn       player pawn
      */
-    public Player(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
+    public Player(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls, boolean isAI) {
         this.name = name;
         this.verticalWalls = verticalWalls;
         this.horizontalWalls = horizontalWalls;
         this.stats = new Statistics();
         this.pawn = pawn;
+        this.isAI = isAI;
         numWalls = Settings.getSingleton().getNumWalls();
     }
 
@@ -85,8 +107,24 @@ public abstract class Player {
         numWalls++;
     }
 
+    public void setStats(Statistics stats) {
+        this.stats = stats;
+    }
+
+    public void setAI(boolean AI) {
+        isAI = AI;
+    }
+
+    public void setNumWalls(int numWalls) {
+        this.numWalls = numWalls;
+    }
+
     public Pawn getPawn() {
         return pawn;
+    }
+
+    public boolean isAI() {
+        return isAI;
     }
 
     /**

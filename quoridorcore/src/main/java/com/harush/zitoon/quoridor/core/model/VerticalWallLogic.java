@@ -49,7 +49,7 @@ public class VerticalWallLogic implements Wall {
         currentPlayer.getStatistics().incrementWallsUsed();
         currentPlayer.decrementWalls();
 
-        PlayerAction playerAction = new PlayerAction(PlayerActionType.PLACE_WALL, currentX, currentY, 'v');
+        PlayerAction playerAction = new PlayerAction(currentX, currentY, false, true);
         gameSession.updateTurn(playerAction);
 
         return new LogicResult(true);

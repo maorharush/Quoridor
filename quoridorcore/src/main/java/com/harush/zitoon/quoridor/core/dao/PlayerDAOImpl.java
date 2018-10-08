@@ -20,14 +20,16 @@ public class PlayerDAOImpl extends BaseDAO implements PlayerDAO {
 
     @Override
     public List<PlayerDBO> getAll() {
-        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (ResultSet resultSet, int i) -> {
-            PlayerDBO playerDBO = new PlayerDBO();
-            playerDBO.setPlayer_id(resultSet.getInt("player_id"));
-            playerDBO.setPlayer_name(resultSet.getString("player_name"));
-            playerDBO.setHighest_score(resultSet.getString("highest_score"));
-            playerDBO.setIs_AI(resultSet.getInt("is_AI"));
-            return playerDBO;
-        });
+        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (ResultSet resultSet, int i) -> getPlayerDBO(resultSet));
+    }
+
+    public PlayerDBO getPlayerDBO(ResultSet resultSet) throws SQLException {
+        PlayerDBO playerDBO = new PlayerDBO();
+        playerDBO.setPlayer_id(resultSet.getInt("player_id"));
+        playerDBO.setPlayer_name(resultSet.getString("player_name"));
+        playerDBO.setHighest_score(resultSet.getString("highest_score"));
+        playerDBO.setIs_AI(resultSet.getInt("is_AI"));
+        return playerDBO;
     }
 
     @Override
@@ -50,5 +52,10 @@ public class PlayerDAOImpl extends BaseDAO implements PlayerDAO {
 
     private void createTable() {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"players\" ( `player_id` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `player_name` TEXT, `highest_score` INTEGER, `is_AI` INTEGER )");
+    }
+
+    @Override
+    public PlayerDBO getPlayer(String playerName) {
+        return jdbcTemplate.queryForObject("SELECT * FROM " + TABLE_NAME + " WHERE player_name='" + playerName + "'", (ResultSet resultSet, int i) -> getPlayerDBO(resultSet));
     }
 }

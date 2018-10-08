@@ -23,9 +23,10 @@ public class GameSession extends Observable {
     private int currentPlayerIndex = 0;
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
-    private int gameID;
-    private GameDAO gameDAO;
 
+    private int gameID;
+
+    private GameDAO gameDAO;
 
     /**
      * private WinnerDecider winnerDecider;
@@ -44,6 +45,10 @@ public class GameSession extends Observable {
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
         this.gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
+    }
+
+    public void setGameID(int gameID) {
+        this.gameID = gameID;
     }
 
     /**

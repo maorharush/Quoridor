@@ -85,6 +85,10 @@ public class Board {
         return logicResult;
     }
 
+    public LogicResult setPawn(Coordinate pawnCoordinate) {
+        return setPawn(pawnCoordinate.getX(), pawnCoordinate.getY());
+    }
+
 
     /**
      * Checks whether the position on the {@link Board} contains a {@link Wall}.
@@ -120,10 +124,14 @@ public class Board {
         }
 
         if (isHorizontal) {
-            horizontalWallData[x][y] = new WallData(x, y, isFirst, placedBy);
+            horizontalWallData[x][y] = new WallData(x, y, isHorizontal, isFirst, placedBy);
         } else {
-            verticalWallData[x][y] = new WallData(x, y, isFirst, placedBy);
+            verticalWallData[x][y] = new WallData(x, y, isHorizontal, isFirst, placedBy);
         }
+    }
+
+    public void setWall(WallData wallData) {
+        setWall(wallData.getX(), wallData.getY(), wallData.isHorizontal(), wallData.isFirst(), null);
     }
 
     /**
