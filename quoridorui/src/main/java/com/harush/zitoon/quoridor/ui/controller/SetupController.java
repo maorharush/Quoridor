@@ -270,6 +270,11 @@ public class SetupController extends AbstractController implements Initializable
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        doStuffWeWillProbablyDelete();
+    }
+
+    @Override
+    protected void postConstruct() {
         int lastGameID = gameDAO.getLastGameID();
         if (lastGameID != -1) {
             boolean shouldLoadGame = askUserIfShouldLoadGame();
@@ -277,8 +282,6 @@ public class SetupController extends AbstractController implements Initializable
                 loadGame();
             }
         }
-
-        doStuffWeWillProbablyDelete();
     }
 
     private void loadGame() {
