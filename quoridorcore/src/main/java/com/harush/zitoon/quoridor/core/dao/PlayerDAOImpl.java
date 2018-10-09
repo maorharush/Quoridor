@@ -3,6 +3,7 @@ package com.harush.zitoon.quoridor.core.dao;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -55,7 +56,14 @@ public class PlayerDAOImpl extends BaseDAO implements PlayerDAO {
     }
 
     @Override
-    public PlayerDBO getPlayer(String playerName) {
-        return jdbcTemplate.queryForObject("SELECT * FROM " + TABLE_NAME + " WHERE player_name='" + playerName + "'", (ResultSet resultSet, int i) -> getPlayerDBO(resultSet));
+    public PlayerDBO getPlayer(int playerID) {
+        return jdbcTemplate.queryForObject("SELECT * FROM " + TABLE_NAME + " WHERE player_id='" + playerID + "'", (ResultSet resultSet, int i) -> getPlayerDBO(resultSet));
+    }
+
+    @Override
+    public int insertAndReturnID(PlayerDBO playerDBO) {
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        simpleJdbcInsert.withTableName(TABLE_NAME).usingGeneratedKeyColumns("player_id");
+        return simpleJdbcInsert.executeAndReturnKey(new BeanPropertySqlParameterSource(playerDBO)).intValue();
     }
 }

@@ -10,6 +10,8 @@ import java.util.Objects;
  */
 public class PlayerHistory {
 
+    private int playerID;
+
     private String playerName;
 
     private PawnType pawnType;
@@ -26,7 +28,8 @@ public class PlayerHistory {
 
     private boolean isAI;
 
-    public PlayerHistory(String playerName, PawnType pawnType, List<WallData> wallPlacements, int numWallsLeft, int numTotalMoves, Coordinate initialPawnCoordinate, Coordinate currentPawnCoordinate, boolean isAI) {
+    public PlayerHistory(int playerID, String playerName, PawnType pawnType, List<WallData> wallPlacements, int numWallsLeft, int numTotalMoves, Coordinate initialPawnCoordinate, Coordinate currentPawnCoordinate, boolean isAI) {
+        this.playerID = playerID;
         this.playerName = playerName;
         this.pawnType = pawnType;
         this.wallPlacements = wallPlacements;
@@ -69,12 +72,17 @@ public class PlayerHistory {
         return numTotalMoves;
     }
 
+    public int getPlayerID() {
+        return playerID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerHistory that = (PlayerHistory) o;
-        return numWallsLeft == that.numWallsLeft &&
+        return playerID == that.playerID &&
+                numWallsLeft == that.numWallsLeft &&
                 numTotalMoves == that.numTotalMoves &&
                 isAI == that.isAI &&
                 Objects.equals(playerName, that.playerName) &&
@@ -86,13 +94,14 @@ public class PlayerHistory {
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerName, pawnType, wallPlacements, numWallsLeft, initialPawnCoordinate, currentPawnCoordinate, numTotalMoves, isAI);
+        return Objects.hash(playerID, playerName, pawnType, wallPlacements, numWallsLeft, initialPawnCoordinate, currentPawnCoordinate, numTotalMoves, isAI);
     }
 
     @Override
     public String toString() {
         return "PlayerHistory{" +
-                "playerName='" + playerName + '\'' +
+                "playerID=" + playerID +
+                ", playerName='" + playerName + '\'' +
                 ", pawnType=" + pawnType +
                 ", wallPlacements=" + wallPlacements +
                 ", numWallsLeft=" + numWallsLeft +

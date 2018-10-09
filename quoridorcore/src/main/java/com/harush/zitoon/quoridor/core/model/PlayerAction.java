@@ -11,13 +11,15 @@ public class PlayerAction {
     private boolean isFirst;
     private Player player;
 
-    public PlayerAction(int x, int y) {
+    public PlayerAction(int x, int y, Player player) {
+        this.player = player;
         this.playerActionType = PlayerActionType.MOVE_PAWN;
         this.x = x;
         this.y = y;
     }
 
-    public PlayerAction(int x, int y, boolean isHorizontal, boolean isFirst) {
+    public PlayerAction(int x, int y, boolean isHorizontal, boolean isFirst, Player player) {
+        this.player = player;
         this.playerActionType = PlayerActionType.PLACE_WALL;
         this.x = x;
         this.y = y;

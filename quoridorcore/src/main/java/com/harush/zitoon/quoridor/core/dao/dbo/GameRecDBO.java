@@ -8,14 +8,14 @@ import java.util.Objects;
  */
 public class GameRecDBO extends DBO {
     private int game_id;
-    private String player_name;
+    private int player_id;
+    private String pawn_type;
     private int pawn_x;
     private int pawn_y;
     private int wall_x;
     private int wall_y;
     private int is_first;
     private Character fence_orien;
-    private String pawn_type;
 
     public boolean setGame_id(int game_id) {
         if (game_id < 0) {
@@ -38,21 +38,21 @@ public class GameRecDBO extends DBO {
                 wall_x == that.wall_x &&
                 wall_y == that.wall_y &&
                 is_first == that.is_first &&
-                Objects.equals(player_name, that.player_name) &&
+                Objects.equals(player_id, that.player_id) &&
                 Objects.equals(fence_orien, that.fence_orien) &&
                 Objects.equals(pawn_type, that.pawn_type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(game_id, player_name, pawn_x, pawn_y, wall_x, wall_y, is_first, fence_orien, pawn_type);
+        return Objects.hash(game_id, player_id, pawn_x, pawn_y, wall_x, wall_y, is_first, fence_orien, pawn_type);
     }
 
     @Override
     public String toString() {
         return "GameRecDBO{" +
                 "game_id=" + game_id +
-                ", player_name='" + player_name + '\'' +
+                ", player_id='" + player_id + '\'' +
                 ", pawn_x=" + pawn_x +
                 ", pawn_y=" + pawn_y +
                 ", wall_x=" + wall_x +
@@ -67,12 +67,12 @@ public class GameRecDBO extends DBO {
         return game_id;
     }
 
-    public String getPlayer_name() {
-        return player_name;
+    public int getPlayer_id() {
+        return player_id;
     }
 
-    public void setPlayer_name(String player_name) {
-        this.player_name = player_name;
+    public void setPlayer_id(int player_id) {
+        this.player_id = player_id;
     }
 
     public int getPawn_x() {

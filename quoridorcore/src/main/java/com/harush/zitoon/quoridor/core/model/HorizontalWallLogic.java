@@ -54,7 +54,7 @@ public class HorizontalWallLogic implements Wall {
         currentPlayer.getStatistics().incrementWallsUsed();
         currentPlayer.decrementWalls();
 
-        PlayerAction playerAction = new PlayerAction(currentX, currentY, true, true);
+        PlayerAction playerAction = new PlayerAction(currentX, currentY, true, true, currentPlayer);
         gameSession.updateTurn(playerAction);
 
         return new LogicResult(true);

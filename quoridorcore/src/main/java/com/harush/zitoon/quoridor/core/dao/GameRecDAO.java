@@ -11,5 +11,5 @@ public interface GameRecDAO extends DAO<GameRecDBO> {
 
     List<GameRecDBO> getGameRecords(int gameId);
 
-    List<GameRecDBO> getPlayerRecords(int gameId, String playerName);
+    List<GameRecDBO> getPlayerRecords(int gameId, int playerID);
 }

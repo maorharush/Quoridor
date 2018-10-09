@@ -7,13 +7,14 @@ import java.util.Objects;
  * Represents a Player in the game.
  */
 public abstract class Player {
+    private int playerID;
     private String name;
     private int numWalls;
     private Statistics stats;
-
     private boolean isAI;
 
     protected Wall[][] verticalWalls;
+
     protected Wall[][] horizontalWalls;
     protected Pawn pawn;
     public Player(String name, int numWalls, Statistics stats, boolean isAI, Pawn pawn) {
@@ -23,7 +24,6 @@ public abstract class Player {
         this.isAI = isAI;
         this.pawn = pawn;
     }
-
     public Player(String name, int numWalls, Statistics stats, boolean isAI, Wall[][] verticalWalls, Wall[][] horizontalWalls, Pawn pawn) {
         this.name = name;
         this.numWalls = numWalls;
@@ -136,12 +136,22 @@ public abstract class Player {
         return stats;
     }
 
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return numWalls == player.numWalls &&
+        return playerID == player.playerID &&
+                numWalls == player.numWalls &&
+                isAI == player.isAI &&
                 Objects.equals(name, player.name) &&
                 Objects.equals(stats, player.stats) &&
                 Arrays.equals(verticalWalls, player.verticalWalls) &&
@@ -151,9 +161,23 @@ public abstract class Player {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, numWalls, stats, pawn);
+        int result = Objects.hash(playerID, name, numWalls, stats, isAI, pawn);
         result = 31 * result + Arrays.hashCode(verticalWalls);
         result = 31 * result + Arrays.hashCode(horizontalWalls);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "playerID=" + playerID +
+                ", name='" + name + '\'' +
+                ", numWalls=" + numWalls +
+                ", stats=" + stats +
+                ", isAI=" + isAI +
+                ", verticalWalls=" + Arrays.toString(verticalWalls) +
+                ", horizontalWalls=" + Arrays.toString(horizontalWalls) +
+                ", pawn=" + pawn +
+                '}';
     }
 }

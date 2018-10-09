@@ -24,13 +24,13 @@ public class PopulateBoardUtilTest {
         WallData wallPlacement2 = new WallData(3, 3, false, true, null);
         ArrayList<WallData> wallPlacements = Lists.newArrayList(wallPlacement1, wallPlacement2);
 
-        PlayerHistory humanPlayerHistory = new PlayerHistory("player1", PawnType.RED, wallPlacements,
+        PlayerHistory humanPlayerHistory = new PlayerHistory(1,"player1", PawnType.RED, wallPlacements,
                 8,
                 2,
                 new Coordinate(4, 8),
                 new Coordinate(4, 8), false);
 
-        PlayerHistory aiPlayerHistory = new PlayerHistory("Wall-e", PawnType.BLUE, null,
+        PlayerHistory aiPlayerHistory = new PlayerHistory(2, "Wall-e", PawnType.BLUE, null,
                 10,
                 2,
                 new Coordinate(4,0),

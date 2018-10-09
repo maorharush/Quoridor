@@ -1,8 +1,10 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.List;
+
 public interface GamePersistenceService {
 
-    void initGamePersistence(GameSession gameSession);
+    void initGamePersistence(List<Player> players, GameSession gameSession);
 
     void saveTurn(PlayerAction playerAction);
 

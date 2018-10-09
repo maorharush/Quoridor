@@ -1,11 +1,10 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.dao.DAO;
-import com.harush.zitoon.quoridor.core.dao.DAOFactory;
-import com.harush.zitoon.quoridor.core.dao.GameDAO;
-import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
+import com.harush.zitoon.quoridor.core.dao.*;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
 
 import java.util.*;
 
@@ -23,10 +22,10 @@ public class GameSession extends Observable {
     private int currentPlayerIndex = 0;
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
-
+    private PlayerDAO playerDAO;
     private int gameID;
-
     private GameDAO gameDAO;
+    private Player2PlayerDBOConverter player2PlayerDBOConverter;
 
     /**
      * private WinnerDecider winnerDecider;
@@ -37,7 +36,13 @@ public class GameSession extends Observable {
      */
     private Deque<Move> moves;
 
-    public GameSession(int gameID, Board board, RuleType rule, DAOFactory daoFactory, WinnerDecider winnerDecider) {
+    public GameSession(
+            int gameID,
+            Board board,
+            RuleType rule,
+            DAOFactory daoFactory,
+            WinnerDecider winnerDecider,
+            Player2PlayerDBOConverter player2PlayerDBOConverter) {
         this.board = board;
         this.players = new ArrayList<>();
         this.moves = new ArrayDeque<>();
@@ -45,6 +50,8 @@ public class GameSession extends Observable {
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
         this.gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
+        this.playerDAO = daoFactory.getDAO(PlayerDAO.TABLE_NAME);
+        this.player2PlayerDBOConverter = player2PlayerDBOConverter;
     }
 
     public void setGameID(int gameID) {
@@ -184,6 +191,8 @@ public class GameSession extends Observable {
         GameDBO gameDBO = new GameDBO();
         gameDBO.setGame_id(gameID);
         gameDBO.setEnd_date(System.currentTimeMillis());
+
+
         gameDBO.setWinner(currentPlayerIndex); //TODO MorManush: What to set here ?
         //gameDBO.setNum_of_moves(); //TODO MorManush: Collect number of moves and set here
 
@@ -220,7 +229,7 @@ public class GameSession extends Observable {
         newTurnPlayer.play();
     }
 
-    private void recordMove(PlayerAction playerAction) {
+    public void recordMove(PlayerAction playerAction) {
         playerAction.setPlayer(getCurrentPlayer());
         gamePersistenceService.saveTurn(playerAction);
     }

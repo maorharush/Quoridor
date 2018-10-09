@@ -1,7 +1,9 @@
 package com.harush.zitoon.quoridor.core.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a board filled with tiles.
@@ -119,10 +121,6 @@ public class Board {
     public void setWall(int x, int y, boolean isHorizontal, boolean isFirst, Player placedBy) {
         validateCoordinateThrowException(x, y);
 
-        if (placedBy == null) {
-            throw new IllegalArgumentException("The player cannot be null");
-        }
-
         if (isHorizontal) {
             horizontalWallData[x][y] = new WallData(x, y, isHorizontal, isFirst, placedBy);
         } else {
@@ -223,5 +221,26 @@ public class Board {
             return new LogicResult(false, String.format("The coordinate (%d,%d) is outside the board", x, y));
         }
         return new LogicResult(true);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        return height == board.height &&
+                width == board.width &&
+                Arrays.deepEquals(tiles, board.tiles) &&
+                Arrays.deepEquals(horizontalWallData, board.horizontalWallData) &&
+                Arrays.deepEquals(verticalWallData, board.verticalWallData);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(height, width);
+        result = 31 * result + Arrays.deepHashCode(tiles);
+        result = 31 * result + Arrays.deepHashCode(horizontalWallData);
+        result = 31 * result + Arrays.deepHashCode(verticalWallData);
+        return result;
     }
 }

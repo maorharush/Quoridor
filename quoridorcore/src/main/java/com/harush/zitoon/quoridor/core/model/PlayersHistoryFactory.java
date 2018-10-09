@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface PlayersHistoryFactory {
 
-    List<PlayerHistory> getPlayerHistories(int gameID, Set<String> playerNames);
+    List<PlayerHistory> getPlayerHistories(int gameID, Set<Integer> playerNames);
 }

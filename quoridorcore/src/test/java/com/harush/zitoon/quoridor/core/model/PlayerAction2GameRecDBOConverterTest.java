@@ -1,6 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBOConverter;
+import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBOConverterImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -17,6 +19,9 @@ public class PlayerAction2GameRecDBOConverterTest {
     @Mock
     private Player player;
 
+    @Mock
+    private Pawn pawn;
+
     @BeforeClass
     public static void beforeClass() {
         converter = new PlayerAction2GameRecDBOConverterImpl();
@@ -29,16 +34,20 @@ public class PlayerAction2GameRecDBOConverterTest {
 
     @Test
     public void convertMovePawnAction_success() {
-        when(player.getName()).thenReturn("testPlayer");
-        PlayerAction playerAction = new PlayerAction(4, 9);
+        when(player.getPlayerID()).thenReturn(22);
+        when(pawn.getType()).thenReturn(PawnType.RED);
+        when(player.getPawn()).thenReturn(pawn);
+        PlayerAction playerAction = new PlayerAction(4, 9, player);
         playerAction.setPlayer(player);
 
         GameRecDBO expected = new GameRecDBO();
         expected.setPawn_x(4);
         expected.setPawn_y(9);
+        expected.setPawn_type("RED");
         expected.setWall_x(-1);
         expected.setWall_y(-1);
-        expected.setPlayer_name("testPlayer");
+        expected.setIs_first(-1);
+        expected.setPlayer_id(22);
 
         GameRecDBO actual = converter.toGameRecDBO(playerAction);
 
@@ -47,8 +56,8 @@ public class PlayerAction2GameRecDBOConverterTest {
 
     @Test
     public void convertPlaceWallAction_success() {
-        when(player.getName()).thenReturn("testPlayer");
-        PlayerAction playerAction = new PlayerAction(4, 9, true, true);
+        when(player.getPlayerID()).thenReturn(22);
+        PlayerAction playerAction = new PlayerAction(4, 9, true, true, player);
         playerAction.setPlayer(player);
 
         GameRecDBO expected = new GameRecDBO();
@@ -58,7 +67,7 @@ public class PlayerAction2GameRecDBOConverterTest {
         expected.setWall_y(9);
         expected.setFence_orien('h');
         expected.setIs_first(1);
-        expected.setPlayer_name("testPlayer");
+        expected.setPlayer_id(22);
 
         GameRecDBO actual = converter.toGameRecDBO(playerAction);
 

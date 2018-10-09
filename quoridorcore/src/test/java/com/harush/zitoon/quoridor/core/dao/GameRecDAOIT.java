@@ -44,10 +44,10 @@ public class GameRecDAOIT {
 
     @Test
     public void getSpecificGamesById_success() {
-        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1", "RED", -1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player2", "GREEN",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(2, "player3", "BLUE", -1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(3, "player4", "WHITE",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, 22, "RED", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, 23, "GREEN",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(2, 24, "BLUE", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(3, 25, "WHITE",-1, -1, -1, -1, null);
 
         gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4);
 
@@ -73,17 +73,17 @@ public class GameRecDAOIT {
 
     @Test
     public void getAllPlayerRecords_success() {
-        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1", "RED", -1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player1", "RED",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(1, "player2", "GREEN",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(1, "player2", "GREEN",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO5 = TestHelper.generateGameRecDBO(2, "player3", "BLUE",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO6 = TestHelper.generateGameRecDBO(2, "player4", "WHITE",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, 11, "RED", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, 11, "RED",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(1, 22, "GREEN",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(1, 22, "GREEN",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO5 = TestHelper.generateGameRecDBO(2, 23, "BLUE",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO6 = TestHelper.generateGameRecDBO(2, 24, "WHITE",-1, -1, -1, -1, null);
 
         gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4, gameRecDBO5, gameRecDBO6);
 
-        List<GameRecDBO> player1Records = gameRecDAO.getPlayerRecords(1, "player1");
-        List<GameRecDBO> player4Records = gameRecDAO.getPlayerRecords(2, "player4");
+        List<GameRecDBO> player1Records = gameRecDAO.getPlayerRecords(1, 11);
+        List<GameRecDBO> player4Records = gameRecDAO.getPlayerRecords(2, 24);
 
         ArrayList<GameRecDBO> expectedPlayer1Records = Lists.newArrayList(gameRecDBO1, gameRecDBO2);
 
@@ -100,12 +100,12 @@ public class GameRecDAOIT {
     @Test
     public void getLastGameID_success() {
 
-        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, "player1","RED", -1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, "player1", "RED", -1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(1, "player2", "GREEN",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(1, "player2", "GREEN",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO5 = TestHelper.generateGameRecDBO(2, "player3", "BLUE",-1, -1, -1, -1, null);
-        GameRecDBO gameRecDBO6 = TestHelper.generateGameRecDBO(3, "player4", "WHITE",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO1 = TestHelper.generateGameRecDBO(1, 11,"RED", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO2 = TestHelper.generateGameRecDBO(1, 11, "RED", -1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO3 = TestHelper.generateGameRecDBO(1, 22, "GREEN",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO4 = TestHelper.generateGameRecDBO(1, 22, "GREEN",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO5 = TestHelper.generateGameRecDBO(2, 24, "BLUE",-1, -1, -1, -1, null);
+        GameRecDBO gameRecDBO6 = TestHelper.generateGameRecDBO(3, 25, "WHITE",-1, -1, -1, -1, null);
 
         gameRecDAO.insert(gameRecDBO1, gameRecDBO2, gameRecDBO3, gameRecDBO4, gameRecDBO5, gameRecDBO6);
 

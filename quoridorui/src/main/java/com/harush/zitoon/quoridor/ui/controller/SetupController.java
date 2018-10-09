@@ -1,6 +1,9 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
 import com.harush.zitoon.quoridor.core.dao.*;
+import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
+import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverterImpl;
+import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBOConverterImpl;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.components.*;
@@ -54,7 +57,7 @@ public class SetupController extends AbstractController implements Initializable
     private PawnType[] pawnTypes = PawnType.values();
     private DAOFactory daoFactory = DAOFactoryImpl.instance();
     private GameDAO gameDAO = DAOFactoryImpl.instance().getDAO(GameDAO.TABLE_NAME);
-    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic());
+    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic(), new Player2PlayerDBOConverterImpl());
     private VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
     private HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
     private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
@@ -234,8 +237,8 @@ public class SetupController extends AbstractController implements Initializable
     }
 
     private void setupNewGameWithWallComponents(List<Player> players, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
+        gamePersistenceService.initGamePersistence(players, gameSession);
         setupGameSession(players);
-        gamePersistenceService.initGamePersistence(gameSession);
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
         centerStage(stage, width, height);
         List<AbstractPawnComponent> pawnComponents = players.stream().map(player -> (AbstractPawnComponent) player.getPawn()).collect(Collectors.toList());
@@ -495,7 +498,11 @@ public class SetupController extends AbstractController implements Initializable
     }
 
     private GamePersistenceServiceImpl getGamePersistenceService() {
-        return new GamePersistenceServiceImpl(DAOFactoryImpl.instance(), getPlayersHistoryFactory(), getPlayerAction2GameRecDBOConverter());
+        return new GamePersistenceServiceImpl(DAOFactoryImpl.instance(), getPlayersHistoryFactory(), getPlayerAction2GameRecDBOConverter(), getPlayer2PlayerDBOConverter());
+    }
+
+    private Player2PlayerDBOConverter getPlayer2PlayerDBOConverter() {
+        return new Player2PlayerDBOConverterImpl();
     }
 
     private PlayerAction2GameRecDBOConverterImpl getPlayerAction2GameRecDBOConverter() {

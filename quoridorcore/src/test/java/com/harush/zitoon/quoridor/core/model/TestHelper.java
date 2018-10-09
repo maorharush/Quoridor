@@ -4,21 +4,25 @@ import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class TestHelper {
 
-    public static GameRecDBO generateGameRecDBO(int gameID, String playerName, String pawnType, int pawnX, int pawnY, int wallX, int wallY, Character orientation) {
+    public static GameRecDBO generateGameRecDBO(int gameID, int playerID, String pawnType, int pawnX, int pawnY, int wallX, int wallY, Character orientation) {
         GameRecDBO gameRecDBO = new GameRecDBO();
         gameRecDBO.setGame_id(gameID);
-        gameRecDBO.setPlayer_name(playerName);
+        gameRecDBO.setPlayer_id(playerID);
         gameRecDBO.setPawn_type(pawnType);
         gameRecDBO.setPawn_x(pawnX);
         gameRecDBO.setPawn_y(pawnY);
+
         gameRecDBO.setWall_x(wallX);
         gameRecDBO.setWall_y(wallY);
         gameRecDBO.setFence_orien(orientation);
+        if (wallX != -1) {
+            gameRecDBO.setIs_first(1);
+        } else {
+            gameRecDBO.setIs_first(-1);
+        }
+
         return gameRecDBO;
     }
 
@@ -39,5 +43,9 @@ public abstract class TestHelper {
         playerDBO.setIs_AI(isAI ? 1 : 0);
         playerDBO.setPlayer_name(playerName);
         return playerDBO;
+    }
+
+    public static PlayerDBO generatePlayerDBO(String playerName, boolean isAI) {
+        return generatePlayerDBO(-1, playerName, isAI);
     }
 }

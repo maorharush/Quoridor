@@ -1,6 +1,7 @@
-package com.harush.zitoon.quoridor.core.model;
+package com.harush.zitoon.quoridor.core.dao.dbo.converter;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.model.PlayerAction;
 
 import static com.harush.zitoon.quoridor.core.model.PlayerActionType.MOVE_PAWN;
 
@@ -14,12 +15,14 @@ public class PlayerAction2GameRecDBOConverterImpl implements PlayerAction2GameRe
      */
     public GameRecDBO toGameRecDBO(PlayerAction playerAction) {
         GameRecDBO gameRecord = new GameRecDBO();
-        gameRecord.setPlayer_name(playerAction.getPlayer().getName());
+        gameRecord.setPlayer_id(playerAction.getPlayer().getPlayerID());
         if (playerAction.getPlayerActionType() == MOVE_PAWN) {
             gameRecord.setPawn_x(playerAction.getX());
+            gameRecord.setPawn_type(playerAction.getPlayer().getPawn().getType().toString());
             gameRecord.setPawn_y(playerAction.getY());
             gameRecord.setWall_x(-1);
             gameRecord.setWall_y(-1);
+            gameRecord.setIs_first(-1);
         } else {
             gameRecord.setWall_x(playerAction.getX());
             gameRecord.setWall_y(playerAction.getY());

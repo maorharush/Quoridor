@@ -61,15 +61,15 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
     }
 
     @Override
-    public List<GameRecDBO> getPlayerRecords(int gameId, String playerName) {
-        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE game_id='" + gameId + "' AND player_name='" + playerName + "'", (resultSet, i) -> getGameRecDBO(resultSet));
+    public List<GameRecDBO> getPlayerRecords(int gameId, int playerID) {
+        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME + " WHERE game_id='" + gameId + "' AND player_id='" + playerID + "'", (resultSet, i) -> getGameRecDBO(resultSet));
     }
 
     private void createTable() {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS `game_recorder` (\n" +
                 "\t`game_rec_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
                 "\t`game_id`\tINTEGER,\n" +
-                "\t`player_name`\tINTEGER,\n" +
+                "\t`player_id`\tINTEGER,\n" +
                 "\t`pawn_type`\tVARCHAR ,\n" +
                 "\t`pawn_x`\tINTEGER,\n" +
                 "\t`pawn_y`\tINTEGER,\n" +
@@ -85,7 +85,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
         GameRecDBO gameRecDBO = new GameRecDBO();
         String fence_orien = resultSet.getString("fence_orien");
         gameRecDBO.setGame_id(resultSet.getInt("game_id"));
-        gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
+        gameRecDBO.setPlayer_id(resultSet.getInt("player_id"));
         gameRecDBO.setPawn_type(resultSet.getString("pawn_type"));
         gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
         gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
