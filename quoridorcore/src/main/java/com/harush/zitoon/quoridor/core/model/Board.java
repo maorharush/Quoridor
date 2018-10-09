@@ -137,7 +137,6 @@ public class Board {
     /**
      * Returns a {@link Wall} given the x and y coordinate.
      *
-     * @param x            the x coordinate
      * @param y            the y coordinate
      * @param isHorizontal whether the wall is horizontal
      * @return the wall
