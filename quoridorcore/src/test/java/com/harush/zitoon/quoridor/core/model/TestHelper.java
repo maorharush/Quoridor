@@ -9,10 +9,11 @@ import java.util.List;
 
 public abstract class TestHelper {
 
-    public static GameRecDBO generateGameRecDBO(int gameID, String playerName, int pawnX, int pawnY, int wallX, int wallY, Character orientation) {
+    public static GameRecDBO generateGameRecDBO(int gameID, String playerName, String pawnType, int pawnX, int pawnY, int wallX, int wallY, Character orientation) {
         GameRecDBO gameRecDBO = new GameRecDBO();
         gameRecDBO.setGame_id(gameID);
         gameRecDBO.setPlayer_name(playerName);
+        gameRecDBO.setPawn_type(pawnType);
         gameRecDBO.setPawn_x(pawnX);
         gameRecDBO.setPawn_y(pawnY);
         gameRecDBO.setWall_x(wallX);

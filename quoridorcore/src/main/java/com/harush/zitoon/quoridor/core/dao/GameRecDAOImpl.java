@@ -70,6 +70,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
                 "\t`game_rec_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
                 "\t`game_id`\tINTEGER,\n" +
                 "\t`player_name`\tINTEGER,\n" +
+                "\t`pawn_type`\tVARCHAR ,\n" +
                 "\t`pawn_x`\tINTEGER,\n" +
                 "\t`pawn_y`\tINTEGER,\n" +
                 "\t`wall_x`\tINTEGER,\n" +
@@ -85,6 +86,7 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
         String fence_orien = resultSet.getString("fence_orien");
         gameRecDBO.setGame_id(resultSet.getInt("game_id"));
         gameRecDBO.setPlayer_name(resultSet.getString("player_name"));
+        gameRecDBO.setPawn_type(resultSet.getString("pawn_type"));
         gameRecDBO.setPawn_x(resultSet.getInt("pawn_x"));
         gameRecDBO.setPawn_y(resultSet.getInt("pawn_y"));
         gameRecDBO.setWall_x(resultSet.getInt("wall_x"));
