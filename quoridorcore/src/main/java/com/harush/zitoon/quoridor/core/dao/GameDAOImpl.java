@@ -63,7 +63,14 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
     }
 
     private void createTable() {
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS \"games\" ( `game_id` INTEGER PRIMARY KEY AUTOINCREMENT, `winner` INTEGER, `num_of_moves` INTEGER, `start_date` NUMERIC, `end_date` NUMERIC )");
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS `games` (\n" +
+                "\t`game_id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "\t`winner`\tINTEGER,\n" +
+                "\t`num_of_moves`\tINTEGER,\n" +
+                "\t`start_date`\tNUMERIC,\n" +
+                "\t`end_date`\tNUMERIC,\n" +
+                "\tFOREIGN KEY(`winner`) REFERENCES `players`(`player_id`)\n" +
+                ");");
     }
 
     @Override

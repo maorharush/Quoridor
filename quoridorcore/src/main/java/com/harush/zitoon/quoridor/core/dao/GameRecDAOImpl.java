@@ -70,14 +70,15 @@ public class GameRecDAOImpl extends BaseDAO implements GameRecDAO {
                 "\t`game_rec_id`\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
                 "\t`game_id`\tINTEGER,\n" +
                 "\t`player_id`\tINTEGER,\n" +
-                "\t`pawn_type`\tVARCHAR ,\n" +
+                "\t`pawn_type`\tVARCHAR,\n" +
                 "\t`pawn_x`\tINTEGER,\n" +
                 "\t`pawn_y`\tINTEGER,\n" +
                 "\t`wall_x`\tINTEGER,\n" +
                 "\t`wall_y`\tINTEGER,\n" +
                 "\t`is_first`\tINTEGER,\n" +
                 "\t`fence_orien`\tTEXT,\n" +
-                "\tFOREIGN KEY(`game_id`) REFERENCES `game_recorder`\n" +
+                "\tFOREIGN KEY(`game_id`) REFERENCES `games`(`game_id`) ON DELETE CASCADE,\n" +
+                "\tFOREIGN KEY(`player_id`) REFERENCES `players`(`player_id`) ON DELETE CASCADE\n" +
                 ");");
     }
 
