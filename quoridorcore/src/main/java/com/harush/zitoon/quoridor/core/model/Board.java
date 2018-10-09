@@ -133,9 +133,9 @@ public class Board {
     }
 
     /**
-     * Returns a {@link Wall} given the x and y coordinate.
+     * Returns a {@link Wall} given the x and y coordina
+     *      * @param x            the x coordinatete.
      *
-     * @param x            the x coordinate
      * @param y            the y coordinate
      * @param isHorizontal whether the wall is horizontal
      * @return the wall
@@ -184,6 +184,7 @@ public class Board {
      * @param isHorizontal whether the wall is horizontal
      * @throws IllegalArgumentException if x or y is below 0
      */
+
     public void removeWall(int x, int y, boolean isHorizontal) {
         LogicResult isValid = validateCoordinate(x, y);
 
