@@ -9,5 +9,7 @@ public interface GameDAO extends DAO<GameDBO> {
 
     int getLastGameID();
 
+    GameDBO getLastGame();
+
     void updateGameRecord(GameDBO gameDBO);
 }

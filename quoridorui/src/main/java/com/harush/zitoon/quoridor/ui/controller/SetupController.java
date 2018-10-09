@@ -1,6 +1,7 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
 import com.harush.zitoon.quoridor.core.dao.*;
+import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverterImpl;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBOConverterImpl;
@@ -275,8 +276,8 @@ public class SetupController extends AbstractController implements Initializable
 
     @Override
     protected void postConstruct() {
-        int lastGameID = gameDAO.getLastGameID();
-        if (lastGameID != -1) {
+        GameDBO lastGame = gameDAO.getLastGame();
+        if (lastGame != null && lastGame.getWinner() == -1) {
             boolean shouldLoadGame = askUserIfShouldLoadGame();
             if (shouldLoadGame) {
                 loadGame();
@@ -306,10 +307,11 @@ public class SetupController extends AbstractController implements Initializable
         List<Pawn> pawns = makePawns(numPlayers);
         List<String> playerNames = playerHistories.stream().map(PlayerHistory::getPlayerName).collect(Collectors.toList());
         List<AbstractPawnComponent> pawnComponents = makePawnComponents(playerNames, pawns);
-        List<Player> loadedPlayers = makePlayers(numPlayers, playerNames, pawnComponents);
+        List<Player> players = makePlayers(numPlayers, playerNames, pawnComponents);
 
-        populatePlayersByHistory(loadedPlayers, playerHistories);
-        setupSavedGame(loadedPlayers);
+        populatePlayersByHistory(players, playerHistories);
+        setupGameSession(players);
+        setupSavedGameUI(players, playerHistories);
     }
 
     private void loadVsAIGame(SavedGame savedGame) {
@@ -329,34 +331,69 @@ public class SetupController extends AbstractController implements Initializable
         List<Player> players = getVsAIPlayers(humanPlayerName, aiPlayerName);
 
         populatePlayersByHistory(players, playerHistories);
-        setupSavedGame(players);
+        setupGameSession(players);
+        setupSavedGameUI(players, playerHistories);
     }
 
     private void populatePlayersByHistory(List<Player> players, List<PlayerHistory> playerHistories) {
-        for (Player player : players) {
-            PlayerHistory playerHistory = playerHistories.stream().filter(ph -> ph.getPlayerName().equals(player.getName())).findFirst().get();
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            PlayerHistory playerHistory = playerHistories.get(i);
             populatePlayerByHistory(player, playerHistory);
         }
     }
 
     private void populatePlayerByHistory(Player player, PlayerHistory playerHistory) {
-        Statistics statistics = new Statistics();
-        statistics.setNumOfTotalMoves(playerHistory.getNumTotalMoves());
-        statistics.setNumOfWallsUsed(playerHistory.getWallPlacements().size());
-        player.setStats(statistics);
+        player.setPlayerID(playerHistory.getPlayerID());
         player.setNumWalls(playerHistory.getNumWallsLeft());
         player.getPawn().setCurrentCoordinate(playerHistory.getCurrentPawnCoordinate());
         player.getPawn().setInitialCoordinate(playerHistory.getInitialPawnCoordinate());
         player.setAI(playerHistory.isAI());
+
+        Statistics statistics = new Statistics();
+        statistics.setNumOfTotalMoves(playerHistory.getNumTotalMoves());
+        statistics.setNumOfWallsUsed(playerHistory.getWallPlacements().size());
+        player.setStats(statistics);
     }
 
-    private void setupSavedGame(List<Player> players) {
-        setupGameSession(players);
+    private void setupSavedGameUI(List<Player> players, List<PlayerHistory> playerHistories) {
+        placeWallsInPreviousLocation(players, playerHistories);
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
         centerStage(stage, width, height);
         List<AbstractPawnComponent> pawnComponents = players.stream().map(player -> (AbstractPawnComponent) player.getPawn()).collect(Collectors.toList());
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
         stage.show();
+    }
+
+    private void placeWallsInPreviousLocation(List<Player> players, List<PlayerHistory> playerHistories) {
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            PlayerHistory playerHistory = playerHistories.get(i);
+
+            List<WallData> wallPlacements = playerHistory.getWallPlacements();
+            for (WallData wallPlacement : wallPlacements) {
+                Color playerColor = Color.valueOf(player.getPawn().getType().getHexColor());
+
+                int wallX = wallPlacement.getX();
+                int wallY = wallPlacement.getY();
+
+                if (wallPlacement.isHorizontal()) {
+                    horizontalWallComponents[wallX][wallY].setFill(playerColor);
+                    horizontalWallComponents[wallX + 1][wallY].setFill(playerColor);
+                } else {
+                    verticalWallComponents[wallX][wallY].setFill(playerColor);
+                    verticalWallComponents[wallX][wallY + 1].setFill(playerColor);
+                }
+            }
+        }
+    }
+
+    private void movePawnsToPreviousLocation(List<Player> players) {
+        for (Player player : players) {
+            Pawn pawn = player.getPawn();
+            Coordinate currentCoordinate = pawn.getCurrentCoordinate();
+            pawn.setCurrentCoordinate(currentCoordinate);
+        }
     }
 
     private boolean askUserIfShouldLoadGame() {

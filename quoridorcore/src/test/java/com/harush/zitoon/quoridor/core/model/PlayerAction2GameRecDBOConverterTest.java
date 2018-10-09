@@ -41,6 +41,7 @@ public class PlayerAction2GameRecDBOConverterTest {
         playerAction.setPlayer(player);
 
         GameRecDBO expected = new GameRecDBO();
+        expected.setGame_id(1);
         expected.setPawn_x(4);
         expected.setPawn_y(9);
         expected.setPawn_type("RED");
@@ -49,7 +50,7 @@ public class PlayerAction2GameRecDBOConverterTest {
         expected.setIs_first(-1);
         expected.setPlayer_id(22);
 
-        GameRecDBO actual = converter.toGameRecDBO(playerAction);
+        GameRecDBO actual = converter.toGameRecDBO(1, playerAction);
 
         Assert.assertEquals(expected, actual);
     }
@@ -61,6 +62,7 @@ public class PlayerAction2GameRecDBOConverterTest {
         playerAction.setPlayer(player);
 
         GameRecDBO expected = new GameRecDBO();
+        expected.setGame_id(1);
         expected.setPawn_x(-1);
         expected.setPawn_y(-1);
         expected.setWall_x(4);
@@ -69,7 +71,7 @@ public class PlayerAction2GameRecDBOConverterTest {
         expected.setIs_first(1);
         expected.setPlayer_id(22);
 
-        GameRecDBO actual = converter.toGameRecDBO(playerAction);
+        GameRecDBO actual = converter.toGameRecDBO(1, playerAction);
 
         Assert.assertEquals(expected, actual);
     }

@@ -5,5 +5,5 @@ import com.harush.zitoon.quoridor.core.model.PlayerAction;
 
 public interface PlayerAction2GameRecDBOConverter {
 
-    GameRecDBO toGameRecDBO(PlayerAction playerAction);
+    GameRecDBO toGameRecDBO(int gameID, PlayerAction playerAction);
 }

@@ -12,11 +12,10 @@ public abstract class Player {
     private int numWalls;
     private Statistics stats;
     private boolean isAI;
-
     protected Wall[][] verticalWalls;
-
     protected Wall[][] horizontalWalls;
     protected Pawn pawn;
+
     public Player(String name, int numWalls, Statistics stats, boolean isAI, Pawn pawn) {
         this.name = name;
         this.numWalls = numWalls;
@@ -24,6 +23,7 @@ public abstract class Player {
         this.isAI = isAI;
         this.pawn = pawn;
     }
+
     public Player(String name, int numWalls, Statistics stats, boolean isAI, Wall[][] verticalWalls, Wall[][] horizontalWalls, Pawn pawn) {
         this.name = name;
         this.numWalls = numWalls;

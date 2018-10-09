@@ -85,6 +85,6 @@ public class PlayersHistoryFactoryImpl implements PlayersHistoryFactory {
     }
 
     private PawnType getPawnType(List<GameRecDBO> moves) {
-        return moves.stream().map(rec -> PawnType.valueOf(rec.getPawn_type())).collect(Collectors.toCollection(LinkedList::new)).getFirst();
+        return moves.stream().filter(rec -> rec.getPawn_type() != null).map(rec -> PawnType.valueOf(rec.getPawn_type())).collect(Collectors.toCollection(LinkedList::new)).getFirst();
     }
 }

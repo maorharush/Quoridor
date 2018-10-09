@@ -13,9 +13,11 @@ public class PlayerAction2GameRecDBOConverterImpl implements PlayerAction2GameRe
     /**
      * get the game record database object, to be used in saveGame();
      */
-    public GameRecDBO toGameRecDBO(PlayerAction playerAction) {
+    public GameRecDBO toGameRecDBO(int gameID, PlayerAction playerAction) {
         GameRecDBO gameRecord = new GameRecDBO();
         gameRecord.setPlayer_id(playerAction.getPlayer().getPlayerID());
+        gameRecord.setGame_id(gameID);
+
         if (playerAction.getPlayerActionType() == MOVE_PAWN) {
             gameRecord.setPawn_x(playerAction.getX());
             gameRecord.setPawn_type(playerAction.getPlayer().getPawn().getType().toString());

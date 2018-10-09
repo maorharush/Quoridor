@@ -44,7 +44,9 @@ public class PopulateBoardUtilTest {
         expectedBoard.setPawn(4,8);
         expectedBoard.setPawn(4, 2);
         expectedBoard.setWall(1,1, true, true, null);
+        expectedBoard.setWall(2,1, true, false, null);
         expectedBoard.setWall(3,3, false, true, null);
+        expectedBoard.setWall(3,4, false, false, null);
 
         Assert.assertEquals(expectedBoard, board);
     }

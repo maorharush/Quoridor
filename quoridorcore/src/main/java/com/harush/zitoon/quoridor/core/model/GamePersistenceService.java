@@ -6,7 +6,7 @@ public interface GamePersistenceService {
 
     void initGamePersistence(List<Player> players, GameSession gameSession);
 
-    void saveTurn(PlayerAction playerAction);
+    void saveTurn(int gameID, PlayerAction playerAction);
 
     SavedGame loadGame();
 }

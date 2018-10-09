@@ -2,11 +2,15 @@ package com.harush.zitoon.quoridor.core.dao;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,15 +30,17 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
      */
     @Override
     public List<GameDBO> getAll() {
-        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (resultSet, i) -> {
-            GameDBO gameDBO = new GameDBO();
-            gameDBO.setGame_id(resultSet.getInt("game_id"));
-            gameDBO.setWinner(resultSet.getInt("winner"));
-            gameDBO.setNum_of_moves(resultSet.getInt("num_of_moves"));
-            gameDBO.setStart_date(resultSet.getLong("start_date"));
-            gameDBO.setEnd_date(resultSet.getLong("end_date"));
-            return gameDBO;
-        });
+        return jdbcTemplate.query("SELECT * FROM " + TABLE_NAME, (resultSet, i) -> getGameDBO(resultSet));
+    }
+
+    public GameDBO getGameDBO(ResultSet resultSet) throws SQLException {
+        GameDBO gameDBO = new GameDBO();
+        gameDBO.setGame_id(resultSet.getInt("game_id"));
+        gameDBO.setWinner(resultSet.getInt("winner"));
+        gameDBO.setNum_of_moves(resultSet.getInt("num_of_moves"));
+        gameDBO.setStart_date(resultSet.getLong("start_date"));
+        gameDBO.setEnd_date(resultSet.getLong("end_date"));
+        return gameDBO;
     }
 
     /**
@@ -83,7 +89,22 @@ public class GameDAOImpl extends BaseDAO implements GameDAO {
     }
 
     @Override
+    public GameDBO getLastGame() {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM " + TABLE_NAME + " ORDER BY game_id DESC LIMIT 1", (resultSet, i) -> getGameDBO(resultSet));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
     public void updateGameRecord(GameDBO gameDBO) {
-        //TODO MorManush: Implement
+        jdbcTemplate.update("UPDATE " + TABLE_NAME + " set game_id=?,winner=?,num_of_moves=?,end_date=? WHERE game_id=?", ps -> {
+            ps.setInt(1, gameDBO.getGame_id());
+            ps.setInt(2, gameDBO.getWinner());
+            ps.setInt(3, gameDBO.getNum_of_moves());
+            ps.setLong(4, gameDBO.getEnd_date());
+            ps.setInt(5, gameDBO.getGame_id());
+        });
     }
 }

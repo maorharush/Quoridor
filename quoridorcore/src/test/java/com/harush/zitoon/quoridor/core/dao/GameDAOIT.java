@@ -39,14 +39,50 @@ public class GameDAOIT {
     @Test
     public void getLastGameID_success() {
 
-        GameDBO gameDBO1 = TestHelper.generateGameDBO(1, 0, 12);
-        GameDBO gameDBO2 = TestHelper.generateGameDBO(2, 0, 12);
-        GameDBO gameDBO3 = TestHelper.generateGameDBO(3, 0, 12);
+        GameDBO gameDBO1 = TestHelper.generateGameDBO(1, -1, 12);
+        GameDBO gameDBO2 = TestHelper.generateGameDBO(2, -1, 12);
+        GameDBO gameDBO3 = TestHelper.generateGameDBO(3, -1, 12);
 
         gameDAO.insert(gameDBO1, gameDBO2, gameDBO3);
 
         int maxID = gameDAO.getLastGameID();
         Assert.assertEquals(3, maxID);
+    }
+
+    @Test
+    public void getLastGame_success() {
+        GameDBO gameDBO1 = TestHelper.generateGameDBO(1, -1, 12);
+        GameDBO gameDBO2 = TestHelper.generateGameDBO(2, -1, 12);
+        GameDBO gameDBO3 = TestHelper.generateGameDBO(3, -1, 12);
+
+        gameDAO.insert(gameDBO1, gameDBO2, gameDBO3);
+
+        GameDBO lastGame = gameDAO.getLastGame();
+
+        Assert.assertEquals(gameDBO3, lastGame);
+    }
+
+    @Test
+    public void noLastGameGetLastGameReturnsNull_success() {
+        GameDBO lastGame = gameDAO.getLastGame();
+        Assert.assertNull(lastGame);
+    }
+
+    @Test
+    public void updateGameRecordWithWinner_success() {
+        long startDate = System.currentTimeMillis() - 1000;
+        GameDBO gameDBO = TestHelper.generateGameDBO(1, -1, 0);
+        gameDBO.setStart_date(startDate);
+        gameDAO.insert(gameDBO);
+
+        GameDBO updated = TestHelper.generateGameDBO(1, 1, 12);
+        updated.setStart_date(startDate);
+        updated.setEnd_date(System.currentTimeMillis());
+
+        gameDAO.updateGameRecord(updated);
+
+        GameDBO lastGame = gameDAO.getLastGame();
+        Assert.assertEquals(updated, lastGame);
     }
 
     private List<GameDBO> createGameDBOS() {

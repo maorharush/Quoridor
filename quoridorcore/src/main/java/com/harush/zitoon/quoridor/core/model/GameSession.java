@@ -170,19 +170,27 @@ public class GameSession extends Observable {
     }
 
     public void checkForWinnerAndUpdateTurn(PlayerAction playerAction) {
-        //update whose turn it is
-        updateTurn(playerAction);
         //Check if the pawn is in a winning position on the board
-        checkForWinner();
+        boolean isWinnerFound = checkForWinner();
+        if (!isWinnerFound) {
+            //update whose turn it is
+            updateTurn(playerAction);
+        }
     }
 
-    public void checkForWinner() {
+    /**
+     * Checks for winner, ends the game if found
+     * @return true if winner found, false otherwise
+     */
+    public boolean checkForWinner() {
         Player currentPlayer = getCurrentPlayer();
         boolean isWinner = winnerDecider.isWinner(currentPlayer);
         if (isWinner) {
             setWinner(currentPlayer);
             endGame();
+            return true;
         }
+        return false;
     }
 
     public void endGame() {
@@ -191,11 +199,8 @@ public class GameSession extends Observable {
         GameDBO gameDBO = new GameDBO();
         gameDBO.setGame_id(gameID);
         gameDBO.setEnd_date(System.currentTimeMillis());
-
-
-        gameDBO.setWinner(currentPlayerIndex); //TODO MorManush: What to set here ?
+        gameDBO.setWinner(getCurrentPlayer().getPlayerID());
         //gameDBO.setNum_of_moves(); //TODO MorManush: Collect number of moves and set here
-
         gameDAO.updateGameRecord(gameDBO);
 
         notifyObservers(this);
@@ -231,7 +236,7 @@ public class GameSession extends Observable {
 
     public void recordMove(PlayerAction playerAction) {
         playerAction.setPlayer(getCurrentPlayer());
-        gamePersistenceService.saveTurn(playerAction);
+        gamePersistenceService.saveTurn(gameID, playerAction);
     }
 
     public void setGamePersistenceService(GamePersistenceService gamePersistenceService) {

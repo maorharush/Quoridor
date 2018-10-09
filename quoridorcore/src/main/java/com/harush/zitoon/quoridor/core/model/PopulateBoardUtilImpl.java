@@ -37,6 +37,17 @@ public class PopulateBoardUtilImpl implements PopulateBoardUtil {
                 filter(playerHistory -> playerHistory.getWallPlacements() != null).
                 flatMap(playerHistory -> playerHistory.getWallPlacements().stream())
                 .collect(Collectors.toList());
-        wallData.forEach(board::setWall);
+
+        for (WallData wallDatum : wallData) {
+            if (wallDatum.isHorizontal()) {
+                board.setWall(wallDatum);
+                WallData wallData2 = new WallData(wallDatum.getX() + 1, wallDatum.getY(), true, false, null);
+                board.setWall(wallData2);
+            } else {
+                board.setWall(wallDatum);
+                WallData wallData2 = new WallData(wallDatum.getX(), wallDatum.getY() + 1, false, false, null);
+                board.setWall(wallData2);
+            }
+        }
     }
 }

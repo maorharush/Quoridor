@@ -120,6 +120,11 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
     @Override
     public void setCurrentCoordinate(Coordinate currentCoordinate) {
+        final int newX = currentCoordinate.getX() * TILE_SIZE;
+        final int newY = currentCoordinate.getY() * TILE_SIZE;
+        relocate(newX, newY);
+        this.currentX = newX;
+        this.currentY = newY;
         pawn.setCurrentCoordinate(currentCoordinate);
     }
 

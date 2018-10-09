@@ -34,7 +34,7 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
     @Override
     public void initGamePersistence(List<Player> players, GameSession gameSession) {
         insertGameRecord(gameSession);
-        players.forEach(this::insertPlayerAndSetID);
+        players.forEach(player -> insertPlayerAndSetID(gameSession.getGameID(), player));
     }
 
     /**
@@ -42,8 +42,8 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
      * @param playerAction
      */
     @Override
-    public void saveTurn(PlayerAction playerAction) {
-        GameRecDBO gameRecDBO = playerAction2GameRecDBOConverter.toGameRecDBO(playerAction);
+    public void saveTurn(int gameID, PlayerAction playerAction) {
+        GameRecDBO gameRecDBO = playerAction2GameRecDBOConverter.toGameRecDBO(gameID, playerAction);
         gameRecDAO.insert(gameRecDBO);
     }
 
@@ -66,19 +66,20 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
         GameDBO gameDBO = new GameDBO();
         gameDBO.setGame_id(gameSession.getGameID());
         gameDBO.setStart_date(System.currentTimeMillis());
+        gameDBO.setWinner(-1);
         gameDAO.insert(gameDBO);
     }
 
-    private void insertPlayerAndSetID(Player player) {
+    private void insertPlayerAndSetID(int gameID, Player player) {
         PlayerDBO playerDBO = player2PlayerDBOConverter.toDBO(player);
         int playerID = playerDAO.insertAndReturnID(playerDBO);
         player.setPlayerID(playerID);
-        recordPawnSpawn(player);
+        recordPawnSpawn(gameID, player);
     }
 
-    private void recordPawnSpawn(Player player) {
+    private void recordPawnSpawn(int gameID, Player player) {
         Coordinate initialCoordinate = player.getPawn().getInitialCoordinate();
-        saveTurn(new PlayerAction(initialCoordinate.getX(), initialCoordinate.getY(), player));
+        saveTurn(gameID, new PlayerAction(initialCoordinate.getX(), initialCoordinate.getY(), player));
     }
 
 }
