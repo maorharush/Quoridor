@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SetupController">
+<?import com.jfoenix.controls.JFXButton?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SetupController" stylesheets="@../style.css">
    <children>
       <TabPane layoutX="7.0" layoutY="46.0" prefHeight="354.0" prefWidth="586.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -19,10 +20,10 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                         <Button layoutX="226.0" layoutY="33.0" mnemonicParsing="false" onAction="#on1PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="1 Player Game" />
-                         <Button layoutX="226.0" layoutY="122.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="2 Player Game" />
-                         <Button layoutX="226.0" layoutY="222.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="4 Player Game" />
-                         <Button layoutX="14.0" layoutY="286.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
+                         <JFXButton styleClass="button" layoutX="226.0" layoutY="33.0" mnemonicParsing="false" onAction="#on1PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="1 Player Game" />
+                         <JFXButton styleClass="button" layoutX="226.0" layoutY="122.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="2 Player Game" />
+                         <JFXButton styleClass="button" layoutX="226.0" layoutY="222.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="4 Player Game" />
+                         <JFXButton styleClass="button" layoutX="14.0" layoutY="286.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
                          <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
                              <image>
                                 <Image url="@/resources/layouts/images/setup/2.png" />

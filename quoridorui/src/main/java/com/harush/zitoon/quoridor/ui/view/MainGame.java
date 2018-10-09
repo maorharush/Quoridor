@@ -83,6 +83,7 @@ public class MainGame extends Application implements GameScreen, Observer {
         Scene scene = new Scene(createContent());
         stage.getIcons().add(new Image(s));
         stage.setTitle("Quoridor");
+        scene.getStylesheets().add("resources/style.css");
         stage.setScene(scene);
         stage.show();
     }
@@ -164,6 +165,7 @@ public class MainGame extends Application implements GameScreen, Observer {
                 Stage stage = (Stage) tileGroup.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/layouts/stats.fxml"));
                 Scene scene = new Scene(loader.load());
+
                 StatsController controller = loader.getController();
                 controller.setGameSession(gameSession);
                 stage.setTitle("Quoridor");
@@ -185,6 +187,7 @@ public class MainGame extends Application implements GameScreen, Observer {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/resources/layouts/mainmenu.fxml"));
             Scene scene = new Scene(root);
+
             primaryStage.setTitle("Quoridor");
             primaryStage.getIcons().add(new Image("resources/icons/favicon.png"));
             primaryStage.setScene(scene);

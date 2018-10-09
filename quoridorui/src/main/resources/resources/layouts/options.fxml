@@ -17,7 +17,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SettingsController">
+<?import com.jfoenix.controls.JFXButton?>
+<GridPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SettingsController" stylesheets="@../style.css">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -35,8 +36,8 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="104.0" prefWidth="587.0">
                      <children>
-                        <Button layoutX="36.0" layoutY="232.0" mnemonicParsing="false" onAction="#onResetBtn" text="Reset to Default" />
-                        <Button layoutX="537.0" layoutY="232.0" mnemonicParsing="false" onAction="#onSaveBtn" text="Save" />
+                        <JFXButton layoutX="36.0" layoutY="232.0" mnemonicParsing="false" onAction="#onResetBtn" text="Reset to Default" />
+                        <JFXButton layoutX="537.0" layoutY="232.0" mnemonicParsing="false" onAction="#onSaveBtn" text="Save" />
                         <Text layoutX="98.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main">
                            <font>
                               <Font size="18.0" />
@@ -81,8 +82,8 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="104.0" prefWidth="587.0">
                      <children>
-                        <Button layoutX="36.0" layoutY="232.0" mnemonicParsing="false" onAction="#onResetBtn" text="Reset to Default" />
-                        <Button layoutX="537.0" layoutY="232.0" mnemonicParsing="false" onAction="#onSaveBtn" text="Save" />
+                        <JFXButton layoutX="36.0" layoutY="232.0" mnemonicParsing="false" onAction="#onResetBtn" text="Reset to Default" />
+                        <JFXButton layoutX="537.0" layoutY="232.0" mnemonicParsing="false" onAction="#onSaveBtn" text="Save" />
                         <Text layoutX="101.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Advanced">
                            <font>
                               <Font size="18.0" />
@@ -140,7 +141,7 @@
                   <Image url="@/resources/layouts/images/settings/arrow_left.png" />
                </image>
             </ImageView>
-            <Button layoutX="527.0" layoutY="37.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
+            <JFXButton layoutX="527.0" layoutY="37.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
             <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="28.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@/resources/layouts/images/main/setting_tools.png" />

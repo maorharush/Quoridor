@@ -1,18 +1,12 @@
 .root{
--fx-background-color: #141414;
+-fx-background-color: #E0E7FF;
 }
 
-.button{
-    -fx-background-color: 
-        #000000,
-        linear-gradient(#7ebcea, #2f4b8f),
-        linear-gradient(#426ab7, #263e75),
-        linear-gradient(#395cab, #223768);
-    -fx-background-insets: 0,1,2,3;
-    -fx-background-radius: 3,2,2,2;
-    -fx-padding: 12 30 12 30;
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
+/*Raised button example */
+.button {
+     -jfx-button-type: RAISED;
+     -fx-background-color: #57617F;
+     -fx-text-fill: white;
+     -jfx-disable-visual-focus:false;
 }
 
-.pawn

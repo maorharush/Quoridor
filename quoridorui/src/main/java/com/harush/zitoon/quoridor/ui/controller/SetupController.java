@@ -75,6 +75,7 @@ public class SetupController extends AbstractController implements Initializable
     @FXML
     private void onBackBtn(ActionEvent event) {
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
+
         loadScreen(stage, "mainmenu.fxml");
     }
 
@@ -241,7 +242,8 @@ public class SetupController extends AbstractController implements Initializable
     private void setupGame(List<Player> players, List<AbstractPawnComponent> pawnComponents, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
         setupGameSession(players);
         Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
-        centerStage(stage, width, height);
+
+        stage.setFullScreen(true);
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
         stage.show();
     }
