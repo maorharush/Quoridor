@@ -19,14 +19,15 @@ public class GameSession extends Observable {
     private List<Player> players;
     private RuleType ruleType;
     private Player winner;
+
     private int currentPlayerIndex = 0;
+
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
     private PlayerDAO playerDAO;
     private int gameID;
     private GameDAO gameDAO;
     private Player2PlayerDBOConverter player2PlayerDBOConverter;
-
     /**
      * private WinnerDecider winnerDecider;
      * <p>
@@ -56,6 +57,10 @@ public class GameSession extends Observable {
 
     public void setGameID(int gameID) {
         this.gameID = gameID;
+    }
+
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
     }
 
     /**

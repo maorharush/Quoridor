@@ -39,6 +39,7 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
 
     /**
      * saves the current turn. to be initiated by gameSession prior to turn update.
+     *
      * @param playerAction
      */
     @Override
@@ -47,8 +48,15 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
         gameRecDAO.insert(gameRecDBO);
     }
 
+    @Override
+    public int getCurrentPlayerIndex(int gameID) {
+        List<GameRecDBO> gameRecords = gameRecDAO.getGameRecords(gameID);
+        return gameRecords.size() % 2;
+    }
+
     /**
      * load to latest turn on the last game.
+     *
      * @return GameSession
      */
     @Override
