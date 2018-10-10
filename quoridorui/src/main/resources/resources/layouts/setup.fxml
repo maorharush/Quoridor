@@ -1,88 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 <?import com.jfoenix.controls.JFXButton?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SetupController" stylesheets="@../style.css">
-   <children>
-      <TabPane layoutX="7.0" layoutY="46.0" prefHeight="354.0" prefWidth="586.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-            <Tab text="Quick Game">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                         <JFXButton styleClass="button" layoutX="226.0" layoutY="33.0" mnemonicParsing="false" onAction="#on1PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="1 Player Game" />
-                         <JFXButton styleClass="button" layoutX="226.0" layoutY="122.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="2 Player Game" />
-                         <JFXButton styleClass="button" layoutX="226.0" layoutY="222.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="73.0" prefWidth="135.0" text="4 Player Game" />
-                         <JFXButton styleClass="button" layoutX="14.0" layoutY="286.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
-                         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
-                             <image>
-                                <Image url="@/resources/layouts/images/setup/2.png" />
-                            </image>
-                         </ImageView>
-                         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
-                             <image>
-                                <Image url="@/resources/layouts/images/setup/4.png" />
-                            </image>
-                         </ImageView>
-                         <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
-                             <image>
-                                <Image url="@images/setup/ai.png" />
-                            </image>
-                         </ImageView>
-                     </children>
-                  </AnchorPane>
-              </content>
-            </Tab>
-          <Tab text="Multiplayer Game">
-            <content>
-              <AnchorPane fx:id="multiPlayerPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="multiPlayerTable" layoutX="14.0" layoutY="40.0" prefHeight="200.0" prefWidth="559.0">
-                          <columns>
-                            <TableColumn fx:id="nameColumn" prefWidth="280.0" text="Name" />
-                              <TableColumn fx:id="pawnColumn" minWidth="0.0" prefWidth="278.0" text="Pawn Colour" />
-                          </columns>
-                        </TableView>
-                        <Button fx:id="addPlayerBtn" layoutX="257.0" layoutY="254.0" mnemonicParsing="false" onAction="#onAddPlayerBtn" text="Add Player" />
-                        <Button fx:id="playBtn" disable="true" layoutX="528.0" layoutY="286.0" mnemonicParsing="false" onAction="#onPlayBtn" text="Play" />
-                        <Button layoutX="30.0" layoutY="286.0" mnemonicParsing="false" onAction="#onBackBtn" text="Back" />
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-            <Tab disable="true" text="Practice Game">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView layoutX="14.0" layoutY="40.0" prefHeight="200.0" prefWidth="559.0">
-                           <columns>
-                              <TableColumn prefWidth="280.0" text="Name" />
-                              <TableColumn minWidth="0.0" prefWidth="278.0" text="Pawn Colour" />
-                           </columns>
-                        </TableView>
-                        <Button layoutX="257.0" layoutY="254.0" mnemonicParsing="false" text="Add Player" />
-                        <Button layoutX="528.0" layoutY="286.0" mnemonicParsing="false" text="Play" />
-                        <Button layoutX="30.0" layoutY="286.0" mnemonicParsing="false" text="Back" />
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-      <Label layoutX="278.0" layoutY="14.0" text="Play ">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
-   </children>
-</AnchorPane>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="com.harush.zitoon.quoridor.ui.controller.SetupController" stylesheets="@../style.css" fx:id="gameStage">
+    <top>
+        <VBox alignment="BASELINE_CENTER">
+            <Label>
+                <font>
+                    <Font size="21.0"/>
+                </font>
+                <text>Play</text>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" prefHeight="600" prefWidth="400" spacing="15">
+
+            <JFXButton mnemonicParsing="false" fx:id="on1PlayerButton" onAction="#on1PlayerBtn" prefHeight="75.0" prefWidth="135.0">
+                <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="53.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@images/setup/ai.png"/>
+                    </image>
+                </ImageView>
+                <text>Against AI</text>
+            </JFXButton>
+            <JFXButton layoutY="100.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="75.0"
+                       prefWidth="135.0">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/resources/layouts/images/setup/2.png"/>
+                    </image>
+                </ImageView>
+                <text>2 Player Game</text>
+            </JFXButton>
+            <JFXButton layoutY="200.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="75.0"
+                       prefWidth="135.0">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/resources/layouts/images/setup/4.png"/>
+                    </image>
+                </ImageView>
+                <text>4 Player Game</text>
+            </JFXButton>
+            <JFXButton fx:id="backBtn" layoutY="300.0" mnemonicParsing="false" onAction="#onBackBtn" prefHeight="75" prefWidth="135">
+                <text>Back</text>
+            </JFXButton>
+
+        </VBox>
+    </center>
+</BorderPane>

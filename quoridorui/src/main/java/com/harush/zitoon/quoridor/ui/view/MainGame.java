@@ -1,6 +1,7 @@
 package com.harush.zitoon.quoridor.ui.view;
 
 import com.harush.zitoon.quoridor.core.model.*;
+import com.harush.zitoon.quoridor.core.theirs.Main;
 import com.harush.zitoon.quoridor.ui.controller.StatsController;
 import com.harush.zitoon.quoridor.ui.view.components.*;
 import javafx.application.Application;
@@ -85,6 +86,7 @@ public class MainGame extends Application implements GameScreen, Observer {
         stage.setTitle("Quoridor");
         scene.getStylesheets().add("resources/style.css");
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 
@@ -184,17 +186,8 @@ public class MainGame extends Application implements GameScreen, Observer {
      * @param primaryStage the stage
      */
     private void loadMainMenu(Stage primaryStage) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/resources/layouts/mainmenu.fxml"));
-            Scene scene = new Scene(root);
-
-            primaryStage.setTitle("Quoridor");
-            primaryStage.getIcons().add(new Image("resources/icons/favicon.png"));
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.start(primaryStage);
     }
 
     /**

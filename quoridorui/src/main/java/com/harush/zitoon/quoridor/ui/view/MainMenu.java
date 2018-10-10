@@ -24,7 +24,7 @@ public class MainMenu extends Application implements GameScreen {
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("Quoridor");
 
-
+			//theres a method of LoadScrean, why dont we use it?
 			primaryStage.setFullScreenExitHint("");
 			primaryStage.setFullScreen(true);
 

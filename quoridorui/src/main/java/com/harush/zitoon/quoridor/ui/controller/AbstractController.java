@@ -27,7 +27,11 @@ public abstract class AbstractController {
 			primaryStage.setTitle("Quoridor");
 			primaryStage.getIcons().add(new Image("resources/icons/favicon.png"));
 			primaryStage.setScene(scene);
-			primaryStage.show();
+
+			primaryStage.setFullScreenExitHint("");
+            primaryStage.setFullScreen(true);
+            primaryStage.setResizable(false);
+            primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
