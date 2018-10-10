@@ -27,7 +27,8 @@ public class PawnLogic implements Pawn {
 
     @Override
     public LogicResult move(int newX, int newY) {
-        String currentPlayerName = gameSession.getCurrentPlayer().getName();
+        Player currentPlayer = gameSession.getCurrentPlayer();
+        String currentPlayerName = currentPlayer.getName();
 
         LogicResult isCurrentTurn = gameSession.isCurrentTurn(type);
         if (!isCurrentTurn.isSuccess()) {
@@ -46,7 +47,8 @@ public class PawnLogic implements Pawn {
         this.currentX = newX;
         this.currentY = newY;
 
-        gameSession.checkForWinnerAndUpdateTurn();
+        PlayerAction playerAction = new PlayerAction(currentX ,currentY, currentPlayer);
+        gameSession.checkForWinnerAndUpdateTurn(playerAction);
 
         return new LogicResult(true);
     }
@@ -74,6 +76,20 @@ public class PawnLogic implements Pawn {
     @Override
     public Coordinate getCurrentCoordinate() {
         return new Coordinate(currentX, currentY);
+    }
+
+    @Override
+    public void setInitialCoordinate(Coordinate initialCoordinate) {
+        this.initialCoordinate = initialCoordinate;
+    }
+
+    @Override
+    public void setCurrentCoordinate(Coordinate currentCoordinate) {
+        int newX = currentCoordinate.getX();
+        int newY = currentCoordinate.getY();
+        board.movePawn(currentX, currentY, newX, newY);
+        this.currentX = newX;
+        this.currentY = newY;
     }
 
     @Override

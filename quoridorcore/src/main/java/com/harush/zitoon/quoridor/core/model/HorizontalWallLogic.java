@@ -16,8 +16,8 @@ public class HorizontalWallLogic implements Wall {
         this.gameSession = gameSession;
         this.currentX = x;
         this.currentY = y;
-        this.width = gameSession.getBoard().getWidth();
-        this.height = gameSession.getBoard().getHeight();
+        this.width = Settings.getSingleton().getBoardWidth();
+        this.height = Settings.getSingleton().getBoardHeight();
     }
 
     @Override
@@ -53,7 +53,9 @@ public class HorizontalWallLogic implements Wall {
 
         currentPlayer.getStatistics().incrementWallsUsed();
         currentPlayer.decrementWalls();
-        gameSession.updateTurn();
+
+        PlayerAction playerAction = new PlayerAction(currentX, currentY, true, true, currentPlayer);
+        gameSession.updateTurn(playerAction);
 
         return new LogicResult(true);
     }

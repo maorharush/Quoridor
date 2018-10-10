@@ -16,4 +16,8 @@ public interface Pawn {
     Coordinate getInitialCoordinate();
 
     Coordinate getCurrentCoordinate();
+
+    void setInitialCoordinate(Coordinate initialCoordinate);
+
+    void setCurrentCoordinate(Coordinate currentCoordinate);
 }
