@@ -25,6 +25,7 @@ public class MainMenu extends Application implements GameScreen {
 			primaryStage.setTitle("Quoridor");
 			scene.getStylesheets().add("resources/style.css");
 			primaryStage.setFullScreen(true);
+
 			primaryStage.getIcons().add(new Image("resources/icons/favicon.png"));
 			primaryStage.setScene(scene);
 			primaryStage.show();

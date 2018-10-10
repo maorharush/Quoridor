@@ -1,7 +1,7 @@
 .root{
 -fx-background-color: #E0E7FF;
 }
-
+.pane{}
 /*Raised button example */
 .button {
      -jfx-button-type: RAISED;
