@@ -7,41 +7,62 @@
 <?import javafx.scene.layout.Pane?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.MainMenuController" stylesheets="@../style.css">
-   <children>
-      <Pane prefHeight="390.0" prefWidth="361.0">
-         <children>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="131.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/resources/layouts/images/main/icon.png" />
-               </image>
-            </ImageView>
+<?import javafx.scene.layout.VBox?>
 
-            <JFXButton  mnemonicParsing="false" onAction="#onPlayBtnPress" prefHeight="40.0" prefWidth="125.0" style="-fx-background-image: url('images\main\control_play_blue.png');" text="Play" />
-            <JFXButton  layoutY="50" mnemonicParsing="false" onAction="#onSettingBtnPress" prefHeight="40.0" prefWidth="125.0" text="Settings" />
-            <JFXButton  layoutY="100" mnemonicParsing="false" onAction="#onHelpBtnPress" prefHeight="40.0" prefWidth="125.0" text="Help" />
-            <JFXButton  layoutY="150" fx:id="exitButton" mnemonicParsing="false" onAction="#onExitBtnPress" prefHeight="40.0" prefWidth="125.0" text="Exit" />
-            <ImageView fitHeight="32.0" fitWidth="25.0" layoutX="135.0" layoutY="238.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/resources/layouts/images/main/setting_tools.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="131.0" layoutY="138.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/resources/layouts/images/main/control_play_blue.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="131.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/resources/layouts/images/main/door_open.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="131.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/resources/layouts/images/main/question.png" />
-               </image>
-            </ImageView>
-         </children>
-      </Pane>
-   </children>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml" fx:controller="com.harush.zitoon.quoridor.ui.controller.MainMenuController" stylesheets="@../style.css">
+<top>
+    <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="131.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@/resources/layouts/images/main/icon.png" />
+        </image>
+    </ImageView>
+</top>
+<center>
+         <VBox prefHeight="390.0" prefWidth="361.0" alignment="CENTER" spacing="10">
+
+
+
+            <JFXButton  mnemonicParsing="false" onAction="#onPlayBtnPress" prefHeight="40.0" prefWidth="125.0" text="Play" >
+                <graphic>
+                    <ImageView fitHeight="50.0" fitWidth="50.0" preserveRatio="true">
+                    <image>
+                        <Image url="@/resources/layouts/images/main/control-play-black.png" />
+                    </image>
+                </ImageView>
+                </graphic>
+            </JFXButton>
+            <JFXButton  layoutY="50" mnemonicParsing="false" onAction="#onSettingBtnPress" prefHeight="40.0" prefWidth="125.0" text="Settings" >
+                <graphic>
+                    <ImageView BorderPane.alignment="BASELINE_LEFT" fitHeight="50.0" fitWidth="50.0"  layoutY="50.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image  url="@/resources/layouts/images/main/setting_tools.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+            <JFXButton  layoutY="100" mnemonicParsing="false" onAction="#onHelpBtnPress" prefHeight="40.0" prefWidth="125.0" text="Help">
+                <graphic>
+                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/layouts/images/main/door_open.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+            <JFXButton  layoutY="150" fx:id="exitButton" mnemonicParsing="false" onAction="#onExitBtnPress" prefHeight="40.0" prefWidth="125.0" text="Exit">
+                <graphic>
+                    <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="131.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/layouts/images/main/question.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+
+
+
+
+
+      </VBox>
+</center>
 </BorderPane>

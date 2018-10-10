@@ -23,7 +23,9 @@ public class MainMenu extends Application implements GameScreen {
 			Parent root = FXMLLoader.load(getClass().getResource("/resources/layouts/mainmenu.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("Quoridor");
-			scene.getStylesheets().add("resources/style.css");
+
+
+			primaryStage.setFullScreenExitHint("");
 			primaryStage.setFullScreen(true);
 
 			primaryStage.getIcons().add(new Image("resources/icons/favicon.png"));
