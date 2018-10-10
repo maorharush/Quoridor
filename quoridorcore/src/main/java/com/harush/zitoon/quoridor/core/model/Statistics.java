@@ -13,9 +13,16 @@ public class Statistics {
 	public Statistics() {
 		numOfTotalMoves = 0;
 		numOfWallsUsed = 0;
-		
 	}
-	
+
+	public void setNumOfTotalMoves(int numOfTotalMoves) {
+		this.numOfTotalMoves = numOfTotalMoves;
+	}
+
+	public void setNumOfWallsUsed(int numOfWallsUsed) {
+		this.numOfWallsUsed = numOfWallsUsed;
+	}
+
 	/**
 	 * Increments the total moves.
 	 */

@@ -6,6 +6,9 @@ import com.mchange.v2.c3p0.*;
 
 import java.sql.SQLException;
 
+/**
+ * config's the database parameters for sqlite to use.
+ */
 public class DataSourceProvider {
 
     public static DataSource getDataSource() {

@@ -1,25 +1,49 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Represents a Player in the game.
  */
 public abstract class Player {
+    private int playerID;
     private String name;
     private int numWalls;
     private Statistics stats;
+    private boolean isAI;
     protected Wall[][] verticalWalls;
     protected Wall[][] horizontalWalls;
     protected Pawn pawn;
+
+    public Player(String name, int numWalls, Statistics stats, boolean isAI, Pawn pawn) {
+        this.name = name;
+        this.numWalls = numWalls;
+        this.stats = stats;
+        this.isAI = isAI;
+        this.pawn = pawn;
+    }
+
+    public Player(String name, int numWalls, Statistics stats, boolean isAI, Wall[][] verticalWalls, Wall[][] horizontalWalls, Pawn pawn) {
+        this.name = name;
+        this.numWalls = numWalls;
+        this.stats = stats;
+        this.isAI = isAI;
+        this.verticalWalls = verticalWalls;
+        this.horizontalWalls = horizontalWalls;
+        this.pawn = pawn;
+    }
 
     /**
      *
      * @param name      player name
      * @param pawn      player pawn
      */
-    public Player(String name, Pawn pawn) {
+    public Player(String name, Pawn pawn, boolean isAI) {
         this.name = name;
         this.pawn = pawn;
         this.stats = new Statistics();
+        this.isAI = isAI;
         numWalls = Settings.getSingleton().getNumWalls();
     }
 
@@ -28,12 +52,13 @@ public abstract class Player {
      * @param name       player name
      * @param pawn       player pawn
      */
-    public Player(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
+    public Player(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls, boolean isAI) {
         this.name = name;
         this.verticalWalls = verticalWalls;
         this.horizontalWalls = horizontalWalls;
         this.stats = new Statistics();
         this.pawn = pawn;
+        this.isAI = isAI;
         numWalls = Settings.getSingleton().getNumWalls();
     }
 
@@ -82,8 +107,24 @@ public abstract class Player {
         numWalls++;
     }
 
+    public void setStats(Statistics stats) {
+        this.stats = stats;
+    }
+
+    public void setAI(boolean AI) {
+        isAI = AI;
+    }
+
+    public void setNumWalls(int numWalls) {
+        this.numWalls = numWalls;
+    }
+
     public Pawn getPawn() {
         return pawn;
+    }
+
+    public boolean isAI() {
+        return isAI;
     }
 
     /**
@@ -93,5 +134,50 @@ public abstract class Player {
      */
     public Statistics getStatistics() {
         return stats;
+    }
+
+    public int getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return playerID == player.playerID &&
+                numWalls == player.numWalls &&
+                isAI == player.isAI &&
+                Objects.equals(name, player.name) &&
+                Objects.equals(stats, player.stats) &&
+                Arrays.equals(verticalWalls, player.verticalWalls) &&
+                Arrays.equals(horizontalWalls, player.horizontalWalls) &&
+                Objects.equals(pawn, player.pawn);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(playerID, name, numWalls, stats, isAI, pawn);
+        result = 31 * result + Arrays.hashCode(verticalWalls);
+        result = 31 * result + Arrays.hashCode(horizontalWalls);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "playerID=" + playerID +
+                ", name='" + name + '\'' +
+                ", numWalls=" + numWalls +
+                ", stats=" + stats +
+                ", isAI=" + isAI +
+                ", verticalWalls=" + Arrays.toString(verticalWalls) +
+                ", horizontalWalls=" + Arrays.toString(horizontalWalls) +
+                ", pawn=" + pawn +
+                '}';
     }
 }

@@ -72,8 +72,7 @@ public class MainGame extends Application implements GameScreen, Observer {
 
         height = settings.getBoardHeight();
         width = settings.getBoardWidth();
-        tileBoard = new TileComponent[board.getWidth()][board.getHeight()];
-        horizontalWalls = new HorizontalWallComponent[board.getWidth()][board.getHeight()];
+        tileBoard = new TileComponent[height][width];
     }
 
     private void startGame() {

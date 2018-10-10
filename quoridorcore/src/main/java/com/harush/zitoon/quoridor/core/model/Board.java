@@ -1,5 +1,10 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Represents a board filled with tiles.
  *
@@ -82,6 +87,10 @@ public class Board {
         return logicResult;
     }
 
+    public LogicResult setPawn(Coordinate pawnCoordinate) {
+        return setPawn(pawnCoordinate.getX(), pawnCoordinate.getY());
+    }
+
 
     /**
      * Checks whether the position on the {@link Board} contains a {@link Wall}.
@@ -112,21 +121,21 @@ public class Board {
     public void setWall(int x, int y, boolean isHorizontal, boolean isFirst, Player placedBy) {
         validateCoordinateThrowException(x, y);
 
-        if (placedBy == null) {
-            throw new IllegalArgumentException("The player cannot be null");
-        }
-
         if (isHorizontal) {
-            horizontalWallData[x][y] = new WallData(x, y, isFirst, placedBy);
+            horizontalWallData[x][y] = new WallData(x, y, isHorizontal, isFirst, placedBy);
         } else {
-            verticalWallData[x][y] = new WallData(x, y, isFirst, placedBy);
+            verticalWallData[x][y] = new WallData(x, y, isHorizontal, isFirst, placedBy);
         }
     }
 
+    public void setWall(WallData wallData) {
+        setWall(wallData.getX(), wallData.getY(), wallData.isHorizontal(), wallData.isFirst(), null);
+    }
+
     /**
-     * Returns a {@link Wall} given the x and y coordinate.
+     * Returns a {@link Wall} given the x and y coordina
+     *      * @param x            the x coordinatete.
      *
-     * @param x            the x coordinate
      * @param y            the y coordinate
      * @param isHorizontal whether the wall is horizontal
      * @return the wall
@@ -139,6 +148,23 @@ public class Board {
             return horizontalWallData[x][y];
         } else {
             return verticalWallData[x][y];
+        }
+    }
+
+    public List<WallData> getAllWalls() {
+        List<WallData> walls = new ArrayList<>();
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                addWallIfExists(walls, y, x, true);
+                addWallIfExists(walls, y, x, false);
+            }
+        }
+        return walls;
+    }
+
+    private void addWallIfExists(List<WallData> wall, int y, int x, boolean isHorizontal) {
+        if (containsWall(x, y, isHorizontal)) {
+            wall.add(getWall(x, y, isHorizontal));
         }
     }
 
@@ -158,6 +184,7 @@ public class Board {
      * @param isHorizontal whether the wall is horizontal
      * @throws IllegalArgumentException if x or y is below 0
      */
+
     public void removeWall(int x, int y, boolean isHorizontal) {
         LogicResult isValid = validateCoordinate(x, y);
 
@@ -195,5 +222,26 @@ public class Board {
             return new LogicResult(false, String.format("The coordinate (%d,%d) is outside the board", x, y));
         }
         return new LogicResult(true);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        return height == board.height &&
+                width == board.width &&
+                Arrays.deepEquals(tiles, board.tiles) &&
+                Arrays.deepEquals(horizontalWallData, board.horizontalWallData) &&
+                Arrays.deepEquals(verticalWallData, board.verticalWallData);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(height, width);
+        result = 31 * result + Arrays.deepHashCode(tiles);
+        result = 31 * result + Arrays.deepHashCode(horizontalWallData);
+        result = 31 * result + Arrays.deepHashCode(verticalWallData);
+        return result;
     }
 }

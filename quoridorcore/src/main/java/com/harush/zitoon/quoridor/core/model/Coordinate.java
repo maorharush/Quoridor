@@ -2,7 +2,7 @@ package com.harush.zitoon.quoridor.core.model;
 
 import java.util.Objects;
 
-public class Coordinate {
+public class    Coordinate {
 
     private int x;
 
@@ -11,6 +11,14 @@ public class Coordinate {
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     @Override
