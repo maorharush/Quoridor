@@ -85,8 +85,11 @@ public class PawnLogic implements Pawn {
 
     @Override
     public void setCurrentCoordinate(Coordinate currentCoordinate) {
-        this.currentX = currentCoordinate.getX();
-        this.currentY = currentCoordinate.getY();
+        int newX = currentCoordinate.getX();
+        int newY = currentCoordinate.getY();
+        board.movePawn(currentX, currentY, newX, newY);
+        this.currentX = newX;
+        this.currentY = newY;
     }
 
     @Override

@@ -388,14 +388,6 @@ public class SetupController extends AbstractController implements Initializable
         }
     }
 
-    private void movePawnsToPreviousLocation(List<Player> players) {
-        for (Player player : players) {
-            Pawn pawn = player.getPawn();
-            Coordinate currentCoordinate = pawn.getCurrentCoordinate();
-            pawn.setCurrentCoordinate(currentCoordinate);
-        }
-    }
-
     private boolean askUserIfShouldLoadGame() {
         boolean shouldLoadGame = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
