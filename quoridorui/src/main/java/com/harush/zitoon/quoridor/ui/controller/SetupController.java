@@ -8,6 +8,19 @@ import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBO
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.components.*;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,48 +29,15 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-
 /**
  * Handles setup actions
  */
 public class SetupController extends AbstractController implements Initializable {
 
     @FXML
-    private TableView<Player> multiPlayerTable;
-    @FXML
-    private TableColumn<Player, String> nameColumn;
-    @FXML
-    private TableColumn<Player, String> pawnColumn;
-    @FXML
     private BorderPane gameStage;
-    @FXML
-    private Button addPlayerBtn;
-    @FXML
-    private Button playBtn;
     private int width = Settings.getSingleton().getBoardWidth();
     private int height = Settings.getSingleton().getBoardHeight();
-    private Color[] defaultColours;
-    private int playerIndex;
     private Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
     private PawnType[] pawnTypes = PawnType.values();
     private DAOFactory daoFactory = DAOFactoryImpl.instance();
@@ -65,9 +45,6 @@ public class SetupController extends AbstractController implements Initializable
     private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic(), new Player2PlayerDBOConverterImpl());
     private VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
     private HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
-    private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
-    private VerticalWallComponent[][] multiPlayerVerticalWallComponents = makeVerticalWallComponents();
-    private HorizontalWallComponent[][] multiPlayerHorizontalWallComponents = makeHorizontalWallComponents();
     private int[] xStartingPositions = getStartingPositionsX(width);
     private int[] yStartingPositions = getStartingPositionsY(height, width);
     @FXML
@@ -165,26 +142,17 @@ public class SetupController extends AbstractController implements Initializable
         return horizontalWalls;
     }
 
-    /**
-     * Sets up a game with {@link Player players}
-     *
-     * @param players the players
-     */
-    private void setupNewGame(List<Player> players, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
-        setupNewGameWithWallComponents(players, verticalWallComponents, horizontalWallComponents);
-    }
-
     private void setupNewGameWithWallComponents(List<Player> players, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
         gamePersistenceService.initGamePersistence(players, gameSession);
         setupGameSession(players);
-        Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
+        Stage stage = (Stage) gameStage.getScene().getWindow();
         centerStage(stage, width, height);
         List<AbstractPawnComponent> pawnComponents = players.stream().map(player -> (AbstractPawnComponent) player.getPawn()).collect(Collectors.toList());
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
         stage.show();
     }
-doDo
-    /**doStuff
+
+    /**
      * Sets up a game with {@link Player players}
      *
      * @param players the players
@@ -193,22 +161,9 @@ doDo
         setupNewGameWithWallComponents(players, verticalWallComponents, horizontalWallComponents);
     }
 
-    /**
-     * Converts a {@link ColorPicker} value to hex.
-     *
-     * @param colourPicker the {@link ColorPicker}
-     * @return the converted colour
-     */
-    private String convertColour(ColorPicker colourPicker) {
-        int green = (int) (colourPicker.getValue().getGreen() * 255);
-        int blue = (int) (colourPicker.getValue().getBlue() * 255);
-        int red = (int) (colourPicker.getValue().getRed() * 255);
-        return "#" + Integer.toHexString(red) + Integer.toHexString(green) + Integer.toHexString(blue);
-    }
-
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        doStuffWeWillProbablyDelete();
+
     }
 
     @Override
@@ -297,7 +252,7 @@ doDo
 
     private void setupSavedGameUI(List<Player> players, List<PlayerHistory> playerHistories) {
         placeWallsInPreviousLocation(players, playerHistories);
-        Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
+        Stage stage = (Stage) gameStage.getScene().getWindow();
         centerStage(stage, width, height);
         List<AbstractPawnComponent> pawnComponents = players.stream().map(player -> (AbstractPawnComponent) player.getPawn()).collect(Collectors.toList());
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
@@ -344,26 +299,6 @@ doDo
             shouldLoadGame = result.get() == buttonTypeYes;
         }
         return shouldLoadGame;
-    }
-
-    private void doStuffWeWillProbablyDelete() {
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        pawnColumn.setCellValueFactory(new PropertyValueFactory<>("pawnColour"));
-        pawnColumn.setCellFactory(column -> new TableCell<Player, String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : getString());
-                setStyle("-fx-background-color:" + getString() + ";");
-            }
-
-            private String getString() {
-                return getItem() == null ? "" : getItem();
-            }
-        });
-        multiPlayerTable.setPlaceholder(new Label("No players yet"));
-        defaultColours = new Color[]{Color.valueOf("#663366"), Color.valueOf("#b3e6b3"), Color.valueOf("#334db3"), Color.valueOf("#ff6666")};
-        playerIndex = 0;
     }
 
     private void setupGameSession(List<Player> players) {
