@@ -2,8 +2,11 @@ package com.harush.zitoon.quoridor.core.dao.dbo;
 
 import java.util.Objects;
 
+/**
+ * database object for whole game session, holds up summed data of hisoric games.
+ */
 public class GameDBO extends DBO {
-    private String game_id;
+    private int game_id;
     private int winner;
     private int num_of_moves;
     private long start_date;
@@ -44,11 +47,11 @@ public class GameDBO extends DBO {
         this.end_date = end_date;
     }
 
-    public String getGame_id() {
+    public int getGame_id() {
         return game_id;
     }
 
-    public void setGame_id(String game_id) {
+    public void setGame_id(int game_id) {
         this.game_id = game_id;
     }
 
@@ -57,16 +60,15 @@ public class GameDBO extends DBO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameDBO gameDBO = (GameDBO) o;
-        return winner == gameDBO.winner &&
+        return game_id == gameDBO.game_id &&
+                winner == gameDBO.winner &&
                 num_of_moves == gameDBO.num_of_moves &&
                 start_date == gameDBO.start_date &&
-                end_date == gameDBO.end_date &&
-                Objects.equals(game_id, gameDBO.game_id);
+                end_date == gameDBO.end_date;
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(game_id, winner, num_of_moves, start_date, end_date);
     }
 

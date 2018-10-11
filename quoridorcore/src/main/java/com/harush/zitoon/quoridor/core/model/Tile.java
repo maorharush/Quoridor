@@ -1,5 +1,7 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import java.util.Objects;
+
 /**
  * Represents a Tile on the {@link Board}
  * @author Moar Harush
@@ -46,5 +48,20 @@ public class Tile {
 	 */
 	public boolean containsPawn() {
 		return containsPawn;
-	}	
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Tile tile = (Tile) o;
+		return x == tile.x &&
+				y == tile.y &&
+				containsPawn == tile.containsPawn;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y, containsPawn);
+	}
 }

@@ -117,6 +117,21 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         return pawn.getCurrentCoordinate();
     }
 
+    @Override
+    public void setInitialCoordinate(Coordinate initialCoordinate) {
+        pawn.setInitialCoordinate(initialCoordinate);
+    }
+
+    @Override
+    public void setCurrentCoordinate(Coordinate currentCoordinate) {
+        final int newX = currentCoordinate.getX() * TILE_SIZE;
+        final int newY = currentCoordinate.getY() * TILE_SIZE;
+        relocate(newX, newY);
+        this.currentX = newX;
+        this.currentY = newY;
+        pawn.setCurrentCoordinate(currentCoordinate);
+    }
+
     private void drawPawn() {
         /*Circle ellipse = new Circle(TILE_SIZE * 0.3215);
         ellipse.setFill(Color.web(pawn.getType().getHexColor()));

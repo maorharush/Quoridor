@@ -5,12 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * core component with the authorities to decide on winner.
+ * by game rules, a winner is a player which was able to get its pawn to the opposite side of its starting location.
+ */
 public class WinnerDeciderLogic implements WinnerDecider {
 
     private static final int BOARD_WIDTH = Settings.getSingleton().getBoardWidth() - 1;
 
     private static final int BOARD_HEIGHT = Settings.getSingleton().getBoardHeight() - 1;
 
+    /**
+     * a map with the four starting location for players.
+     */
     private static final Map<Coordinate, List<Coordinate>> initialCoordinate2WinningRowMap = new HashMap<Coordinate, List<Coordinate>>() {{
         put(new Coordinate(0, BOARD_HEIGHT / 2), getVerticalRow(BOARD_WIDTH));      // Pawn started on the left
         put(new Coordinate(BOARD_WIDTH, BOARD_HEIGHT / 2), getVerticalRow(0));      // Pawn started on the right
@@ -18,6 +25,11 @@ public class WinnerDeciderLogic implements WinnerDecider {
         put(new Coordinate(BOARD_WIDTH / 2, 0), getHorizontalRow(BOARD_HEIGHT));    // Pawn started on the top
     }};
 
+    /**
+     * comparing between starting location coordinate, and the current.
+     * @param player
+     * @return Boolean, if true, the player is the winner.
+     */
     @Override
     public boolean isWinner(Player player) {
         Coordinate initialCoordinate = player.getPawn().getInitialCoordinate();

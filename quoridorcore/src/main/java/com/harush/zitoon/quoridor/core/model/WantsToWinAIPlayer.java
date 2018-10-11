@@ -6,7 +6,7 @@ package com.harush.zitoon.quoridor.core.model;
 public class WantsToWinAIPlayer extends Player {
 
     public WantsToWinAIPlayer(String name, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
-        super(name, pawn, verticalWalls, horizontalWalls);
+        super(name, pawn, verticalWalls, horizontalWalls, true);
     }
 
     @Override
