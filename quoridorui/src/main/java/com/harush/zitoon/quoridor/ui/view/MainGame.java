@@ -7,13 +7,15 @@ import com.harush.zitoon.quoridor.ui.view.components.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -81,14 +83,28 @@ public class MainGame extends Application implements GameScreen, Observer {
     }
 
     private void showStage(Stage stage, String s) {
-        Scene scene = new Scene(createContent());
+        Scene scene = new Scene(buildScene(createContent(),createInfoPanel()));
         stage.getIcons().add(new Image(s));
         stage.setTitle("Quoridor");
-        scene.getStylesheets().add("resources/style.css");
         stage.setScene(scene);
         stage.setFullScreen(true);
         stage.show();
     }
+
+    private Parent buildScene(Pane board, Pane infoPanel) {
+        HBox box = new HBox();
+        VBox root = new VBox();
+        root.setAlignment(Pos.CENTER);
+        root.setStyle("fx:");
+        box.setAlignment(Pos.CENTER);
+        box.setSpacing(100.0);
+
+        box.getChildren().addAll(board,infoPanel);
+        root.getChildren().add(box);
+
+        return  root;
+    }
+
 
     /**
      * Creates an information panel on the side of the board.
@@ -111,13 +127,13 @@ public class MainGame extends Application implements GameScreen, Observer {
         wallsLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
         wallsLabel.setTranslateY(50);
         panel.getChildren().addAll(currentTurnLabel, wallsLabel, button);
-        if (offset == 7) {
+        /*if (offset == 7) {
             panel.setTranslateX(350);
         } else if (offset == 11) {
             panel.setTranslateX(550);
         } else {
             panel.setTranslateX(450);
-        }
+        }*/
         return panel;
     }
 
@@ -126,9 +142,11 @@ public class MainGame extends Application implements GameScreen, Observer {
      *
      * @return the content
      */
-    private Parent createContent() {
+    private Pane createContent() {
         Pane root = new Pane();
-        root.setPrefSize((width * TILE_SIZE) + 85, height * TILE_SIZE);
+
+
+
         root.getChildren().addAll(tileGroup, pawnGroup, horizontalWallGroup, verticalWallGroup, createInfoPanel());
 
         //Add tiles to the board
@@ -173,6 +191,9 @@ public class MainGame extends Application implements GameScreen, Observer {
                 stage.setTitle("Quoridor");
                 stage.getIcons().add(new Image("resources/icons/favicon.png"));
                 stage.setScene(scene);
+                stage.setFullScreenExitHint("");
+                stage.setFullScreen(true);
+                stage.setResizable(false);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();

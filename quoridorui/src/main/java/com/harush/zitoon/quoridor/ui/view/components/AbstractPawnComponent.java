@@ -5,12 +5,16 @@ import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
 import java.util.Objects;
+
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import javax.swing.text.html.ImageView;
 
 /**
  * Represents a Pawn within the main game screen.
@@ -114,13 +118,15 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
     }
 
     private void drawPawn() {
-        Circle ellipse = new Circle(TILE_SIZE * 0.3215);
+        /*Circle ellipse = new Circle(TILE_SIZE * 0.3215);
         ellipse.setFill(Color.web(pawn.getType().getHexColor()));
         ellipse.setStroke(Color.BLACK);
         ellipse.setStrokeWidth(TILE_SIZE * 0.03);
         ellipse.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3125 * 2) / 2);
         ellipse.setTranslateY((TILE_SIZE - TILE_SIZE * 0.26 * 2) / 2);
-        getChildren().addAll(ellipse);
+        getChildren().addAll(ellipse);*/
+        Pane pane = new Pane();
+        ImageView img = new ImageView(new ImageView())
     }
 
     private void drawLabels() {
