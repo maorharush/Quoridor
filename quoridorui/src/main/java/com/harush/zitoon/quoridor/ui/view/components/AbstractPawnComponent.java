@@ -4,8 +4,14 @@ import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Objects;
 
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -13,8 +19,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
-import javax.swing.text.html.ImageView;
+import javafx.stage.Stage;
+import sun.security.tools.keytool.Main;
 
 /**
  * Represents a Pawn within the main game screen.
@@ -63,7 +69,7 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
         MovePawnTask movePawnTask = new MovePawnTask(pawn, x, y);
         movePawnTask.setOnSucceeded((workerStateEvent) -> {
-            LogicResult logicResult = (LogicResult)workerStateEvent.getSource().getValue();
+            LogicResult logicResult = (LogicResult) workerStateEvent.getSource().getValue();
             if (!logicResult.isSuccess()) {
                 // Can display error message returned from logic layer in UI here by logicResult.getErrMsg();
                 System.out.println(logicResult.getErrMsg());
@@ -140,8 +146,17 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         ellipse.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3125 * 2) / 2);
         ellipse.setTranslateY((TILE_SIZE - TILE_SIZE * 0.26 * 2) / 2);
         getChildren().addAll(ellipse);*/
-        Pane pane = new Pane();
-        ImageView img = new ImageView(new ImageView())
+        StackPane pane = new StackPane();
+        pane.setLayoutX(currentX);
+        pane.setLayoutY(currentY);
+        Image img = new Image("/resources/layouts/images/main/white-pawn.png",40,40,true,false,true);
+        ImageView imgView = new ImageView(img);
+
+        pane.getChildren().add(imgView);
+        pane.boundsInParentProperty();
+        getChildren().add(pane);
+
+
     }
 
     private void drawLabels() {

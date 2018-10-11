@@ -94,7 +94,7 @@ public class MainGame extends Application implements GameScreen, Observer {
         HBox box = new HBox();
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
-        root.setStyle("fx:");
+        //root.setStyle("fx:");
         box.setAlignment(Pos.CENTER);
         box.setSpacing(100.0);
 
@@ -143,9 +143,6 @@ public class MainGame extends Application implements GameScreen, Observer {
      */
     private Pane createContent() {
         Pane root = new Pane();
-
-
-
         root.getChildren().addAll(tileGroup, pawnGroup, horizontalWallGroup, verticalWallGroup, createInfoPanel());
 
         //Add tiles to the board
@@ -170,6 +167,7 @@ public class MainGame extends Application implements GameScreen, Observer {
                 horizontalWallGroup.getChildren().add(horizontalWalls[x][y]);
             }
         }
+        root.setId("gameBoard");
 
         pawnGroup.getChildren().addAll(pawnComponentList);
         return root;
