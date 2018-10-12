@@ -139,17 +139,10 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
     }
 
     private void drawPawn() {
-        /*Circle ellipse = new Circle(TILE_SIZE * 0.3215);
-        ellipse.setFill(Color.web(pawn.getType().getHexColor()));
-        ellipse.setStroke(Color.BLACK);
-        ellipse.setStrokeWidth(TILE_SIZE * 0.03);
-        ellipse.setTranslateX((TILE_SIZE - TILE_SIZE * 0.3125 * 2) / 2);
-        ellipse.setTranslateY((TILE_SIZE - TILE_SIZE * 0.26 * 2) / 2);
-        getChildren().addAll(ellipse);*/
         StackPane pane = new StackPane();
-        pane.setLayoutX(currentX);
-        pane.setLayoutY(currentY);
-        Image img = new Image("/resources/layouts/images/main/white-pawn.png",40,40,true,false,true);
+        pane.setLayoutX(currentX-10);
+        pane.setLayoutY(currentY-10);
+        Image img = new Image("/resources/layouts/images/main/white-pawn.png",50,50,true,false,true);
         ImageView imgView = new ImageView(img);
 
         pane.getChildren().add(imgView);
@@ -162,8 +155,11 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
     private void drawLabels() {
         if (Settings.getSingleton().isShowLabels()) {
             Text text = new Text(playerName);
-            text.setTranslateX(8);
-            text.setTranslateY(-10);
+
+            text.setLayoutX(currentX);
+            text.setLayoutY(currentY);
+            text.setFill(Color.WHITE);
+            text.setTranslateX(45);//pushing the label away from currectX to  right side
             text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
             getChildren().add(text);
         }

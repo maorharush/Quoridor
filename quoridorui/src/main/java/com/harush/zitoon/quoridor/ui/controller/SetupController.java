@@ -285,6 +285,7 @@ public class SetupController extends AbstractController implements Initializable
     private boolean askUserIfShouldLoadGame() {
         boolean shouldLoadGame = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(gameStage.getScene().getWindow());
         alert.setTitle("Resume previous game");
         alert.setHeaderText("Would you like to resume the previous game?");
         alert.setContentText("A previous game can be resumed.");
@@ -319,6 +320,7 @@ public class SetupController extends AbstractController implements Initializable
 
     private TextInputDialog getInsertPlayerNameTextInputDialog(int playerNumber) {
         TextInputDialog textInputDialog = new TextInputDialog("Player");
+        textInputDialog.initOwner(gameStage.getScene().getWindow());
         textInputDialog.setTitle("Insert player name");
         textInputDialog.setHeaderText(String.format("Player %d's Name:", playerNumber));
         textInputDialog.getDialogPane().getButtonTypes().remove(ButtonType.CANCEL);

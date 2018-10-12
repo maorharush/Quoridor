@@ -41,7 +41,7 @@ public class HorizontalWallComponent extends Rectangle implements Wall {
 
 		setOnMouseEntered(e -> setWallColor(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor())));
 
-		setOnMouseExited(e -> setWallColor(Color.rgb(153, 217, 234, 0.8)));
+		setOnMouseExited(e -> setWallColor(Color.valueOf("#45260D")));
 
 		setOnMousePressed(this::onMousePressed);
 
@@ -128,7 +128,7 @@ public class HorizontalWallComponent extends Rectangle implements Wall {
 		setWidth((MainGame.TILE_SIZE / 5) + 40);
 		setHeight(MainGame.TILE_SIZE / 10);
 		relocate(x * MainGame.TILE_SIZE, y * MainGame.TILE_SIZE);
-		setFill(Color.rgb(153, 217, 234, 0.8));
+		setFill(Color.valueOf("#45260D"));
 	}
 
 }

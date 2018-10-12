@@ -121,7 +121,7 @@ public class MainGame extends Application implements GameScreen, Observer {
         button.setTranslateY(150);
         currentTurnLabel.setText(gameSession.getCurrentPlayer().getName() + "'s turn");
         currentTurnLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
-        currentTurnLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        currentTurnLabel.setFont(Font.font("Ariel", FontWeight.BOLD, 14));
         wallsLabel.setText("Walls left: " + gameSession.getCurrentPlayer().getNumWalls());
         wallsLabel.setTextFill(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor()));
         wallsLabel.setTranslateY(50);
@@ -143,7 +143,7 @@ public class MainGame extends Application implements GameScreen, Observer {
      */
     private Pane createContent() {
         Pane root = new Pane();
-        root.getChildren().addAll(tileGroup, pawnGroup, horizontalWallGroup, verticalWallGroup, createInfoPanel());
+        root.getChildren().addAll(tileGroup, pawnGroup, horizontalWallGroup, verticalWallGroup);
 
         //Add tiles to the board
         for (int y = 0; y < height; y++) {
@@ -167,7 +167,9 @@ public class MainGame extends Application implements GameScreen, Observer {
                 horizontalWallGroup.getChildren().add(horizontalWalls[x][y]);
             }
         }
-        root.setId("gameBoard");
+        root.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, new CornerRadii(0),new BorderWidths(2))));
+        root.setStyle("-fx:id='gameBoard'");
+//        root.setStyle("-fx-border-color: black;");
 
         pawnGroup.getChildren().addAll(pawnComponentList);
         return root;

@@ -9,8 +9,9 @@
      -fx-text-fill: white;
      -jfx-disable-visual-focus:false;
 }
-.gameBoard{
--fx-background-color:#47270E;
+#gameBoard{
+-fx-border-color: black;
+-fx-border-radius: 5;
 }
 
 
