@@ -169,8 +169,8 @@ public class SetupController extends AbstractController implements Initializable
         HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
 
         Player player1 = new HumanPlayer(humanPlayerName, pawns.get(0));
-//        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
-        Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+       Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+     // Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
         players.add(player1);
         players.add(player2);
 
