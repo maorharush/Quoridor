@@ -129,7 +129,7 @@ public class Board {
     }
 
     public void setWall(WallData wallData) {
-        setWall(wallData.getX(), wallData.getY(), wallData.isHorizontal(), wallData.isFirst(), null);
+        setWall(wallData.getX(), wallData.getY(), wallData.isHorizontal(), wallData.setIsFirst(), null);
     }
 
     /**

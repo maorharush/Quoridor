@@ -80,7 +80,7 @@ public class PlayerAction {
                 ", x=" + x +
                 ", y=" + y +
                 ", isHorizontal=" + isHorizontal +
-                ", isFirst=" + isFirst +
+                ", setIsFirst=" + isFirst +
                 ", player=" + player +
                 '}';
     }

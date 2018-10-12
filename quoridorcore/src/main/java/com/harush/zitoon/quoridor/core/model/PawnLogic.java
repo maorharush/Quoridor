@@ -8,15 +8,10 @@ public class PawnLogic implements Pawn {
     //private static final Logger log = Logger.getLogger(PawnLogic.class.getSimpleName());
 
     private int currentX;
-
     private int currentY;
-
     private Board board;
-
     private GameSession gameSession;
-
     private PawnType type;
-
     private Coordinate initialCoordinate;
 
     public PawnLogic(GameSession gameSession, PawnType type) {
@@ -87,7 +82,7 @@ public class PawnLogic implements Pawn {
     public void setCurrentCoordinate(Coordinate currentCoordinate) {
         int newX = currentCoordinate.getX();
         int newY = currentCoordinate.getY();
-        board.movePawn(currentX, currentY, newX, newY);
+        board.movePawn(currentX, currentY, newX, newY); //we recieve logicResult and doing nothing with it
         this.currentX = newX;
         this.currentY = newY;
     }
