@@ -1,5 +1,6 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
+import com.harush.zitoon.quoridor.core.Utils.Settings;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.task.PlaceWallTask;

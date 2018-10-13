@@ -1,7 +1,8 @@
 package com.harush.zitoon.quoridor.ui.view;
 
+import com.harush.zitoon.quoridor.core.Utils.Settings;
+import com.harush.zitoon.quoridor.core.Utils.Statistics;
 import com.harush.zitoon.quoridor.core.model.*;
-import com.harush.zitoon.quoridor.core.theirs.Main;
 import com.harush.zitoon.quoridor.ui.controller.StatsController;
 import com.harush.zitoon.quoridor.ui.view.components.*;
 import javafx.application.Application;
@@ -13,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;

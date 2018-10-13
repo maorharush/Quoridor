@@ -1,6 +1,4 @@
-package com.harush.zitoon.quoridor.core.model;
-
-import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+package com.harush.zitoon.quoridor.core.Utils;
 
 import java.util.List;
 import java.util.Set;

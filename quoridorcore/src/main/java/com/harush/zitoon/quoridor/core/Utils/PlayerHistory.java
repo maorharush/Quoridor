@@ -1,6 +1,8 @@
-package com.harush.zitoon.quoridor.core.model;
+package com.harush.zitoon.quoridor.core.Utils;
 
-import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
+import com.harush.zitoon.quoridor.core.model.Coordinate;
+import com.harush.zitoon.quoridor.core.model.PawnType;
+import com.harush.zitoon.quoridor.core.model.WallData;
 
 import java.util.List;
 import java.util.Objects;

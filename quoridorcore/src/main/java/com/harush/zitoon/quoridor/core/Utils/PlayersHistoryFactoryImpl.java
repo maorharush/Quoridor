@@ -1,9 +1,10 @@
-package com.harush.zitoon.quoridor.core.model;
+package com.harush.zitoon.quoridor.core.Utils;
 
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import com.harush.zitoon.quoridor.core.dao.PlayerDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
+import com.harush.zitoon.quoridor.core.model.*;
 
 import java.util.*;
 import java.util.stream.Collectors;

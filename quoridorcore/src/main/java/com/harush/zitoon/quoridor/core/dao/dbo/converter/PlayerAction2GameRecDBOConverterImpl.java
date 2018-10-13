@@ -1,9 +1,9 @@
 package com.harush.zitoon.quoridor.core.dao.dbo.converter;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
-import com.harush.zitoon.quoridor.core.model.PlayerAction;
+import com.harush.zitoon.quoridor.core.Utils.PlayerAction;
 
-import static com.harush.zitoon.quoridor.core.model.PlayerActionType.MOVE_PAWN;
+import static com.harush.zitoon.quoridor.core.Utils.PlayerActionType.MOVE_PAWN;
 
 /** converting players action from core to DBO
  * used as independent class to operate with the core logic before database operation is been made.
@@ -30,8 +30,8 @@ public class PlayerAction2GameRecDBOConverterImpl implements PlayerAction2GameRe
             gameRecord.setWall_y(playerAction.getY());
             gameRecord.setPawn_x(-1);
             gameRecord.setPawn_y(-1);
-            gameRecord.setFence_orien(playerAction.isHorizontal() ? 'h' : 'v');
-            gameRecord.setIs_first(playerAction.isFirst() ? 1 : 0);
+            gameRecord.setFence_orien(playerAction.getIsHorizontal() ? 'h' : 'v');
+            gameRecord.setIs_first(playerAction.getIsFirst() ? 1 : 0);
         }
         return gameRecord;
     }

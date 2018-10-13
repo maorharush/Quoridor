@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.core.model;
+package com.harush.zitoon.quoridor.core.Utils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,6 +9,7 @@ import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBOConverter;
+import com.harush.zitoon.quoridor.core.model.*;
 
 /**
  * represent a save\load game handler

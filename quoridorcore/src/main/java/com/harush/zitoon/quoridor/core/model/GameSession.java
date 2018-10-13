@@ -1,9 +1,10 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.Utils.GamePersistenceService;
+import com.harush.zitoon.quoridor.core.Utils.PlayerAction;
+import com.harush.zitoon.quoridor.core.Utils.WinnerDecider;
 import com.harush.zitoon.quoridor.core.dao.*;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
-import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
-import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
 
 import java.util.*;
@@ -19,23 +20,14 @@ public class GameSession extends Observable {
     private List<Player> players;
     private RuleType ruleType;
     private Player winner;
-
     private int currentPlayerIndex = 0;
-
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
     private PlayerDAO playerDAO;
     private int gameID;
     private GameDAO gameDAO;
     private Player2PlayerDBOConverter player2PlayerDBOConverter;
-    /**
-     * private WinnerDecider winnerDecider;
-     * <p>
-     * /**
-     * A {@link Stack} was chosen to store all the moves as an undo function can be
-     * implemented in the practise mode.
-     */
-    private Deque<Move> moves;
+
 
     public GameSession(
             int gameID,
@@ -46,7 +38,7 @@ public class GameSession extends Observable {
             Player2PlayerDBOConverter player2PlayerDBOConverter) {
         this.board = board;
         this.players = new ArrayList<>();
-        this.moves = new ArrayDeque<>();
+
         this.ruleType = rule;
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
@@ -118,31 +110,7 @@ public class GameSession extends Observable {
         return players.get(id);
     }
 
-    /**
-     * Adds a {@link Move} to the move list.
-     *
-     * @param move the pawn
-     * @return true if the move was successful
-     */
-    public boolean addMove(Move move) {
-        moves.push(move);
-        return true;
-    }
 
-    /**
-     * Gets a history of moves that have taken place.
-     *
-     * @return the history of moves
-     */
-    public Deque<Move> getMoves() {
-        return moves;
-    }
-
-    /**
-     * Gets the rule type for this particular session.
-     *
-     * @return the rule type
-     */
     public RuleType getRuleType() {
         return ruleType;
     }

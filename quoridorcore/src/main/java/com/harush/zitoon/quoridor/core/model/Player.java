@@ -1,5 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.Utils.Settings;
+import com.harush.zitoon.quoridor.core.Utils.Statistics;
+
 import java.util.Arrays;
 import java.util.Objects;
 

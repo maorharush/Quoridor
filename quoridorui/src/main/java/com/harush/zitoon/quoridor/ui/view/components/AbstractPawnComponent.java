@@ -2,25 +2,19 @@ package com.harush.zitoon.quoridor.ui.view.components;
 
 import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 
+import com.harush.zitoon.quoridor.core.Utils.Settings;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Objects;
 
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import sun.security.tools.keytool.Main;
 
 /**
  * Represents a Pawn within the main game screen.

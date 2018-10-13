@@ -1,5 +1,7 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.Utils.WinnerDecider;
+import com.harush.zitoon.quoridor.core.Utils.WinnerDeciderLogic;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;

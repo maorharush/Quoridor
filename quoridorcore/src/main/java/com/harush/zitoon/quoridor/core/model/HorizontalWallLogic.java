@@ -1,5 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.Utils.PlayerAction;
+import com.harush.zitoon.quoridor.core.Utils.Settings;
+
 public class HorizontalWallLogic implements Wall {
 
     private GameSession gameSession;

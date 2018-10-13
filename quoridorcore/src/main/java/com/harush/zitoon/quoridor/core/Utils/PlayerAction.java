@@ -1,4 +1,6 @@
-package com.harush.zitoon.quoridor.core.model;
+package com.harush.zitoon.quoridor.core.Utils;
+
+import com.harush.zitoon.quoridor.core.model.Player;
 
 import java.util.Objects;
 
@@ -27,7 +29,7 @@ public class PlayerAction {
         this.isFirst = isFirst;
     }
 
-    public boolean isFirst() {
+    public boolean getIsFirst() {
         return isFirst;
     }
 
@@ -51,7 +53,7 @@ public class PlayerAction {
         this.player = player;
     }
 
-    public boolean isHorizontal() {
+    public boolean getIsHorizontal() {
         return isHorizontal;
     }
 
@@ -79,7 +81,7 @@ public class PlayerAction {
                 "playerActionType=" + playerActionType +
                 ", x=" + x +
                 ", y=" + y +
-                ", isHorizontal=" + isHorizontal +
+                ", getIsHorizontal=" + isHorizontal +
                 ", setIsFirst=" + isFirst +
                 ", player=" + player +
                 '}';
