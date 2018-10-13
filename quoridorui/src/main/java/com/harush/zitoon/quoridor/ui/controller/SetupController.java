@@ -288,7 +288,7 @@ public class SetupController extends AbstractController implements Initializable
     private void loadGame() {
         SavedGame savedGame = gamePersistenceService.loadGame();
         gameSession.setGameID(savedGame.getGameID());
-        gameSession.setCurrentPlayerIndex(gamePersistenceService.getCurrentPlayerIndex(savedGame.getGameID()));
+        gameSession.setCurrentPlayerIndex(savedGame.getCurrentPlayerIndex());
 
         List<PlayerHistory> playerHistories = savedGame.getPlayerHistories();
         PopulateBoardUtil populateBoardUtil = new PopulateBoardUtilImpl();
