@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.core.Utils;
+package com.harush.zitoon.quoridor.core.model.Utils;
 
 import java.util.*;
 import java.util.stream.Collectors;

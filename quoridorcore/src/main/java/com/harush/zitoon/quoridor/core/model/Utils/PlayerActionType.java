@@ -1,4 +1,4 @@
-package com.harush.zitoon.quoridor.core.Utils;
+package com.harush.zitoon.quoridor.core.model.Utils;
 
 public enum PlayerActionType {
     MOVE_PAWN,

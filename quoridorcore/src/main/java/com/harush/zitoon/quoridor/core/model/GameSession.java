@@ -1,8 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.Utils.GamePersistenceService;
-import com.harush.zitoon.quoridor.core.Utils.PlayerAction;
-import com.harush.zitoon.quoridor.core.Utils.WinnerDecider;
+import com.harush.zitoon.quoridor.core.model.Utils.GamePersistenceService;
+import com.harush.zitoon.quoridor.core.model.Utils.PlayerAction;
+import com.harush.zitoon.quoridor.core.model.Utils.WinnerDecider;
 import com.harush.zitoon.quoridor.core.dao.*;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;

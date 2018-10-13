@@ -1,9 +1,9 @@
 package com.harush.zitoon.quoridor.core.model;
 
 import com.google.common.collect.Lists;
-import com.harush.zitoon.quoridor.core.Utils.PlayerHistory;
-import com.harush.zitoon.quoridor.core.Utils.PopulateBoardUtil;
-import com.harush.zitoon.quoridor.core.Utils.PopulateBoardUtilImpl;
+import com.harush.zitoon.quoridor.core.model.Utils.PlayerHistory;
+import com.harush.zitoon.quoridor.core.model.Utils.PopulateBoardUtil;
+import com.harush.zitoon.quoridor.core.model.Utils.PopulateBoardUtilImpl;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

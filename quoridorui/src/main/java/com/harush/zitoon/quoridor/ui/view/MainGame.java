@@ -1,7 +1,7 @@
 package com.harush.zitoon.quoridor.ui.view;
 
-import com.harush.zitoon.quoridor.core.Utils.Settings;
-import com.harush.zitoon.quoridor.core.Utils.Statistics;
+import com.harush.zitoon.quoridor.core.model.Utils.Settings;
+import com.harush.zitoon.quoridor.core.model.Utils.Statistics;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.controller.StatsController;
 import com.harush.zitoon.quoridor.ui.view.components.*;

@@ -2,7 +2,7 @@ package com.harush.zitoon.quoridor.ui.view.components;
 
 import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 
-import com.harush.zitoon.quoridor.core.Utils.Settings;
+import com.harush.zitoon.quoridor.core.model.Utils.Settings;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
 
