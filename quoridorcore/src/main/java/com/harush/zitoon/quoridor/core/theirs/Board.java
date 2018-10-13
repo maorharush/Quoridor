@@ -2,6 +2,7 @@
 package com.harush.zitoon.quoridor.core.theirs;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -64,7 +65,7 @@ public class Board {
      *            an array of 2 or 4 initial players
      */
     public Board(Player[] players) {
-        this.history = new LinkedList<String>();
+        this.history = new LinkedList<>();
         this.players = players;
         initBoxGraph();
         Direction[] defaults = { Direction.UP, Direction.DOWN, Direction.LEFT,
@@ -89,7 +90,7 @@ public class Board {
      *            applied set of moves to get to a state
      */
     private Board(Player[] players, List<String> history) {
-        this.history = new LinkedList<String>();
+        this.history = new LinkedList<>();
         this.players = players;
         initBoxGraph();
         Position[] defaultpos = { new Position(8, 4), new Position(0, 4),
@@ -261,7 +262,7 @@ public class Board {
      * @return list of reachable positions
      */
     public List<Position> neighboursOf(Position p) {
-        List<Position> neighbours = new LinkedList<Position>();
+        List<Position> neighbours = new LinkedList<>();
         for (Direction d : Direction.values()) {
             if (boxes[p.getRow()][p.getCol()].getNeighbour(d) != null) {
                 neighbours.add(boxes[p.getRow()][p.getCol()].getNeighbour(d)
@@ -277,8 +278,8 @@ public class Board {
      * @return if the board is floodable.
      */
     public boolean flood() {
-        LinkedList<Box> visited = new LinkedList<Box>();
-        Queue<Box> q = new LinkedList<Box>();
+        LinkedList<Box> visited = new LinkedList<>();
+        Queue<Box> q = new LinkedList<>();
         q.add(boxes[0][0]);
         visited.add(boxes[0][0]);
         Box current;
@@ -304,9 +305,9 @@ public class Board {
      * @return reachable empty squares
      */
     public List<Position> validMoves(Position pm) {
-        LinkedList<Position> adjacent = new LinkedList<Position>();
-        LinkedList<Position> moves = new LinkedList<Position>();
-        LinkedList<Direction> dirs = new LinkedList<Direction>();
+        LinkedList<Position> adjacent = new LinkedList<>();
+        LinkedList<Position> moves = new LinkedList<>();
+        LinkedList<Direction> dirs = new LinkedList<>();
         Box current = boxes[pm.getRow()][pm.getCol()];
         Box neighbour;
         Direction d;
@@ -321,9 +322,7 @@ public class Board {
         for (Position p : adjacent) {
             d = dirs.removeFirst();
             if (playerAt(p) != null) {
-                for (Position pos: jump(p, d, false)) {
-                    moves.add(pos);
-                }
+                moves.addAll(Arrays.asList(jump(p, d, false)));
             } else {
                 moves.add(p);
             }
@@ -344,15 +343,12 @@ public class Board {
             rval[0] = p.adjacentSquare(d);
             return rval;
         } else if (giveUp) {
-            Position[] rval = new Position[0];
-            return rval;
+            return new Position[0];
         } else {
             LinkedList<Position> moves = new LinkedList<Position>();
             for (Direction dir : Direction.values()) {
                 if (!dir.equals(d) && !dir.equals(d.reverse())) {
-                    for (Position pos : jump(p, dir, true)) {
-                        moves.add(pos);
-                    }
+                    moves.addAll(Arrays.asList(jump(p, dir, true)));
                 }
             }
             Position rval[] = new Position[moves.size()];
@@ -367,14 +363,13 @@ public class Board {
      * @return if move is valid.
      */
     private boolean isValidMove(Position m) {
-        boolean validity = true;
+        boolean validity;
         if (m.isWall() && players[current].getNumWalls() >= 0) {
             Box northwest = boxes[m.getRow()][m.getCol()];
             Box northeast = boxes[m.getRow()][m.getCol() + 1];
             Box southwest = boxes[m.getRow() + 1][m.getCol()];
             if (m.getOrientation() == Orientation.Vertical) {
-                validity = validity
-                        && northwest.getNeighbour(Direction.RIGHT) != null;
+                validity = northwest.getNeighbour(Direction.RIGHT) != null;
                 validity = validity
                         && southwest.getNeighbour(Direction.RIGHT) != null;
                 validity = validity
@@ -382,8 +377,7 @@ public class Board {
                                 .getNeighbour(Direction.DOWN) == null);
                 
             } else if (m.getOrientation() == Orientation.Horizontal) {
-                validity = validity
-                        && northwest.getNeighbour(Direction.DOWN) != null;
+                validity = northwest.getNeighbour(Direction.DOWN) != null;
                 validity = validity
                         && northeast.getNeighbour(Direction.DOWN) != null;
                 validity = validity
@@ -402,7 +396,7 @@ public class Board {
             }
         } else {
             List<Position> adjacent = validMoves(positionOf(players[current]));
-            validity = validity && adjacent.contains(m);
+            validity = adjacent.contains(m);
         }
         return validity;
     }

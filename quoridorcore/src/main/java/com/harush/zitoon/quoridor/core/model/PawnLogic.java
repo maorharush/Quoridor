@@ -47,7 +47,7 @@ public class PawnLogic implements Pawn {
         this.currentX = newX;
         this.currentY = newY;
 
-        PlayerAction playerAction = new PlayerAction(currentX ,currentY, currentPlayer);
+        PlayerAction playerAction = new PlayerAction(currentX, currentY, currentPlayer);
         gameSession.checkForWinnerAndUpdateTurn(playerAction);
 
         return new LogicResult(true);
@@ -105,32 +105,132 @@ public class PawnLogic implements Pawn {
     }
 
     //TODO improve / replace with getValidMoves + Handle special move above enemy pawn
-    private boolean isValidMove(int currentX, int currentY, int nextX, int nextY) {
+    public boolean isValidMove(int currentX, int currentY, int nextX, int nextY) {
 
-        if (nextX >= board.getWidth() || nextY >= board.getHeight() || nextX < 0 || nextY < 0) { //Check if the new position is off the board
+        if (isOffBoard(nextX, nextY)) {
             return false;
         }
-        if (board.getTile(nextX, nextY).containsPawn()) {
+        if (isOccupied(nextX, nextY)) {
             return false;
         }
-        if (nextX == currentX) {
-            if (nextY == currentY - 1) { //going upwards
-                return !board.containsWall(currentX, currentY, true);
-            }
-            if (nextY == currentY + 1) { //going downwards
-                return !board.containsWall(currentX, currentY + 1, true);
-            }
+
+        if (isValidVerticalMove(currentX, currentY, nextX, nextY)) {
+            return true;
         }
 
-        if (nextY == currentY) {
-            if (nextX == currentX - 1) { //going left
-                return !board.containsWall(currentX - 1, currentY, false);
+        return isValidHorizontalMove(currentX, currentY, nextX, nextY);
+    }
+
+    public Boolean isValidHorizontalMove(int currentX, int currentY, int nextX, int nextY) {
+        if (isHorizontalMove(currentY, nextY)) {
+            if (isValidMoveLeft(currentX, currentY, nextX, nextY)) {
+                return true;
             }
-            if (nextX == currentX + 1) { //going right
-                return !board.containsWall(currentX, currentY, false);
+
+            return isValidMoveRight(currentX, currentY, nextX, nextY);
+
+        }
+        return false;
+    }
+
+    public Boolean isValidMoveRight(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveRight(currentX, nextX)) {
+            if (isUnblocked(currentX, currentY, false)) {
+                if (isSpecialJump(nextX - 1, nextY)) {
+                    return isUnblocked(nextX - 1, nextY, false);
+                }
+                return nextX == currentX + 1;
             }
         }
         return false;
+    }
+
+    public Boolean isValidMoveLeft(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveLeft(currentX, nextX)) {
+            if (isUnblocked(currentX - 1, currentY, false)) {
+                if (isSpecialJump(nextX + 1, nextY)) {
+                    return isUnblocked(nextX, nextY, false);
+                }
+                return nextX == currentX - 1;
+            }
+        }
+        return false;
+    }
+
+    public Boolean isValidVerticalMove(int currentX, int currentY, int nextX, int nextY) {
+        if (isVerticalMove(currentX, nextX)) {
+            if (isValidMoveUp(currentX, currentY, nextX, nextY)) {
+                return true;
+            }
+
+            return isValidMoveDown(currentX, currentY, nextX, nextY);
+        }
+        return false;
+    }
+
+    public Boolean isValidMoveDown(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveDown(currentY, nextY)) {
+            if (isUnblocked(currentX, currentY + 1, true)) {
+                if (isSpecialJump(nextX, nextY - 1)) {
+                    return isUnblocked(nextX, nextY, true);
+                }
+                return nextY == currentY + 1;
+            }
+        }
+        return false;
+    }
+
+    public Boolean isValidMoveUp(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveUp(currentY, nextY)) {
+            if (isUnblocked(currentX, currentY, true)) {
+                if (isSpecialJump(nextX, nextY + 1)) {
+                    return isUnblocked(nextX, nextY + 1, true);
+                }
+                return nextY == currentY - 1;
+            }
+
+        }
+        return false;
+    }
+
+    private boolean isSpecialJump(int gapX, int gapY) {
+        return board.containsPawn(gapX, gapY);
+    }
+
+    private boolean isOccupied(int nextX, int nextY) {
+        return board.getTile(nextX, nextY).containsPawn();
+    }
+
+    private boolean isUnblocked(int currentX, int currentY, boolean isHorizontal) {
+        return !board.containsWall(currentX, currentY, isHorizontal);
+    }
+
+    private boolean isMoveRight(int currentX, int nextX) {
+        return nextX > currentX;
+    }
+
+    private boolean isMoveLeft(int currentX, int nextX) {
+        return nextX < currentX;
+    }
+
+    private boolean isHorizontalMove(int currentY, int nextY) {
+        return nextY == currentY;
+    }
+
+    private boolean isMoveDown(int currentY, int nextY) {
+        return nextY > currentY;
+    }
+
+    private boolean isMoveUp(int currentY, int nextY) {
+        return nextY < currentY;
+    }
+
+    private boolean isVerticalMove(int currentX, int nextX) {
+        return nextX == currentX;
+    }
+
+    private boolean isOffBoard(int nextX, int nextY) {
+        return nextX >= board.getWidth() || nextY >= board.getHeight() || nextX < 0 || nextY < 0;
     }
 
     private LogicResult createFailedLogicResult(String errMsg) {

@@ -107,6 +107,10 @@ public class Board {
         }
     }
 
+    public boolean containsPawn(int x, int y) {
+        return getTile(x,y).containsPawn();
+    }
+
     /**
      * Places a new {@link Wall} on to the {@link Board}.
      *
