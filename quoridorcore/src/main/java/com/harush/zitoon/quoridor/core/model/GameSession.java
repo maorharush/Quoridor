@@ -1,10 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.dao.*;
+import com.harush.zitoon.quoridor.core.dao.DAOFactory;
+import com.harush.zitoon.quoridor.core.dao.GameDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
-import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
-import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
-import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
 
 import java.util.*;
 
@@ -19,15 +17,11 @@ public class GameSession extends Observable {
     private List<Player> players;
     private RuleType ruleType;
     private Player winner;
-
     private int currentPlayerIndex = 0;
-
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
-    private PlayerDAO playerDAO;
     private int gameID;
     private GameDAO gameDAO;
-    private Player2PlayerDBOConverter player2PlayerDBOConverter;
     /**
      * private WinnerDecider winnerDecider;
      * <p>
@@ -42,8 +36,7 @@ public class GameSession extends Observable {
             Board board,
             RuleType rule,
             DAOFactory daoFactory,
-            WinnerDecider winnerDecider,
-            Player2PlayerDBOConverter player2PlayerDBOConverter) {
+            WinnerDecider winnerDecider) {
         this.board = board;
         this.players = new ArrayList<>();
         this.moves = new ArrayDeque<>();
@@ -51,8 +44,6 @@ public class GameSession extends Observable {
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
         this.gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
-        this.playerDAO = daoFactory.getDAO(PlayerDAO.TABLE_NAME);
-        this.player2PlayerDBOConverter = player2PlayerDBOConverter;
     }
 
     public void setGameID(int gameID) {
