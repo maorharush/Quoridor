@@ -18,6 +18,9 @@
 <?import javafx.scene.text.Text?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<GridPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SettingsController" stylesheets="@../style.css">
+<?import com.jfoenix.controls.JFXButton?>
 <GridPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.harush.zitoon.quoridor.ui.controller.SettingsController" stylesheets="@../style.css">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,7 +33,7 @@
       <RowConstraints maxHeight="300.0" minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="4">
+      <JFXTabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="4">
         <tabs>
           <Tab text="Main">
             <content>
@@ -122,13 +125,8 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab disable="true" text="Tournament">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
         </tabs>
-      </TabPane>
+      </JFXTabPane>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
          <children>
             <Text layoutX="258.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">

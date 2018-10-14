@@ -167,8 +167,8 @@ public class MainGame extends Application implements GameScreen, Observer {
                 horizontalWallGroup.getChildren().add(horizontalWalls[x][y]);
             }
         }
-        root.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, new CornerRadii(0),new BorderWidths(2))));
-        root.setStyle("-fx:id='gameBoard'");
+        //root.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, new CornerRadii(0),new BorderWidths(2))));
+        //root.setStyle("-fx:id='gameBoard'");
 //        root.setStyle("-fx-border-color: black;");
 
         pawnGroup.getChildren().addAll(pawnComponentList);
@@ -184,7 +184,6 @@ public class MainGame extends Application implements GameScreen, Observer {
                 Stage stage = (Stage) tileGroup.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/layouts/stats.fxml"));
                 Scene scene = new Scene(loader.load());
-
                 StatsController controller = loader.getController();
                 controller.setGameSession(gameSession);
                 stage.setTitle("Quoridor");

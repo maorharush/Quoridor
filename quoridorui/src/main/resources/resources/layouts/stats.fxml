@@ -10,24 +10,30 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml/1"
+<?import javafx.scene.layout.HBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.72"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.harush.zitoon.quoridor.ui.controller.StatsController" stylesheets="@../style.css">
-    <VBox BorderPane.alignment="CENTER" prefHeight="400" prefWidth="600">
-
-        <Label fx:id="winnerLabel" layoutX="202.0" layoutY="25.0" text="Player 1 won!">
-            <font>
-                <Font size="33.0"/>
-            </font>
-        </Label>
-        <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="428.0" layoutY="34.0" pickOnBounds="true"
-                   preserveRatio="true">
-            <image>
-                <Image url="@/resources/layouts/images/stats/house.png"/>
-            </image>
-        </ImageView>
-        <Button layoutX="467.0" layoutY="25.0" mnemonicParsing="false" onAction="#onMenuBtn" prefHeight="49.0"
-                prefWidth="105.0" text="Main Menu"/>
-        <TextArea fx:id="statsArea" editable="false" layoutX="150.0" layoutY="110.0" prefHeight="223.0"
-                  prefWidth="310.0"/>
-    </VBox>
+    <center>
+        <HBox alignment="CENTER" prefHeight="400" prefWidth="600">
+            <VBox alignment="CENTER">
+                <Label fx:id="winnerLabel" layoutX="202.0" layoutY="25.0" text="Player 1 won!">
+                    <font>
+                        <Font size="33.0"/>
+                    </font>
+                </Label>
+                <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="428.0" layoutY="34.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@/resources/layouts/images/stats/house.png"/>
+                    </image>
+                </ImageView>
+                <Button layoutX="467.0" layoutY="25.0" mnemonicParsing="false" onAction="#onMenuBtn" prefHeight="49.0"
+                        prefWidth="105.0" text="Main Menu"/>
+                <JFXTextArea fx:id="statsArea" editable="false" layoutX="150.0" layoutY="110.0" prefHeight="223.0"
+                          prefWidth="310.0"/>
+            </VBox>
+        </HBox>
+    </center>
 </BorderPane>

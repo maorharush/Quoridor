@@ -152,7 +152,7 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
             text.setLayoutX(currentX);
             text.setLayoutY(currentY);
-            text.setFill(Color.WHITE);
+            text.setFill(Color.valueOf(pawn.getType().getHexColor()));
             text.setTranslateX(45);//pushing the label away from currectX to  right side
             text.setFont(Font.font("Verdana", FontWeight.BOLD, 10));
             getChildren().add(text);
