@@ -63,6 +63,90 @@ public class PawnLogicTest {
         Assert.assertEquals(expectedValidMoves, actualValidMoves);
     }
 
+    @Test
+    public void getAllValidMovesFromInitialCoordinateBottomWallBlocksUp_success() {
+        Coordinate initialBottomCoordinate = new Coordinate(BOARD_WIDTH / 2, BOARD_HEIGHT - 1);
+        mockBoardOccupiedWithTile(initialBottomCoordinate);
+        Coordinate initialTopCoordinate = new Coordinate(BOARD_WIDTH / 2, 0);
+        mockBoardOccupiedWithTile(initialTopCoordinate);
+        mockBoardOccupiedWithWall(initialBottomCoordinate, true);
+
+        pawnLogic.setInitialCoordinate(initialBottomCoordinate);
+        pawnLogic.setCurrentCoordinate(initialBottomCoordinate);
+
+        Coordinate expectedValidMoveLeft = new Coordinate((BOARD_WIDTH / 2) - 1, BOARD_HEIGHT - 1);
+        Coordinate expectedValidMoveRight = new Coordinate((BOARD_WIDTH / 2) + 1, BOARD_HEIGHT - 1);
+
+        List<Coordinate> expectedValidMoves = Lists.newArrayList(expectedValidMoveLeft, expectedValidMoveRight);
+        List<Coordinate> actualValidMoves = pawnLogic.getValidMoves();
+
+        Assert.assertNotNull(actualValidMoves);
+        Assert.assertEquals(expectedValidMoves.size(), actualValidMoves.size());
+
+        expectedValidMoves.sort(Comparator.comparing(Coordinate::getX).thenComparing(Coordinate::getY));
+        actualValidMoves.sort(Comparator.comparing(Coordinate::getX).thenComparing(Coordinate::getY));
+
+        Assert.assertEquals(expectedValidMoves, actualValidMoves);
+    }
+
+    @Test
+    public void getAllValidMovesFromInitialCoordinateBottomWallBlocksLeft_success() {
+        Coordinate initialBottomCoordinate = new Coordinate(BOARD_WIDTH / 2, BOARD_HEIGHT - 1);
+        mockBoardOccupiedWithTile(initialBottomCoordinate);
+        Coordinate initialTopCoordinate = new Coordinate(BOARD_WIDTH / 2, 0);
+        mockBoardOccupiedWithTile(initialTopCoordinate);
+        Coordinate wallLeftCoordinate = new Coordinate(initialBottomCoordinate.getX() - 1, initialBottomCoordinate.getY());
+        mockBoardOccupiedWithWall(wallLeftCoordinate, false);
+
+        pawnLogic.setInitialCoordinate(initialBottomCoordinate);
+        pawnLogic.setCurrentCoordinate(initialBottomCoordinate);
+
+        Coordinate expectedValidMoveRight = new Coordinate((BOARD_WIDTH / 2) + 1, BOARD_HEIGHT - 1);
+        Coordinate expectedValidMoveUp = new Coordinate(BOARD_WIDTH / 2, BOARD_HEIGHT - 2);
+
+        List<Coordinate> expectedValidMoves = Lists.newArrayList(expectedValidMoveRight, expectedValidMoveUp);
+        List<Coordinate> actualValidMoves = pawnLogic.getValidMoves();
+
+        Assert.assertNotNull(actualValidMoves);
+        Assert.assertEquals(expectedValidMoves.size(), actualValidMoves.size());
+
+        expectedValidMoves.sort(Comparator.comparing(Coordinate::getX).thenComparing(Coordinate::getY));
+        actualValidMoves.sort(Comparator.comparing(Coordinate::getX).thenComparing(Coordinate::getY));
+
+        Assert.assertEquals(expectedValidMoves, actualValidMoves);
+    }
+
+    @Test
+    public void getAllValidMovesFromInitialCoordinateBottomWallBlocksRight_success() {
+        Coordinate initialBottomCoordinate = new Coordinate(BOARD_WIDTH / 2, BOARD_HEIGHT - 1);
+        mockBoardOccupiedWithTile(initialBottomCoordinate);
+        Coordinate initialTopCoordinate = new Coordinate(BOARD_WIDTH / 2, 0);
+        mockBoardOccupiedWithTile(initialTopCoordinate);
+        Coordinate wallRightCoordinate = initialBottomCoordinate;
+        mockBoardOccupiedWithWall(wallRightCoordinate, false);
+
+        pawnLogic.setInitialCoordinate(initialBottomCoordinate);
+        pawnLogic.setCurrentCoordinate(initialBottomCoordinate);
+
+        Coordinate expectedValidMoveLeft = new Coordinate((BOARD_WIDTH / 2) - 1, BOARD_HEIGHT - 1);
+        Coordinate expectedValidMoveUp = new Coordinate(BOARD_WIDTH / 2, BOARD_HEIGHT - 2);
+
+        List<Coordinate> expectedValidMoves = Lists.newArrayList(expectedValidMoveLeft, expectedValidMoveUp);
+        List<Coordinate> actualValidMoves = pawnLogic.getValidMoves();
+
+        Assert.assertNotNull(actualValidMoves);
+        Assert.assertEquals(expectedValidMoves.size(), actualValidMoves.size());
+
+        expectedValidMoves.sort(Comparator.comparing(Coordinate::getX).thenComparing(Coordinate::getY));
+        actualValidMoves.sort(Comparator.comparing(Coordinate::getX).thenComparing(Coordinate::getY));
+
+        Assert.assertEquals(expectedValidMoves, actualValidMoves);
+    }
+
+    private void mockBoardOccupiedWithWall(Coordinate occupiedCoordinate, boolean isHorizontal) {
+        when(board.containsWall(eq(occupiedCoordinate.getX()), eq(occupiedCoordinate.getY()), eq(isHorizontal))).thenReturn(true);
+    }
+
     private void mockBoardOccupiedWithTile(Coordinate occupiedCoordinate) {
         when(board.isOccupied(eq(occupiedCoordinate.getX()), eq(occupiedCoordinate.getY()))).thenReturn(true);
     }
