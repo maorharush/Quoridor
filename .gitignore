@@ -1,7 +1,5 @@
 .idea/
-src/main/resources/
-QuoridorProject.iml
+Quoridor.iml
 .project
 .classpath
-bin/
 target/
