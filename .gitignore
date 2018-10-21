@@ -3,3 +3,5 @@ Quoridor.iml
 .project
 .classpath
 target/
+Quoridor.iml
+classes/
