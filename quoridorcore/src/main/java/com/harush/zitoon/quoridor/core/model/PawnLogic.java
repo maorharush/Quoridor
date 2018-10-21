@@ -1,7 +1,11 @@
 package com.harush.zitoon.quoridor.core.model;
 
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PawnLogic implements Pawn {
 
@@ -36,21 +40,78 @@ public class PawnLogic implements Pawn {
             return isCurrentTurn;
         }
 
-        if (!isValidMove(this.currentX, this.currentY, newX, newY)) {
+        if (!isValidMove(newX, newY)) {
             String errMsg = String.format("%s failed to move pawn to (%d, %d): Invalid pawn move", currentPlayerName, newX, newY);
             System.out.println(errMsg);
             return createFailedLogicResult(errMsg);
         }
 
         System.out.println(String.format("%s is moving pawn to (%d, %d)", currentPlayerName, newX, newY));
-        board.movePawn(this.currentX, this.currentY, newX, newY);
-        this.currentX = newX;
-        this.currentY = newY;
+        board.movePawn(currentX, currentY, newX, newY);
+        currentX = newX;
+        currentY = newY;
 
         PlayerAction playerAction = new PlayerAction(currentX, currentY, currentPlayer);
         gameSession.checkForWinnerAndUpdateTurn(playerAction);
 
         return new LogicResult(true);
+    }
+
+    @Override
+    public List<Coordinate> getValidMoves() {
+        List<Coordinate> potentialMoves = getPotentialsMoves();
+        return potentialMoves.stream().filter(potentialMove -> isValidMove(potentialMove.getX(), potentialMove.getY())).collect(Collectors.toList());
+    }
+
+    private List<Coordinate> getPotentialsMoves() {
+
+        // TODO Add diagonal potential moves as well
+
+        Coordinate potentialMoveUp = getPotentialMoveUp();
+        Coordinate potentialSpecialJumpUp = getPotentialSpecialJumpUp();
+        Coordinate potentialMoveDown = getPotentialMoveDown();
+        Coordinate potentialSpecialJumpDown = getPotentialSpecialJumpDown();
+        Coordinate potentialMoveRight = getPotentialMoveRight();
+        Coordinate potentialSpecialJumpRight = getPotentialSpecialJumpRight();
+        Coordinate potentialMoveLeft = getPotentialMoveLeft();
+        Coordinate potentialSpecialJumpLeft = getPotentialSpecialJumpLeft();
+
+        return Lists.newArrayList(potentialMoveUp, potentialSpecialJumpUp,
+                potentialMoveDown, potentialSpecialJumpDown,
+                potentialMoveLeft, potentialSpecialJumpLeft,
+                potentialMoveRight, potentialSpecialJumpRight);
+    }
+
+    private Coordinate getPotentialSpecialJumpLeft() {
+        return new Coordinate(currentX - 2, currentY);
+    }
+
+    private Coordinate getPotentialMoveLeft() {
+        return new Coordinate(currentX - 1, currentY);
+    }
+
+    private Coordinate getPotentialSpecialJumpRight() {
+        return new Coordinate(currentX + 2, currentY);
+    }
+
+    private Coordinate getPotentialMoveRight() {
+        return new Coordinate(currentX + 1, currentY);
+    }
+
+    private Coordinate getPotentialSpecialJumpDown() {
+        return new Coordinate(currentX, currentY + 2);
+    }
+
+    private Coordinate getPotentialMoveDown() {
+        return new Coordinate(currentX, currentY + 1);
+    }
+
+    private Coordinate getPotentialSpecialJumpUp() {
+        return new Coordinate(currentX, currentY - 2);
+    }
+
+    private Coordinate getPotentialMoveUp() {
+        return new Coordinate(currentX, currentY - 1);
     }
 
     @Override
@@ -92,6 +153,10 @@ public class PawnLogic implements Pawn {
         this.currentY = newY;
     }
 
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
     @Override
     public LogicResult spawn(int x, int y) {
         LogicResult logicResult = board.movePawn(this.currentX, this.currentY, x, y);
@@ -104,8 +169,7 @@ public class PawnLogic implements Pawn {
         return logicResult;
     }
 
-    //TODO improve / replace with getValidMoves + Handle special move above enemy pawn
-    public boolean isValidMove(int currentX, int currentY, int nextX, int nextY) {
+    private boolean isValidMove(int nextX, int nextY) {
 
         if (isOffBoard(nextX, nextY)) {
             return false;
@@ -121,7 +185,7 @@ public class PawnLogic implements Pawn {
         return isValidHorizontalMove(currentX, currentY, nextX, nextY);
     }
 
-    public Boolean isValidHorizontalMove(int currentX, int currentY, int nextX, int nextY) {
+    private Boolean isValidHorizontalMove(int currentX, int currentY, int nextX, int nextY) {
         if (isHorizontalMove(currentY, nextY)) {
             if (isValidMoveLeft(currentX, currentY, nextX, nextY)) {
                 return true;
@@ -133,7 +197,7 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
-    public Boolean isValidMoveRight(int currentX, int currentY, int nextX, int nextY) {
+    private Boolean isValidMoveRight(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveRight(currentX, nextX)) {
             if (isUnblocked(currentX, currentY, false)) {
                 if (isSpecialJump(nextX - 1, nextY)) {
@@ -145,7 +209,7 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
-    public Boolean isValidMoveLeft(int currentX, int currentY, int nextX, int nextY) {
+    private Boolean isValidMoveLeft(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveLeft(currentX, nextX)) {
             if (isUnblocked(currentX - 1, currentY, false)) {
                 if (isSpecialJump(nextX + 1, nextY)) {
@@ -157,7 +221,7 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
-    public Boolean isValidVerticalMove(int currentX, int currentY, int nextX, int nextY) {
+    private Boolean isValidVerticalMove(int currentX, int currentY, int nextX, int nextY) {
         if (isVerticalMove(currentX, nextX)) {
             if (isValidMoveUp(currentX, currentY, nextX, nextY)) {
                 return true;
@@ -168,7 +232,7 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
-    public Boolean isValidMoveDown(int currentX, int currentY, int nextX, int nextY) {
+    private Boolean isValidMoveDown(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveDown(currentY, nextY)) {
             if (isUnblocked(currentX, currentY + 1, true)) {
                 if (isSpecialJump(nextX, nextY - 1)) {
@@ -180,7 +244,7 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
-    public Boolean isValidMoveUp(int currentX, int currentY, int nextX, int nextY) {
+    private Boolean isValidMoveUp(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveUp(currentY, nextY)) {
             if (isUnblocked(currentX, currentY, true)) {
                 if (isSpecialJump(nextX, nextY + 1)) {
@@ -198,7 +262,7 @@ public class PawnLogic implements Pawn {
     }
 
     private boolean isOccupied(int nextX, int nextY) {
-        return board.getTile(nextX, nextY).containsPawn();
+        return board.isOccupied(nextX, nextY);
     }
 
     private boolean isUnblocked(int currentX, int currentY, boolean isHorizontal) {

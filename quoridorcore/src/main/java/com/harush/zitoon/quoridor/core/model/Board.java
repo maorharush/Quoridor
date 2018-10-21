@@ -57,6 +57,10 @@ public class Board {
         return tiles[x][y];
     }
 
+    public boolean isOccupied(int x, int y) {
+        return getTile(x, y).containsPawn();
+    }
+
     public LogicResult movePawn(int currentX, int currentY, int nextX, int nextY) {
         LogicResult logicResultCurrent = validateCoordinate(currentX, currentY);
         LogicResult logicResultNext = validateCoordinate(nextX, nextY);
@@ -108,7 +112,7 @@ public class Board {
     }
 
     public boolean containsPawn(int x, int y) {
-        return getTile(x,y).containsPawn();
+        return getTile(x, y).containsPawn();
     }
 
     /**
@@ -138,7 +142,7 @@ public class Board {
 
     /**
      * Returns a {@link Wall} given the x and y coordina
-     *      * @param x            the x coordinatete.
+     * * @param x            the x coordinatete.
      *
      * @param y            the y coordinate
      * @param isHorizontal whether the wall is horizontal
