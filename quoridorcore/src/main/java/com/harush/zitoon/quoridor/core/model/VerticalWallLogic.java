@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
-public class VerticalWallLogic implements Wall {
+public class VerticalWallLogic implements Wall{
 
     private GameSession gameSession;
 
@@ -38,6 +38,9 @@ public class VerticalWallLogic implements Wall {
         if (currentPlayer.getNumWalls() == 0) {
             return new LogicResult(false, "You do not have any walls left.");
         }
+        if(!opponentPathIsClear()){
+            return  new LogicResult(false,"You cannot place a wall here, blocking opponents path to victory is illegel.");
+        }
 
         gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
         System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
@@ -54,6 +57,8 @@ public class VerticalWallLogic implements Wall {
 
         return new LogicResult(true);
     }
+
+
 
     @Override
     public LogicResult removeWall() {

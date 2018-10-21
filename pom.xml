@@ -19,6 +19,7 @@
         <core.version>1.0-SNAPSHOT</core.version>
         <mockito.version>1.9.5</mockito.version>
         <guava.version>26.0-jre</guava.version>
+
     </properties>
 
     <dependencyManagement>
@@ -63,6 +64,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.com.robust-it</groupId>
+                <artifactId>cloning</artifactId>
+                <version>1.9.10</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
