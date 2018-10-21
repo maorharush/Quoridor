@@ -1,6 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
 
+import java.util.List;
+
 public interface Pawn {
 
     LogicResult spawn(int x, int y);
@@ -20,4 +22,5 @@ public interface Pawn {
     void setInitialCoordinate(Coordinate initialCoordinate);
 
     void setCurrentCoordinate(Coordinate currentCoordinate);
+    List<Coordinate> getValidMoves();
 }

@@ -1,5 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-public interface pathClearance {
+public interface PathClearanceValidator {
     boolean opponentPathIsClear(GameSession gameSession);
 }

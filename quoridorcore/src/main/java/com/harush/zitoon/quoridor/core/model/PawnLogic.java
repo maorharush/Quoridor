@@ -1,6 +1,7 @@
 package com.harush.zitoon.quoridor.core.model;
 
 
+import java.util.List;
 import java.util.Objects;
 
 public class PawnLogic implements Pawn {
