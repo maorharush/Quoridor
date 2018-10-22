@@ -26,17 +26,9 @@ public class VerticalWallLogic implements Wall {
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
 
-        if (currentX == width || nextWallY == height) {
-            return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
-        }
-
-        if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
-                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
-            return new LogicResult(false, "You cannot place a wall here.");
-        }
-
-        if (currentPlayer.getNumWalls() == 0) {
-            return new LogicResult(false, "You do not have any walls left.");
+        LogicResult validationResult = validateWallPlacement();
+        if (!validationResult.isSuccess()) {
+            return validationResult;
         }
 
         gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
@@ -56,7 +48,20 @@ public class VerticalWallLogic implements Wall {
     }
 
     @Override
-    public LogicResult removeWall() {
-        return null;
+    public LogicResult validateWallPlacement() {
+        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
+            return new LogicResult(false, "You do not have any walls left.");
+        }
+
+        int nextWallY = currentY + 1;
+        if (currentX == width || nextWallY == height) {
+            return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
+        }
+
+        if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
+                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
+            return new LogicResult(false, "You cannot place a wall here.");
+        }
+        return new LogicResult(true);
     }
 }

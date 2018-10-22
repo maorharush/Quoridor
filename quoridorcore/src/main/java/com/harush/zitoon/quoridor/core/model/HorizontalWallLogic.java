@@ -26,21 +26,9 @@ public class HorizontalWallLogic implements Wall {
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
 
-        if (nextWallX > width) {
-            return new LogicResult(false, "A horizontal wall cannot be placed at the very top of the board");
-        }
-
-        if (currentX == width) {
-            return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
-        }
-
-        if (gameSession.getBoard().containsWall(currentX, currentY, true) ||
-                gameSession.getBoard().containsWall(nextWallX, currentY, true)) {
-            return new LogicResult(false, "You cannot place a wall here.");
-        }
-
-        if (currentPlayer.getNumWalls() == 0) {
-            return new LogicResult(false, "You do not have any walls left.");
+        LogicResult validationResult = validateWallPlacement();
+        if (!validationResult.isSuccess())  {
+            return validationResult;
         }
 
         gameSession.getBoard().setWall(currentX, currentY, true, true, currentPlayer);
@@ -61,7 +49,25 @@ public class HorizontalWallLogic implements Wall {
     }
 
     @Override
-    public LogicResult removeWall() {
-        return null;
+    public LogicResult validateWallPlacement() {
+        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
+            return new LogicResult(false, "You do not have any walls left.");
+        }
+
+        int nextWallX = currentX + 1;
+        if (nextWallX > width) {
+            return new LogicResult(false, "A horizontal wall cannot be placed at the very top of the board");
+        }
+
+        if (currentX == width) {
+            return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
+        }
+
+        if (gameSession.getBoard().containsWall(currentX, currentY, true) ||
+                gameSession.getBoard().containsWall(nextWallX, currentY, true)) {
+            return new LogicResult(false, "You cannot place a wall here.");
+        }
+
+        return new LogicResult(true);
     }
 }
