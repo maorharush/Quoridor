@@ -8,6 +8,8 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
     private GameSession gameSession;
     private PathClearanceValidator pathClearanceValidator;
     private List<Player> players;
+    Board board;
+
 
 
     public WallMoveValidatorImpl(GameSession gameSession, PathClearanceValidator pathClearanceValidator) {
@@ -17,15 +19,17 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
 
     public boolean isEnemyPathBlockedAfterWallMove(int wallPlaceInX, int wallPlacedInY, boolean isHorizontal, boolean isFirst) {
         Cloner clone = new Cloner();
-        GameSession copyOfGamesSession = clone.deepClone(gameSession);//maybe place in the constructor?
-        copyOfGamesSession.getBoard().setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
+        board=clone.deepClone(gameSession.getBoard());//maybe place in the constructor?
+        players=clone.deepClone(gameSession.getPlayers());//maybe place in the constructor?
 
+
+        board.setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
         players = gameSession.getPlayers();
 
 
         for (Player player:players) {
-            Coordinate opponentCoordinate = player.pawn.getCurrentCoordinate();
-            if (!pathClearanceValidator.opponentPathIsClear(copyOfGamesSession) ){
+
+            if (!pathClearanceValidator.opponentPathIsClear(board,players) ){
                 return false;
             }
         }
