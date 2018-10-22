@@ -58,7 +58,7 @@ public class SetupController extends AbstractController implements Initializable
     private PawnType[] pawnTypes = PawnType.values();
     private DAOFactory daoFactory = DAOFactoryImpl.instance();
     private GameDAO gameDAO = DAOFactoryImpl.instance().getDAO(GameDAO.TABLE_NAME);
-    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic(), new Player2PlayerDBOConverterImpl());
+    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic());
     private VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
     private HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
     private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();

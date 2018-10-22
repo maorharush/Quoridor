@@ -9,6 +9,8 @@ public interface Pawn {
 
     LogicResult move(int x, int y);
 
+    List<Coordinate> getValidMoves();
+
     PawnType getType();
 
     int getX();
