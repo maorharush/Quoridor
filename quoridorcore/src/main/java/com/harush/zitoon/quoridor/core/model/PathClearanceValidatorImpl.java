@@ -8,7 +8,9 @@ public class PathClearanceValidatorImpl implements PathClearanceValidator {
 
         for (Player player : copyOfGameSession.getPlayers()) {
             List<Coordinate> validMoves = player.pawn.getValidMoves();
-            if (validMoves.isEmpty()) return false;
+            if (validMoves.isEmpty()) {
+                return false;
+            }
             for (Coordinate potentialMove : validMoves
             ) {
                 LogicResult movement = player.pawn.move(potentialMove.getX(), potentialMove.getY());
@@ -18,7 +20,7 @@ public class PathClearanceValidatorImpl implements PathClearanceValidator {
                 if (copyOfGameSession.checkForWinner()) {
                     return true;
                 } else {
-                    opponentPathIsClear(copyOfGameSession);
+                    return opponentPathIsClear(copyOfGameSession);
                 }
 
             }

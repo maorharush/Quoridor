@@ -25,7 +25,7 @@ public class VerticalWallLogic implements Wall{
         int nextWallY = currentY + 1;
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
-
+        WallMoveValidatorImpl wallMoveValidator = new WallMoveValidatorImpl(gameSession, new PathClearanceValidatorImpl());
         if (currentX == width || nextWallY == height) {
             return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
         }
@@ -38,7 +38,7 @@ public class VerticalWallLogic implements Wall{
         if (currentPlayer.getNumWalls() == 0) {
             return new LogicResult(false, "You do not have any walls left.");
         }
-        if(!opponentPathIsClear()){
+        if(!wallMoveValidator.isEnemyPathBlockedAfterWallMove(currentX,currentY,false,true)){//TODO:should examine the use of isFirst here
             return  new LogicResult(false,"You cannot place a wall here, blocking opponents path to victory is illegel.");
         }
 

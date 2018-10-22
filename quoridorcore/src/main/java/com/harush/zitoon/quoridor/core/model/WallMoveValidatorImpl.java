@@ -10,16 +10,16 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
     private List<Player> players;
 
 
-    private WallMoveValidatorImpl(GameSession gameSession, PathClearanceValidator pathClearanceValidator) {
+    public WallMoveValidatorImpl(GameSession gameSession, PathClearanceValidator pathClearanceValidator) {
         this.gameSession = gameSession;
         this.pathClearanceValidator = pathClearanceValidator;
     }
 
     public boolean isEnemyPathBlockedAfterWallMove(int wallPlaceInX, int wallPlacedInY, boolean isHorizontal, boolean isFirst) {
         Cloner clone = new Cloner();
-        Board copyOfCurrentBoard = clone.deepClone(gameSession.getBoard());
         GameSession copyOfGamesSession = clone.deepClone(gameSession);//maybe place in the constructor?
-        copyOfCurrentBoard.setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
+        copyOfGamesSession.getBoard().setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
+
         players = gameSession.getPlayers();
 
 
