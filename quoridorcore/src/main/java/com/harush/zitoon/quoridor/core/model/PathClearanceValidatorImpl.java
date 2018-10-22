@@ -1,34 +1,50 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.google.common.collect.Lists;
+import com.rits.cloning.Cloner;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PathClearanceValidatorImpl implements PathClearanceValidator {
-private WinnerDecider winnerDecider;
-    public boolean opponentPathIsClear(Board board, List<Player> players) {
 
-        for (Player player : players) {
-            List<Coordinate> validMoves = player.pawn.getValidMoves();
-            if (validMoves.isEmpty()) {
-                return false;
-            }
-            for (Coordinate potentialMove : validMoves
-            ) {
-                LogicResult movement = player.pawn.move(potentialMove.getX(), potentialMove.getY());
-                if (movement.isSuccess()) {
-                    player.pawn.setCurrentCoordinate(new Coordinate(potentialMove.getX(), potentialMove.getY()));
-                }
+    private WinnerDecider winnerDecider;
 
+    private List<Coordinate> visitedCoordinates = Lists.newArrayList();
 
-                if (winnerDecider.isWinner(player)) {
-                    return true;
-                } else {
-                    return opponentPathIsClear(board,players);
-                }
+    private Cloner cloner;
 
-            }
+    public PathClearanceValidatorImpl(WinnerDecider winnerDecider) {
+        this.winnerDecider = winnerDecider;
+        this.cloner = new Cloner();
+    }
+
+    public boolean isPathClearToVictory(Board board, Player player) {
+        Pawn pawn = player.getPawn();
+        visitedCoordinates.add(pawn.getCurrentCoordinate());
+
+        List<Coordinate> validMoves = pawn.getValidMoves();
+        List<Coordinate> validNonVisitedMoves = validMoves.stream().filter(coordinate -> !visitedCoordinates.contains(coordinate)).collect(Collectors.toList());
+
+        if (validNonVisitedMoves.isEmpty()) {
+            return false;
         }
 
+        for (Coordinate potentialMove : validNonVisitedMoves) {
+            Player potentialMovePlayer = cloner.deepClone(player);
+            Board potentialMoveBoard = cloner.deepClone(board);
+            Pawn potentialMovePawn = potentialMovePlayer.getPawn();
+            potentialMovePawn.setBoard(potentialMoveBoard);
 
-        return true;
+            potentialMovePawn.setCurrentCoordinate(new Coordinate(potentialMove.getX(), potentialMove.getY()));
+
+            if (winnerDecider.isWinner(potentialMovePlayer)) {
+                return true;
+            }
+            if (isPathClearToVictory(potentialMoveBoard, potentialMovePlayer)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

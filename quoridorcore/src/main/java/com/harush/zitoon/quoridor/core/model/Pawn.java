@@ -24,5 +24,6 @@ public interface Pawn {
     void setInitialCoordinate(Coordinate initialCoordinate);
 
     void setCurrentCoordinate(Coordinate currentCoordinate);
-    List<Coordinate> getValidMoves();
+
+    void setBoard(Board board);
 }
