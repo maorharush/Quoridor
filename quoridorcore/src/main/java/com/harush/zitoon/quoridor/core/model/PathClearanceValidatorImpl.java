@@ -1,6 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.google.common.collect.Lists;
 import com.rits.cloning.Cloner;
 
 import java.util.List;
