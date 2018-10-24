@@ -10,16 +10,14 @@ public class PathClearanceValidatorImpl implements PathClearanceValidator {
 
     private WinnerDecider winnerDecider;
 
-    private List<Coordinate> visitedCoordinates = Lists.newArrayList();
-
     private Cloner cloner;
 
-    public PathClearanceValidatorImpl(WinnerDecider winnerDecider) {
+    PathClearanceValidatorImpl(WinnerDecider winnerDecider) {
         this.winnerDecider = winnerDecider;
         this.cloner = new Cloner();
     }
 
-    public boolean isPathClearToVictory(Board board, Player player) {
+    public boolean isPathClearToVictory(Board board, Player player, List<Coordinate> visitedCoordinates) {
         Pawn pawn = player.getPawn();
         visitedCoordinates.add(pawn.getCurrentCoordinate());
 
@@ -41,7 +39,7 @@ public class PathClearanceValidatorImpl implements PathClearanceValidator {
             if (winnerDecider.isWinner(potentialMovePlayer)) {
                 return true;
             }
-            if (isPathClearToVictory(potentialMoveBoard, potentialMovePlayer)) {
+            if (isPathClearToVictory(potentialMoveBoard, potentialMovePlayer,visitedCoordinates)) {
                 return true;
             }
         }

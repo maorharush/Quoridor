@@ -1,9 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
 import com.rits.cloning.Cloner;
-import javafx.scene.control.SplitPane;
 
-import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WallMoveValidatorImpl implements WallMoveValidator {
@@ -13,7 +12,7 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
     Board board;
 
 
-    public WallMoveValidatorImpl(GameSession gameSession, PathClearanceValidator pathClearanceValidator) {
+    WallMoveValidatorImpl(GameSession gameSession, PathClearanceValidator pathClearanceValidator) {
         this.gameSession = gameSession;
         this.pathClearanceValidator = pathClearanceValidator;
     }
@@ -27,10 +26,11 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
         board.setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
         players = gameSession.getPlayers();
 
-
         for (Player player : players) {
+            List<Coordinate> validMovesList=new ArrayList<>();
+            validMovesList.clear();
 
-            if (!pathClearanceValidator.isPathClearToVictory(board, player)) {
+            if (!pathClearanceValidator.isPathClearToVictory(board, player,validMovesList)) {
                 System.out.println("to console:illegal well placement");
                 return false;
             }
