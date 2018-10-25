@@ -27,12 +27,12 @@ public class MainGame extends Application implements GameScreen, Observer {
     public static final int TILE_SIZE = Settings.getSingleton().getTileSize();
 
     private final VerticalWallComponent[][] verticalWalls;
+    private final HorizontalWallComponent[][] horizontalWalls;
     private final List<AbstractPawnComponent> pawnComponentList;
     private GameSession gameSession;
     private int height;
     private int width;
     private TileComponent[][] tileBoard;
-    private HorizontalWallComponent[][] horizontalWalls;
     private Group tileGroup = new Group();
     private Group pawnGroup = new Group();
     private Group horizontalWallGroup = new Group();
@@ -138,7 +138,7 @@ public class MainGame extends Application implements GameScreen, Observer {
 
         //Add vertical walls to the board
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < width - 1; x++) {
                 verticalWallGroup.getChildren().add(verticalWalls[x][y]);
             }
         }
