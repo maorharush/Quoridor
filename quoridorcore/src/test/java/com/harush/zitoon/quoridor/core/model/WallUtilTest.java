@@ -9,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 public class WallUtilTest {
@@ -42,36 +41,25 @@ public class WallUtilTest {
     }
 
     @Test
-    public void generateValidWallPlacements_success() {
-        Wall[][] verticalWalls = getVerticalWalls();
-        Wall[][] horizontalWalls = getHorizontalWalls();
+    public void findValidWallPlacements_allClear_success() {
+        Wall[][] verticalWalls = TestHelper.generateVerticalWalls(gameSession);
+        Wall[][] horizontalWalls = TestHelper.generateHorizontalWalls(gameSession);
+
+        List<PlayerAction> actualPlayerActions = wallUtil.findValidWallPlacements(verticalWalls, horizontalWalls);
+
+        Assert.assertEquals(128, actualPlayerActions.size());
+    }
+
+    @Test
+    public void findValidWallPlacements_1Vertical1HorizontalExist_success() {
+        Wall[][] verticalWalls = TestHelper.generateVerticalWalls(gameSession);
+        Wall[][] horizontalWalls = TestHelper.generateHorizontalWalls(gameSession);
 
         when(board.containsWall(1,1,true)).thenReturn(true);
         when(board.containsWall(3, 4, false)).thenReturn(true);
 
-        List<PlayerAction> expectedPlayerActions = Lists.newArrayList();
-        List<PlayerAction> actualPlayerActions = wallUtil.generateValidWallPlacements(verticalWalls, horizontalWalls);
+        List<PlayerAction> actualPlayerActions = wallUtil.findValidWallPlacements(verticalWalls, horizontalWalls);
 
-        Assert.assertEquals(expectedPlayerActions, actualPlayerActions);
-    }
-
-    public Wall[][] getHorizontalWalls() {
-        Wall[][] verticalWalls = new HorizontalWallLogic[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                verticalWalls[x][y] = new HorizontalWallLogic(x, y, gameSession);
-            }
-        }
-        return verticalWalls;
-    }
-
-    public Wall[][] getVerticalWalls() {
-        Wall[][] verticalWalls = new VerticalWallLogic[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                verticalWalls[x][y] = new VerticalWallLogic(x, y, gameSession);
-            }
-        }
-        return verticalWalls;
+        Assert.assertEquals(124, actualPlayerActions.size());
     }
 }

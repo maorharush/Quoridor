@@ -53,13 +53,13 @@ public class VerticalWallLogic implements Wall {
             return new LogicResult(false, "You do not have any walls left.");
         }
 
-        int nextWallY = currentY + 1;
-        if (currentX == width || nextWallY == height) {
+        int nextY = currentY + 1;
+        if (currentX == width || nextY == height) {
             return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
         }
 
         if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
-                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
+                gameSession.getBoard().containsWall(currentX, nextY, false)) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
         return new LogicResult(true);

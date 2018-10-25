@@ -4,7 +4,5 @@ import java.util.List;
 
 public interface WallUtil {
 
-    List<PlayerAction> generateValidWallPlacements(Wall[][] verticalWalls, Wall[][] horizontalWalls);
-
-    List<PlayerAction> gatherValidWallPlacements(boolean isHorizontal, Wall[][] walls);
+    List<PlayerAction> findValidWallPlacements(Wall[][] verticalWalls, Wall[][] horizontalWalls);
 }
