@@ -17,13 +17,13 @@ public class PawnLogic implements Pawn {
 
     private Board board;
 
-    private GameSession gameSession;
+    private IGameSession gameSession;
 
     private PawnType type;
 
     private Coordinate initialCoordinate;
 
-    public PawnLogic(GameSession gameSession, PawnType type) {
+    public PawnLogic(IGameSession gameSession, PawnType type) {
         this.board = gameSession.getBoard();
         this.gameSession = gameSession;
         this.type = type;

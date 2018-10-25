@@ -62,6 +62,10 @@ public abstract class Player {
         numWalls = Settings.getSingleton().getNumWalls();
     }
 
+    public Player(Pawn pawn) {
+        this.pawn = pawn;
+    }
+
     public abstract void play();
 
     /**

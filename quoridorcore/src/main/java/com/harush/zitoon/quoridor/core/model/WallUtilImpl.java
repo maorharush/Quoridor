@@ -10,39 +10,39 @@ public class WallUtilImpl implements WallUtil {
     private final int height = Settings.getSingleton().getBoardHeight();
 
     @Override
-    public List<PlayerAction> findValidWallPlacements(Wall[][] verticalWalls, Wall[][] horizontalWalls) {
+    public List<PlayerAction> findValidWallPlacements(Board board, Player player) {
         List<PlayerAction> wallPlacements = Lists.newArrayList();
 
-        List<PlayerAction> verticalWallPlacements = findValidVerticalWallPlacements(verticalWalls);
-        List<PlayerAction> horizontalWallPlacements = findValidHorizontalWallPlacements(horizontalWalls);
+        List<PlayerAction> verticalWallPlacements = findValidVerticalWallPlacements(board, player);
+        List<PlayerAction> horizontalWallPlacements = findValidHorizontalWallPlacements(board, player);
 
         wallPlacements.addAll(verticalWallPlacements);
         wallPlacements.addAll(horizontalWallPlacements);
         return wallPlacements;
     }
 
-    private List<PlayerAction> findValidHorizontalWallPlacements(Wall[][] horizontalWalls) {
+    private List<PlayerAction> findValidHorizontalWallPlacements(Board board, Player player) {
         List<PlayerAction> wallPlacements = Lists.newArrayList();
         for (int x = 0; x < width; x++) {
             for (int y = 1; y < height; y++) {
-                Wall wall = horizontalWalls[x][y];
-                LogicResult logicResult = wall.validateWallPlacement();
+                Wall wall = new HorizontalWallLogic(x, y, board);
+                LogicResult logicResult = wall.validateWallWithinBoard();
                 if (logicResult.isSuccess()) {
-                    wallPlacements.add(new PlayerAction(x, y, true, true, null));
+                    wallPlacements.add(new PlayerAction(x, y, true, true, player));
                 }
             }
         }
         return wallPlacements;
     }
 
-    private List<PlayerAction> findValidVerticalWallPlacements(Wall[][] verticalWalls) {
+    private List<PlayerAction> findValidVerticalWallPlacements(Board board, Player player) {
         List<PlayerAction> wallPlacements = Lists.newArrayList();
         for (int x = 0; x < width - 1; x++) {
             for (int y = 0; y < height; y++) {
-                Wall wall = verticalWalls[x][y];
-                LogicResult logicResult = wall.validateWallPlacement();
+                Wall wall = new VerticalWallLogic(x, y, board);
+                LogicResult logicResult = wall.validateWallWithinBoard();
                 if (logicResult.isSuccess()) {
-                    wallPlacements.add(new PlayerAction(x, y, false, true, null));
+                    wallPlacements.add(new PlayerAction(x, y, false, true, player));
                 }
             }
         }

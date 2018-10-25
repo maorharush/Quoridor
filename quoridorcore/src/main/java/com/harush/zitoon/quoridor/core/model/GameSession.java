@@ -54,6 +54,10 @@ public class GameSession extends Observable {
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
+    }
+
     /**
      * get the game id
      *

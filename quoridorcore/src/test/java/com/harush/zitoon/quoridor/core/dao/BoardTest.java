@@ -2,7 +2,6 @@ package com.harush.zitoon.quoridor.core.dao;
 
 import com.harush.zitoon.quoridor.core.model.*;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -33,7 +32,7 @@ public class BoardTest {
         board.setWall(1, 1, true, true, player2);
         board.setWall(2, 2, true, true, player3);
 
-        List<WallData> actualAllWalls = board.getAllWalls();
+        List<WallData> actualAllWalls = board.getAllExistingWalls();
 
 
         Assert.assertEquals("Number of walls returned is not as expected", expectedWalls.size(), actualAllWalls.size());
@@ -43,7 +42,7 @@ public class BoardTest {
     @Test
     public void getAllWalls0Walls_success() {
         Board board = new Board();
-        List<WallData> actualWalls = board.getAllWalls();
+        List<WallData> actualWalls = board.getAllExistingWalls();
         Assert.assertEquals("The wall list was expected to be empty",0, actualWalls.size());
     }
 

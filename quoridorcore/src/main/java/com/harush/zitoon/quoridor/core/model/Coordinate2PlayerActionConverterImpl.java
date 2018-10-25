@@ -7,4 +7,10 @@ public class Coordinate2PlayerActionConverterImpl implements Coordinate2PlayerAc
         PlayerAction playerAction = new PlayerAction(coordinate.getX(), coordinate.getY(), null);
         return playerAction;
     }
+
+    @Override
+    public PlayerAction toPlayerAction(Coordinate coordinate, Player player) {
+        PlayerAction playerAction = new PlayerAction(coordinate.getX(), coordinate.getY(), player);
+        return playerAction;
+    }
 }
