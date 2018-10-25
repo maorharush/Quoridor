@@ -74,6 +74,11 @@ public class VerticalWallComponent extends Rectangle implements Wall {
         return wall.validateWallPlacement();
     }
 
+    @Override
+    public LogicResult validateWallWithinBoard() {
+        return wall.validateWallWithinBoard();
+    }
+
     private void onMousePressed(MouseEvent e) {
         if (e.isPrimaryButtonDown()) {
             placeWall();

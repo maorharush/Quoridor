@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class AlphaBetaAIPlayer extends Player {
 
-    private final IGameSession gameSession;
+    private final GameSession gameSession;
 
     private final WallUtil wallUtil;
 
@@ -20,7 +20,7 @@ public class AlphaBetaAIPlayer extends Player {
     private final int DEPTH = 1;
 
 
-    public AlphaBetaAIPlayer(String name, IGameSession gameSession, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
+    public AlphaBetaAIPlayer(String name, GameSession gameSession, Pawn pawn, Wall[][] verticalWalls, Wall[][] horizontalWalls) {
         super(name, pawn, verticalWalls, horizontalWalls, true);
         this.gameSession = gameSession;
         this.wallUtil = new WallUtilImpl();
@@ -33,9 +33,9 @@ public class AlphaBetaAIPlayer extends Player {
     public void play() {
 
         System.out.println("I am alpha beta AI... `Thinking`...");
-        Board boardClone = cloneUtil.clone(gameSession.getBoard());
-        List<Player> playersClones = cloneUtil.clone(gameSession.getPlayers());
-        AlphaBetaAIPlayer alphaBetaAIPlayerClone = cloneUtil.clone(this);
+        Board boardClone = cloneUtil.clone(gameSession.getBoard(), Board.class);
+        List<Player> playersClones = cloneUtil.clone(gameSession.getPlayers(), Player.class);
+        Player alphaBetaAIPlayerClone = cloneUtil.clone(this, Player.class);
 
         List<PlayerAction> moves = generateMoves(alphaBetaAIPlayerClone, boardClone);
         PlayerAction maxMove = moves.remove(0);
@@ -73,14 +73,14 @@ public class AlphaBetaAIPlayer extends Player {
      * @param beta    beta score
      * @return min-max score
      */
-    public Integer alphaBeta(List<Player> players, Player max, int currentPlayerIndex, Board board, int level, int alpha, int beta) {
+    public int alphaBeta(List<Player> players, Player max, int currentPlayerIndex, Board board, int level, int alpha, int beta) {
         int score;
 
         currentPlayerIndex = (currentPlayerIndex + 1) % 2;
         Player player = players.get(currentPlayerIndex);
 
         if (level == DEPTH) {
-            return calcScore(board, player);
+            return 0;/*calcScore(board, player);*/
         } else {
 
             List<PlayerAction> moves = generateMoves(player, board);
@@ -114,7 +114,7 @@ public class AlphaBetaAIPlayer extends Player {
     }
 
     private Board makePotentialMove(PlayerAction potentialMove, Board board) {
-        Board boardClone = cloneUtil.clone(board);
+        Board boardClone = cloneUtil.clone(board, Board.class);
 
         if (potentialMove.getPlayerActionType().equals(PlayerActionType.MOVE_PAWN)) {
             Pawn pawn = potentialMove.getPlayer().getPawn();

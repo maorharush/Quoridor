@@ -79,7 +79,12 @@ public class HorizontalWallComponent extends Rectangle implements Wall {
 		return wall.validateWallPlacement();
 	}
 
-	private void setWallColor(Color color) {
+    @Override
+    public LogicResult validateWallWithinBoard() {
+        return wall.validateWallWithinBoard();
+    }
+
+    private void setWallColor(Color color) {
 		if (nextWallX > 0 && nextWallX < width) {
 			if (doesBoardContainWall()) {
 				setFill(color);

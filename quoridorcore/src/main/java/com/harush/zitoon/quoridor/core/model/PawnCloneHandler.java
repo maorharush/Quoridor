@@ -22,6 +22,8 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
 
         public ClonedPawn(Pawn pawn) {
             this.pawn = pawn;
+            this.x = pawn.getX();
+            this.y = pawn.getY();
         }
 
         @Override

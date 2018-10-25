@@ -10,7 +10,9 @@ public class PlayerCloneHandler implements CloneHandler<Player> {
 
     @Override
     public Player clone(Player player, Object... args) {
-        return new ClonedPlayer(cloneUtil.clone(player.getPawn()));
+        ClonedPlayer clonedPlayer = new ClonedPlayer(cloneUtil.clone(player.getPawn(), Pawn.class));
+        clonedPlayer.setNumWalls(player.getNumWalls());
+        return clonedPlayer;
     }
 
     private class ClonedPlayer extends Player {

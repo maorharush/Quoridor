@@ -13,8 +13,8 @@ public class BoardCloneHandler implements CloneHandler<Board> {
     @Override
     public Board clone(Board board, Object... args) {
         Board clone = new Board(board.getHeight(), board.getWidth());
-        List<WallData> clonedWalls = cloneUtil.clone(board.getAllWalls());
-        List<Tile> clonedTiles = cloneUtil.clone(board.getAllTiles());
+        List<WallData> clonedWalls = cloneUtil.clone(board.getAllWalls(), WallData.class);
+        List<Tile> clonedTiles = cloneUtil.clone(board.getAllTiles(), Tile.class);
         clonedWalls.forEach(clone::setWall);
         clonedTiles.forEach(clone::setTile);
 

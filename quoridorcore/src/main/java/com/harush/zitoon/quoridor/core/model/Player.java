@@ -45,8 +45,8 @@ public abstract class Player {
         this.stats = new Statistics();
         this.isAI = isAI;
         numWalls = Settings.getSingleton().getNumWalls();
-    }
 
+    }
     /**
      * Creates a new Player by initialising its name and pawn
      * @param name       player name
