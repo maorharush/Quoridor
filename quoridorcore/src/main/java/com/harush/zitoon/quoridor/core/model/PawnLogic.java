@@ -123,8 +123,34 @@ public class PawnLogic implements Pawn {
         if (isValidNorthDiagonalMove(currentX, currentY, nextX, nextY)) {
             return true;
         }
+        if(isValidEastDiagonalMove(currentX,currentY,nextX,nextY)){
+            return true;
+        }
+        if(isValidWestDiagonalMove(currentX,currentY,nextX,nextY)){
+            return true;
+        }
 
         return isValidHorizontalMove(currentX, currentY, nextX, nextY);
+    }
+
+    private boolean isValidWestDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveLeft(currentX, nextX)) {
+            if (isValidNorthWest(currentX, currentY, nextX, nextY)) {
+                return true;
+            }
+            return isValidNorthWest(currentX, currentY, nextX, nextY);
+        }
+        return false;
+    }
+
+    private boolean isValidEastDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveRight(currentX, nextX)) {
+            if (isValidNorthEast(currentX, currentY, nextX, nextY)) {
+                return true;
+            }
+            return isValidNorthWest(currentX, currentY, nextX, nextY);
+        }
+        return false;
     }
 
     private boolean isValidNorthDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
@@ -139,7 +165,7 @@ public class PawnLogic implements Pawn {
 
     private boolean isValidNorthWest(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveLeft(currentX, nextX)) {
-            if (isSpecialJump(currentX, nextY)) {
+            if (isSpecialJump(currentX, currentY-1)||isSpecialJump(currentX-1,currentY)) {
                 if(!isUnblocked(currentX,nextY,true)) {
                     if(isUnblocked(currentX-1,nextY,false))
                         return true;
@@ -151,9 +177,9 @@ public class PawnLogic implements Pawn {
 
     private boolean isValidNorthEast(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveRight(currentX, nextX)) {
-            if (isSpecialJump(currentX, nextY)) {
+            if (isSpecialJump(currentX, currentY-1)||isSpecialJump(currentX+1,currentY)) {
                 if(!isUnblocked(currentX,nextY,true)) {
-                    if(isUnblocked(currentX+1,nextY,false))
+                    if(isUnblocked(currentX,nextY,false))
                     return true;
                 }
             }
@@ -173,8 +199,8 @@ public class PawnLogic implements Pawn {
 
     private boolean isValidSouthWest(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveLeft(currentX, nextX)) {
-            if (isSpecialJump(currentX, nextY)) {
-                if(!isUnblocked(currentX,nextY+1,true)) {
+            if (isSpecialJump(currentX, currentY+1)||isSpecialJump(currentX-1,currentY)) {
+                if(!isUnblocked(nextX+1,nextY+1,true)||!isUnblocked(currentX-1,currentY-1,false)) {
                     if(isUnblocked(currentX-1,nextY,false))
                         return true;
                 }
@@ -185,9 +211,9 @@ public class PawnLogic implements Pawn {
 
     private boolean isValidSouthEast(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveRight(currentX, nextX)) {
-            if (isSpecialJump(currentX, nextY)) {
+            if (isSpecialJump(currentX, currentY+1)||isSpecialJump(currentX+1,currentY)) {
                 if(!isUnblocked(currentX,nextY+1,true)) {
-                    if(isUnblocked(currentX+1,nextY,false))
+                    if(isUnblocked(currentX,nextY,false))
                         return true;
                 }
             }
@@ -223,7 +249,7 @@ public class PawnLogic implements Pawn {
         if (isMoveLeft(currentX, nextX)) {
             if (isUnblocked(currentX - 1, currentY, false)) {
                 if (isSpecialJump(nextX + 1, nextY)) {
-                    return isUnblocked(nextX, nextY, false);
+                    return isUnblocked(nextX-1, nextY, false);
                 }
                 return nextX == currentX - 1;
             }
