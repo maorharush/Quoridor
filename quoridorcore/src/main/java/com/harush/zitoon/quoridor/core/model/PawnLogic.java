@@ -1,7 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
 
-import java.util.List;
 import com.google.common.collect.Lists;
 
 import java.util.List;
@@ -29,6 +28,12 @@ public class PawnLogic implements Pawn {
         this.gameSession = gameSession;
         this.type = type;
     }
+
+    public PawnLogic(Board board, PawnType type) {
+        this.board = board;
+        this.type = type;
+    }
+
 
     @Override
     public LogicResult move(int newX, int newY) {
