@@ -1,5 +1,8 @@
 package com.harush.zitoon.quoridor.core.model;
 
+/**
+ * holds the logical result of core logical operation outcome.
+ */
 public class LogicResult {
 
     private boolean success;

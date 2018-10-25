@@ -117,8 +117,82 @@ public class PawnLogic implements Pawn {
         if (isValidVerticalMove(currentX, currentY, nextX, nextY)) {
             return true;
         }
+        if (isValidSouthDiagonallMove(currentX, currentY, nextX, nextY)) {
+            return true;
+        }
+        if (isValidNorthDiagonalMove(currentX, currentY, nextX, nextY)) {
+            return true;
+        }
 
         return isValidHorizontalMove(currentX, currentY, nextX, nextY);
+    }
+
+    private boolean isValidNorthDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveUp(currentY, nextY)) {
+            if (isValidNorthEast(currentX, currentY, nextX, nextY)) {
+                return true;
+            }
+            return isValidNorthWest(currentX, currentY, nextX, nextY);
+        }
+        return false;
+    }
+
+    private boolean isValidNorthWest(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveLeft(currentX, nextX)) {
+            if (isSpecialJump(currentX, nextY)) {
+                if(!isUnblocked(currentX,nextY,true)) {
+                    if(isUnblocked(currentX-1,nextY,false))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidNorthEast(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveRight(currentX, nextX)) {
+            if (isSpecialJump(currentX, nextY)) {
+                if(!isUnblocked(currentX,nextY,true)) {
+                    if(isUnblocked(currentX+1,nextY,false))
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidSouthDiagonallMove(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveDown(currentY, nextY)) {
+            if (isValidSouthEast(currentX, currentY, nextX, nextY)) {
+                return true;
+            }
+            return isValidSouthWest(currentX, currentY, nextX, nextY);
+        }
+        return false;
+    }
+
+    private boolean isValidSouthWest(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveLeft(currentX, nextX)) {
+            if (isSpecialJump(currentX, nextY)) {
+                if(!isUnblocked(currentX,nextY+1,true)) {
+                    if(isUnblocked(currentX-1,nextY,false))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isValidSouthEast(int currentX, int currentY, int nextX, int nextY) {
+        if (isMoveRight(currentX, nextX)) {
+            if (isSpecialJump(currentX, nextY)) {
+                if(!isUnblocked(currentX,nextY+1,true)) {
+                    if(isUnblocked(currentX+1,nextY,false))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
     public Boolean isValidHorizontalMove(int currentX, int currentY, int nextX, int nextY) {
