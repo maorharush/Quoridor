@@ -8,7 +8,7 @@ import java.util.List;
 public class WallMoveValidatorImpl implements WallMoveValidator {
     private GameSession gameSession;
     private PathClearanceValidator pathClearanceValidator;
-    private List<Player> players;
+    List<Player> players;
     Board board;
 
 
@@ -24,7 +24,7 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
 
 
         board.setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
-        players = gameSession.getPlayers();
+
 
         for (Player player : players) {
             List<Coordinate> validMovesList=new ArrayList<>();
