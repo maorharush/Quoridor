@@ -207,7 +207,7 @@ public class SetupController extends AbstractController implements Initializable
     private VerticalWallComponent[][] makeVerticalWallComponents() {
         final VerticalWallComponent[][] verticalWalls = new VerticalWallComponent[width][height];
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < width - 1; x++) {
                 VerticalWallComponent wall = new VerticalWallComponent(x, y, verticalWalls, gameSession, new VerticalWallLogic(x, y, gameSession));
                 verticalWalls[x][y] = wall;
             }
