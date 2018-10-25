@@ -32,10 +32,9 @@ public class WallMoveValidatorImpl implements WallMoveValidator {
         board.setWall(wallPlaceInX, wallPlacedInY, isHorizontal, isFirst, gameSession.getCurrentPlayer());
 
 
-        for (Player player : players) {
-            PawnLogic pawnLogic =ourCloner.clone(board,player.getPawn());
-            //pawnLogic.setBoard(board);
-            Player playerCopy = ourCloner.clone(player);
+        for (Player player : gameSession.getPlayers()) {
+            PawnLogic pawnLogic =ourCloner.clone(player.getPawn(), board);
+            Player playerCopy = ourCloner.clone(player, pawnLogic);
             playerCopy.pawn.setBoard(board);
 
             List<Coordinate> validMovesList=new ArrayList<>();

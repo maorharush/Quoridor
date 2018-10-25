@@ -30,16 +30,13 @@ public class PathClearanceValidatorImpl implements PathClearanceValidator {
         }
 
         for (Coordinate potentialMove : validNonVisitedMoves) {
-            PawnLogic pawnLogic= ourCloner.clone(board,player.getPawn());
-            //pawnLogic.setBoard(board);
-
-            Player potentialMovePlayer = ourCloner.clone(player);
+            PawnLogic pawnLogic= ourCloner.clone(player.getPawn(), board);
             Board potentialMoveBoard = ourCloner.clone(board);
-            Pawn potentialMovePawn = pawnLogic;
-            potentialMovePawn.setBoard(potentialMoveBoard);
+            pawnLogic.setBoard(potentialMoveBoard);
+            Player potentialMovePlayer = ourCloner.clone(player, pawnLogic);
 
-            potentialMovePawn.setCurrentCoordinate(new Coordinate(potentialMove.getX(), potentialMove.getY()));
 
+            pawnLogic.setCurrentCoordinate(new Coordinate(potentialMove.getX(), potentialMove.getY()));
             if (winnerDecider.isWinner(potentialMovePlayer)) {
                 return true;
             }
