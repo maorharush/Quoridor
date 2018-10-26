@@ -164,10 +164,10 @@ public class AlphaBetaAIPlayer extends Player {
         } else if (potentialMove.getPlayer().getNumWalls() > 0) {
             if (potentialMove.isHorizontal()) {
                 potentialMove.getPlayer().decrementWalls();
-                board.setWall(potentialMove.getX(), potentialMove.getY(), true, true, potentialMove.getPlayer());
+                boardClone.setWall(potentialMove.getX(), potentialMove.getY(), true, true, potentialMove.getPlayer());
             } else {
                 potentialMove.getPlayer().decrementWalls();
-                board.setWall(potentialMove.getX(), potentialMove.getY(), false, true, potentialMove.getPlayer());
+                boardClone.setWall(potentialMove.getX(), potentialMove.getY(), false, true, potentialMove.getPlayer());
             }
         }
 
