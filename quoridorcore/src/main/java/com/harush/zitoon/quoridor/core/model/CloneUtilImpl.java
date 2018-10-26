@@ -1,7 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.theirs.Human;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +17,7 @@ public class CloneUtilImpl implements CloneUtil {
     }
 
     @Override
-    public <T> T clone(T t, Class clazz) {
-        return (T) class2cloneHandlerMap.get(clazz).clone(t);
+    public <T> T clone(T t, Class clazz, Object... args) {
+        return (T) class2cloneHandlerMap.get(clazz).clone(t, args);
     }
 }

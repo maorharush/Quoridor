@@ -7,9 +7,10 @@ public class PlayerAction {
     private PlayerActionType playerActionType;
     private int x;
     private int y;
-    private boolean isHorizontal;
-    private boolean isFirst;
+    private Boolean isHorizontal;
+    private Boolean isFirst;
     private Player player;
+    private PlayerAction parent;
 
     public PlayerAction(int x, int y, Player player) {
         this.player = player;
@@ -83,5 +84,20 @@ public class PlayerAction {
                 ", isFirst=" + isFirst +
                 ", player=" + player +
                 '}';
+    }
+
+    public PlayerAction getParent() {
+        return parent;
+    }
+
+    public void setParent(PlayerAction parent) {
+        this.parent = parent;
+    }
+
+    public int getPathLength() {
+        if (parent == null) {
+            return 1;
+        }
+        return parent.getPathLength() + 1;
     }
 }

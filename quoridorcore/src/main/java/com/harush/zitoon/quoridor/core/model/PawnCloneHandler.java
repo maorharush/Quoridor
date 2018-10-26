@@ -9,21 +9,26 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
 
     @Override
     public Pawn clone(Pawn pawn, Object... args) {
-        return new ClonedPawn(pawn);
+        Board clonedBoard = (Board) args[0];
+        return new ClonedPawn(pawn, clonedBoard);
     }
 
     private class ClonedPawn implements Pawn {
 
         private final Pawn pawn;
 
-        private int x;
+        private final Board clonedBoard;
 
-        private int y;
+        private int currentX;
 
-        public ClonedPawn(Pawn pawn) {
-            this.pawn = pawn;
-            this.x = pawn.getX();
-            this.y = pawn.getY();
+        private int currentY;
+
+        public ClonedPawn(Pawn pawn, Board clonedBoard) {
+            this.pawn = new PawnLogic(clonedBoard, pawn.getType());
+            this.clonedBoard = clonedBoard;
+            this.pawn.setInitialCoordinate(pawn.getInitialCoordinate());
+            this.currentX = pawn.getX();
+            this.currentY = pawn.getY();
         }
 
         @Override
@@ -33,7 +38,10 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
 
         @Override
         public LogicResult move(int x, int y) {
-            throw new NotImplementedException();
+            clonedBoard.movePawn(currentX, currentY, x, y);
+            currentX = x;
+            currentY = y;
+            return new LogicResult(true);
         }
 
         @Override
@@ -48,12 +56,12 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
 
         @Override
         public int getX() {
-            return x;
+            return currentX;
         }
 
         @Override
         public int getY() {
-            return y;
+            return currentY;
         }
 
         @Override
@@ -63,7 +71,7 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
 
         @Override
         public Coordinate getCurrentCoordinate() {
-            return new Coordinate(x, y);
+            return new Coordinate(currentX, currentY);
         }
 
         @Override
@@ -73,8 +81,8 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
 
         @Override
         public void setCurrentCoordinate(Coordinate currentCoordinate) {
-            x = currentCoordinate.getX();
-            y = currentCoordinate.getY();
+            currentX = currentCoordinate.getX();
+            currentY = currentCoordinate.getY();
         }
     }
 }

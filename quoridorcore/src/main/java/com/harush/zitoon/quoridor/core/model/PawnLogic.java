@@ -29,6 +29,11 @@ public class PawnLogic implements Pawn {
         this.type = type;
     }
 
+    public PawnLogic(Board board, PawnType type) {
+        this.board = board;
+        this.type = type;
+    }
+
     @Override
     public LogicResult move(int newX, int newY) {
         Player currentPlayer = gameSession.getCurrentPlayer();

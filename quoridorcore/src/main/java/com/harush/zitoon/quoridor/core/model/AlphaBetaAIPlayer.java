@@ -2,7 +2,9 @@ package com.harush.zitoon.quoridor.core.model;
 
 import com.google.common.collect.Lists;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * A very simple AI player.
@@ -31,11 +33,11 @@ public class AlphaBetaAIPlayer extends Player {
 
     @Override
     public void play() {
-
         System.out.println("I am alpha beta AI... `Thinking`...");
+
         Board boardClone = cloneUtil.clone(gameSession.getBoard(), Board.class);
-        List<Player> playersClones = cloneUtil.clone(gameSession.getPlayers(), Player.class);
-        Player alphaBetaAIPlayerClone = cloneUtil.clone(this, Player.class);
+        List<Player> playersClones = cloneUtil.clone(gameSession.getPlayers(), Player.class, boardClone);
+        Player alphaBetaAIPlayerClone = cloneUtil.clone(this, Player.class, boardClone);
 
         List<PlayerAction> moves = generateMoves(alphaBetaAIPlayerClone, boardClone);
         PlayerAction maxMove = moves.remove(0);
@@ -54,7 +56,7 @@ public class AlphaBetaAIPlayer extends Player {
     private void makeChosenMove(PlayerAction maxMove) {
         if (maxMove.getPlayerActionType().equals(PlayerActionType.MOVE_PAWN)) {
             pawn.move(maxMove.getX(), maxMove.getY());
-        } else if(maxMove.isHorizontal()) {
+        } else if (maxMove.isHorizontal()) {
             horizontalWalls[maxMove.getX()][maxMove.getY()].placeWall();
         } else {
             verticalWalls[maxMove.getX()][maxMove.getY()].placeWall();
@@ -80,9 +82,8 @@ public class AlphaBetaAIPlayer extends Player {
         Player player = players.get(currentPlayerIndex);
 
         if (level == DEPTH) {
-            return 0;/*calcScore(board, player);*/
+            return calcScore(player, cloneUtil.clone(players, Player.class, board));
         } else {
-
             List<PlayerAction> moves = generateMoves(player, board);
             if (player.equals(max)) {
                 for (PlayerAction next : moves) {
@@ -92,13 +93,11 @@ public class AlphaBetaAIPlayer extends Player {
                     }
                     if (beta <= alpha) {
                         break;
-
                     }
                 }
                 return alpha;
             } else {
                 for (PlayerAction next : moves) {
-
                     score = alphaBeta(players, max, currentPlayerIndex, makePotentialMove(next, board), level + 1, alpha, beta);
                     if (score < beta) {
                         beta = score;
@@ -106,28 +105,72 @@ public class AlphaBetaAIPlayer extends Player {
                     if (beta <= alpha) {
                         break;
                     }
-
                 }
                 return beta;
             }
         }
     }
 
+    private int calcScore(Player player, List<Player> others) {
+        PlayerAction move = getShortestPath(player);
+        others.remove(player);
+        int min = getShortestPath(others.remove(0)).getPathLength();
+        for (Player other : others) {
+            int s = getShortestPath(other).getPathLength();
+            if (s > min) {
+                min = s;
+            }
+        }
+        return (min - move.getPathLength());
+    }
+
+    private PlayerAction getShortestPath(Player player) {
+        Queue<PlayerAction> q = new LinkedList<>();
+        LinkedList<PlayerAction> visited = new LinkedList<>();
+        PlayerAction current = new Coordinate2PlayerActionConverterImpl().toPlayerAction(player.getPawn().getCurrentCoordinate());
+
+        boolean finished = false;
+
+        q.add(current);
+        visited.add(current);
+
+        while (!q.isEmpty() && !finished) {
+            current = q.remove();
+
+            List<PlayerAction> pawnMoves = pawnUtil.generatePawnMoves(player);
+            for (PlayerAction p : pawnMoves) {
+                if (!visited.contains(p)) {
+                    p.setParent(current);
+                    visited.add(p);
+                    q.add(p);
+                    if (new WinnerDeciderLogic().isWinner(player)) {
+                        current = p;
+                        finished = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return current;
+    }
+
     private Board makePotentialMove(PlayerAction potentialMove, Board board) {
         Board boardClone = cloneUtil.clone(board, Board.class);
 
         if (potentialMove.getPlayerActionType().equals(PlayerActionType.MOVE_PAWN)) {
-            Pawn pawn = potentialMove.getPlayer().getPawn();
             boardClone.movePawn(pawn.getX(), pawn.getY(), potentialMove.getX(), potentialMove.getY());
-            pawn.setCurrentCoordinate(new Coordinate(potentialMove.getX(), potentialMove.getY()));
-        } else if(potentialMove.isHorizontal()) {
-            potentialMove.getPlayer().decrementWalls();
-            board.setWall(potentialMove.getX(), potentialMove.getY(), true, true, potentialMove.getPlayer());
-        } else {
-            potentialMove.getPlayer().decrementWalls();
-            board.setWall(potentialMove.getX(), potentialMove.getY(), false, true, potentialMove.getPlayer());
+            pawn.move(potentialMove.getX(), potentialMove.getY());
+        } else if (potentialMove.getPlayer().getNumWalls() > 0) {
+            if (potentialMove.isHorizontal()) {
+                potentialMove.getPlayer().decrementWalls();
+                board.setWall(potentialMove.getX(), potentialMove.getY(), true, true, potentialMove.getPlayer());
+            } else {
+                potentialMove.getPlayer().decrementWalls();
+                board.setWall(potentialMove.getX(), potentialMove.getY(), false, true, potentialMove.getPlayer());
+            }
         }
-        
+
         return boardClone;
     }
 
