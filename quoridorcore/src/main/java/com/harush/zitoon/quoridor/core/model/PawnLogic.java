@@ -138,7 +138,7 @@ public class PawnLogic implements Pawn {
             if (isValidNorthWest(currentX, currentY, nextX, nextY)) {
                 return true;
             }
-            return isValidNorthWest(currentX, currentY, nextX, nextY);
+            return isValidSouthWest(currentX, currentY, nextX, nextY);
         }
         return false;
     }
@@ -148,7 +148,7 @@ public class PawnLogic implements Pawn {
             if (isValidNorthEast(currentX, currentY, nextX, nextY)) {
                 return true;
             }
-            return isValidNorthWest(currentX, currentY, nextX, nextY);
+            return isValidSouthWest(currentX, currentY, nextX, nextY);
         }
         return false;
     }
@@ -249,7 +249,7 @@ public class PawnLogic implements Pawn {
         if (isMoveLeft(currentX, nextX)) {
             if (isUnblocked(currentX - 1, currentY, false)) {
                 if (isSpecialJump(nextX + 1, nextY)) {
-                    return isUnblocked(nextX-1, nextY, false);
+                    return isUnblocked(nextX, nextY, false);
                 }
                 return nextX == currentX - 1;
             }

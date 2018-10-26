@@ -16,6 +16,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class MainGame extends Application implements GameScreen, Observer {
     private int width;
     private TileComponent[][] tileBoard;
     private HorizontalWallComponent[][] horizontalWalls;
+    private Group labels = new Group();
     private Group tileGroup = new Group();
     private Group pawnGroup = new Group();
     private Group horizontalWallGroup = new Group();
@@ -125,7 +127,7 @@ public class MainGame extends Application implements GameScreen, Observer {
     private Parent createContent() {
         Pane root = new Pane();
         root.setPrefSize((width * TILE_SIZE) + 85, height * TILE_SIZE);
-        root.getChildren().addAll(tileGroup, pawnGroup, horizontalWallGroup, verticalWallGroup, createInfoPanel());
+        root.getChildren().addAll(tileGroup, pawnGroup, horizontalWallGroup, verticalWallGroup,labels, createInfoPanel());
 
         //Add tiles to the board
         for (int y = 0; y < height; y++) {
@@ -135,17 +137,32 @@ public class MainGame extends Application implements GameScreen, Observer {
                 tileGroup.getChildren().add(tile);
             }
         }
+        //Add labels to the board
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                String location = "(" + x + ", " + y + ")";
+                Text text = new Text(x,y, location);
+                text.setTranslateX(x*Settings.getSingleton().getTileSize());
+                text.setTranslateY(y*Settings.getSingleton().getTileSize()+40);
+                text.setFont(Font.font("Verdana", FontWeight.MEDIUM, 8));
+                text.setFill(Color.BLACK);
+
+                labels.getChildren().add(text);
+            }
+        }
 
         //Add vertical walls to the board
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 verticalWallGroup.getChildren().add(verticalWalls[x][y]);
+
             }
         }
 
         //Add horizontal walls to the board
         for (int y = 1; y < height; y++) {
             for (int x = 0; x < width; x++) {
+
                 horizontalWallGroup.getChildren().add(horizontalWalls[x][y]);
             }
         }
@@ -153,6 +170,8 @@ public class MainGame extends Application implements GameScreen, Observer {
         pawnGroup.getChildren().addAll(pawnComponentList);
         return root;
     }
+
+
 
     /**
      * Ends the game and displays the {@link Statistics}.

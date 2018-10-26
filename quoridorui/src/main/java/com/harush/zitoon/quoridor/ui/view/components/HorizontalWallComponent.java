@@ -4,6 +4,7 @@ import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.task.PlaceWallTask;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
