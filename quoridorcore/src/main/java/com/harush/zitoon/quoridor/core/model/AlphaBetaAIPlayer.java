@@ -2,9 +2,8 @@ package com.harush.zitoon.quoridor.core.model;
 
 import com.google.common.collect.Lists;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.stream.Collectors;
 
 /**
  * A very simple AI player.
@@ -19,6 +18,8 @@ public class AlphaBetaAIPlayer extends Player {
 
     private final CloneUtil cloneUtil;
 
+    private final WinnerDecider winnerDecider;
+
     private final int DEPTH = 1;
 
 
@@ -28,6 +29,7 @@ public class AlphaBetaAIPlayer extends Player {
         this.wallUtil = new WallUtilImpl();
         this.pawnUtil = new PawnUtilImpl();
         this.cloneUtil = new CloneUtilImpl();
+        this.winnerDecider = new WinnerDeciderLogic();
 
     }
 
@@ -82,7 +84,7 @@ public class AlphaBetaAIPlayer extends Player {
         Player player = players.get(currentPlayerIndex);
 
         if (level == DEPTH) {
-            return calcScore(player, cloneUtil.clone(players, Player.class, board));
+            return calcScore(player, board, cloneUtil.clone(players, Player.class, board));
         } else {
             List<PlayerAction> moves = generateMoves(player, board);
             if (player.equals(max)) {
@@ -111,12 +113,12 @@ public class AlphaBetaAIPlayer extends Player {
         }
     }
 
-    private int calcScore(Player player, List<Player> others) {
-        PlayerAction move = getShortestPath(player);
+    private int calcScore(Player player, Board board, List<Player> others) {
+        PlayerAction move = getShortestPath(pawnUtil.generatePawnMove(player), board, Lists.newArrayList());
         others.remove(player);
-        int min = getShortestPath(others.remove(0)).getPathLength();
+        int min = getShortestPath(pawnUtil.generatePawnMove(others.remove(0)), board, Lists.newArrayList()).getPathLength();
         for (Player other : others) {
-            int s = getShortestPath(other).getPathLength();
+            int s = getShortestPath(pawnUtil.generatePawnMove(other), board, Lists.newArrayList()).getPathLength();
             if (s > min) {
                 min = s;
             }
@@ -124,35 +126,28 @@ public class AlphaBetaAIPlayer extends Player {
         return (min - move.getPathLength());
     }
 
-    private PlayerAction getShortestPath(Player player) {
-        Queue<PlayerAction> q = new LinkedList<>();
-        LinkedList<PlayerAction> visited = new LinkedList<>();
-        PlayerAction current = new Coordinate2PlayerActionConverterImpl().toPlayerAction(player.getPawn().getCurrentCoordinate());
+    private PlayerAction getShortestPath(PlayerAction current, Board board, List<PlayerAction> visited) {
+        Player player = current.getPlayer();
+        Coordinate initialCoordinate = player.getPawn().getInitialCoordinate();
 
-        boolean finished = false;
-
-        q.add(current);
         visited.add(current);
 
-        while (!q.isEmpty() && !finished) {
-            current = q.remove();
+        List<PlayerAction> pawnMoves = pawnUtil.generatePawnMoves(current, board);
+        List<PlayerAction> nonVisitedMoves = pawnMoves.stream().filter(move -> !visited.contains(move)).collect(Collectors.toList());
 
-            List<PlayerAction> pawnMoves = pawnUtil.generatePawnMoves(player);
-            for (PlayerAction p : pawnMoves) {
-                if (!visited.contains(p)) {
-                    p.setParent(current);
-                    visited.add(p);
-                    q.add(p);
-                    if (new WinnerDeciderLogic().isWinner(player)) {
-                        current = p;
-                        finished = true;
-                        break;
-                    }
-                }
+        for (PlayerAction move : nonVisitedMoves) {
+            move.setParent(current);
+            if (winnerDecider.isWinner(initialCoordinate, move.getCoordinate())) {
+                return move;
+            }
+            Board updatedBoard = makePotentialMove(move, board);
+            PlayerAction shortestPath = getShortestPath(move, updatedBoard, visited);
+            if (shortestPath != null) {
+                return shortestPath;
             }
         }
 
-        return current;
+        return null;
     }
 
     private Board makePotentialMove(PlayerAction potentialMove, Board board) {
@@ -160,7 +155,6 @@ public class AlphaBetaAIPlayer extends Player {
 
         if (potentialMove.getPlayerActionType().equals(PlayerActionType.MOVE_PAWN)) {
             boardClone.movePawn(pawn.getX(), pawn.getY(), potentialMove.getX(), potentialMove.getY());
-            pawn.move(potentialMove.getX(), potentialMove.getY());
         } else if (potentialMove.getPlayer().getNumWalls() > 0) {
             if (potentialMove.isHorizontal()) {
                 potentialMove.getPlayer().decrementWalls();
