@@ -45,6 +45,14 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
         }
 
         @Override
+        public LogicResult move(Coordinate coordinate) {
+            clonedBoard.movePawn(currentX, currentY, coordinate.getX(), coordinate.getY());
+            currentX = coordinate.getX();
+            currentY = coordinate.getY();
+            return new LogicResult(true);
+        }
+
+        @Override
         public List<Coordinate> getValidMoves() {
             return pawn.getValidMoves();
         }

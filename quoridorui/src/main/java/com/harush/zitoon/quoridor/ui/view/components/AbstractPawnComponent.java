@@ -78,6 +78,11 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
     }
 
     @Override
+    public LogicResult move(Coordinate coordinate) {
+        return pawn.move(coordinate);
+    }
+
+    @Override
     public List<Coordinate> getValidMoves() {
         return pawn.getValidMoves();
     }
