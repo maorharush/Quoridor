@@ -38,14 +38,7 @@ public class WallData {
 	public int getY() {
 		return y;
 	}
-	
-	/**
-	 * Gets whether this is the first part of the {@link WallData}.
-	 * @return whether this is the first part
-	 */
-	public boolean getIsFirst() {
-		return isFirst;
-	}
+
 	
 	/**
 	 * Gets the {@link Player} who placed the wall.

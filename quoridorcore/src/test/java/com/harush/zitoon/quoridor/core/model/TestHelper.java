@@ -6,6 +6,10 @@ import com.harush.zitoon.quoridor.core.dao.dbo.PlayerDBO;
 
 public abstract class TestHelper {
 
+    private static final int width = Settings.getSingleton().getBoardWidth();
+
+    private static final int height = Settings.getSingleton().getBoardHeight();
+
     public static GameRecDBO generateGameRecDBO(int gameID, int playerID, String pawnType, int pawnX, int pawnY, int wallX, int wallY, Character orientation) {
         GameRecDBO gameRecDBO = new GameRecDBO();
         gameRecDBO.setGame_id(gameID);
@@ -47,5 +51,25 @@ public abstract class TestHelper {
 
     public static PlayerDBO generatePlayerDBO(String playerName, boolean isAI) {
         return generatePlayerDBO(-1, playerName, isAI);
+    }
+
+    public static Wall[][] generateHorizontalWalls(GameSession gameSession) {
+        Wall[][] verticalWalls = new HorizontalWallLogic[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 1; y < height; y++) {
+                verticalWalls[x][y] = new HorizontalWallLogic(x, y, gameSession);
+            }
+        }
+        return verticalWalls;
+    }
+
+    public static Wall[][] generateVerticalWalls(GameSession gameSession) {
+        Wall[][] verticalWalls = new VerticalWallLogic[width][height];
+        for (int x = 0; x < width - 1; x++) {
+            for (int y = 0; y < height; y++) {
+                verticalWalls[x][y] = new VerticalWallLogic(x, y, gameSession);
+            }
+        }
+        return verticalWalls;
     }
 }

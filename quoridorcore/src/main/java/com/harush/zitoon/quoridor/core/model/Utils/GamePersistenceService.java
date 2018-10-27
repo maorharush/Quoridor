@@ -11,7 +11,5 @@ public interface GamePersistenceService {
 
     void saveTurn(int gameID, PlayerAction playerAction);
 
-    int getCurrentPlayerIndex(int gameID);
-
     SavedGame loadGame();
 }

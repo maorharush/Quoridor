@@ -49,8 +49,7 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
         gameRecDAO.insert(gameRecDBO);
     }
 
-    @Override
-    public int getCurrentPlayerIndex(int gameID) {
+    private int getCurrentPlayerIndex(int gameID) {
         List<GameRecDBO> gameRecords = gameRecDAO.getGameRecords(gameID);
         return gameRecords.size() % 2;
     }
@@ -68,7 +67,7 @@ public class GamePersistenceServiceImpl implements GamePersistenceService {
         List<PlayerHistory> playerHistories = playersHistoryFactory.getPlayerHistories(lastGameID, playerIDs);
 
         //Board board = populateBoardUtil.populateBoard(playerHistories);
-        return new SavedGame(lastGameID, playerHistories);
+        return new SavedGame(lastGameID, getCurrentPlayerIndex(lastGameID), playerHistories);
     }
 
     private void insertGameRecord(GameSession gameSession) {

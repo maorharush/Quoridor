@@ -43,7 +43,7 @@ public class SetupController extends AbstractController implements Initializable
     private PawnType[] pawnTypes = PawnType.values();
     private DAOFactory daoFactory = DAOFactoryImpl.instance();
     private GameDAO gameDAO = DAOFactoryImpl.instance().getDAO(GameDAO.TABLE_NAME);
-    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic(), new Player2PlayerDBOConverterImpl());
+    private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic());
     private VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
     private HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
     private int[] xStartingPositions = getStartingPositionsX(width);
@@ -94,7 +94,8 @@ public class SetupController extends AbstractController implements Initializable
 
         Player player1 = new HumanPlayer(humanPlayerName, humanPawnComponent);
 //        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
-        Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+//        Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+        Player player2 = new AlphaBetaAIPlayer(aiPlayerName, gameSession, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
         players.add(player1);
         players.add(player2);
         return players;
@@ -122,7 +123,7 @@ public class SetupController extends AbstractController implements Initializable
     private VerticalWallComponent[][] makeVerticalWallComponents() {
         final VerticalWallComponent[][] verticalWalls = new VerticalWallComponent[width][height];
         for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < width - 1; x++) {
                 VerticalWallComponent wall = new VerticalWallComponent(x, y, verticalWalls, gameSession, new VerticalWallLogic(x, y, gameSession));
                 verticalWalls[x][y] = wall;
             }
@@ -181,7 +182,7 @@ public class SetupController extends AbstractController implements Initializable
     private void loadGame() {
         SavedGame savedGame = gamePersistenceService.loadGame();
         gameSession.setGameID(savedGame.getGameID());
-        gameSession.setCurrentPlayerIndex(gamePersistenceService.getCurrentPlayerIndex(savedGame.getGameID()));
+        gameSession.setCurrentPlayerIndex(savedGame.getCurrentPlayerIndex());
 
         List<PlayerHistory> playerHistories = savedGame.getPlayerHistories();
         PopulateBoardUtil populateBoardUtil = new PopulateBoardUtilImpl();

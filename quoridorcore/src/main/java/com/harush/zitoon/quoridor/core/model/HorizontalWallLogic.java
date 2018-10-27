@@ -14,9 +14,20 @@ public class HorizontalWallLogic implements Wall {
     private int width;
 
     private int height;
+    
+    private Board board;
 
     public HorizontalWallLogic(int x, int y, GameSession gameSession) {
         this.gameSession = gameSession;
+        this.board = gameSession.getBoard();
+        this.currentX = x;
+        this.currentY = y;
+        this.width = Settings.getSingleton().getBoardWidth();
+        this.height = Settings.getSingleton().getBoardHeight();
+    }
+
+    public HorizontalWallLogic(int x, int y, Board board) {
+        this.board = board;
         this.currentX = x;
         this.currentY = y;
         this.width = Settings.getSingleton().getBoardWidth();
@@ -29,28 +40,16 @@ public class HorizontalWallLogic implements Wall {
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
 
-        if (nextWallX > width) {
-            return new LogicResult(false, "A horizontal wall cannot be placed at the very top of the board");
+        LogicResult validationResult = validateWallPlacement();
+        if (!validationResult.isSuccess())  {
+            return validationResult;
         }
 
-        if (currentX == width) {
-            return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
-        }
-
-        if (gameSession.getBoard().containsWall(currentX, currentY, true) ||
-                gameSession.getBoard().containsWall(nextWallX, currentY, true)) {
-            return new LogicResult(false, "You cannot place a wall here.");
-        }
-
-        if (currentPlayer.getNumWalls() == 0) {
-            return new LogicResult(false, "You do not have any walls left.");
-        }
-
-        gameSession.getBoard().setWall(currentX, currentY, true, true, currentPlayer);
+        board.setWall(currentX, currentY, true, true, currentPlayer);
         System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
 
         if (nextWallX > 0 && nextWallX < width) {
-            gameSession.getBoard().setWall(nextWallX, currentY, true, false, currentPlayer);
+            board.setWall(nextWallX, currentY, true, false, currentPlayer);
             System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, nextWallX, currentY));
         }
 
@@ -64,7 +63,26 @@ public class HorizontalWallLogic implements Wall {
     }
 
     @Override
-    public LogicResult removeWall() {
-        return null;
+    public LogicResult validateWallPlacement() {
+        if (gameSession.getCurrentPlayer().getNumWalls() == 0) {
+            return new LogicResult(false, "You do not have any walls left.");
+        }
+
+        return validateWallWithinBoard();
+    }
+
+    @Override
+    public LogicResult validateWallWithinBoard() {
+        int nextX = currentX + 1;
+        if (currentY == height || currentY == 0 || nextX == width) {
+            return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
+        }
+
+        if (board.containsWall(currentX, currentY, true) ||
+                board.containsWall(nextX, currentY, true)) {
+            return new LogicResult(false, "You cannot place a wall here.");
+        }
+
+        return new LogicResult(true);
     }
 }

@@ -9,9 +9,10 @@ public class PlayerAction {
     private PlayerActionType playerActionType;
     private int x;
     private int y;
-    private boolean isHorizontal;
-    private boolean isFirst;
+    private Boolean isHorizontal;
+    private Boolean isFirst;
     private Player player;
+    private PlayerAction parent;
 
     public PlayerAction(int x, int y, Player player) {
         this.player = player;
@@ -57,6 +58,10 @@ public class PlayerAction {
         return isHorizontal;
     }
 
+    public Coordinate getCoordinate() {
+        return new Coordinate(x, y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,13 +71,12 @@ public class PlayerAction {
                 y == that.y &&
                 isHorizontal == that.isHorizontal &&
                 isFirst == that.isFirst &&
-                playerActionType == that.playerActionType &&
-                Objects.equals(player, that.player);
+                playerActionType == that.playerActionType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerActionType, x, y, isHorizontal, isFirst, player);
+        return Objects.hash(playerActionType, x, y, isHorizontal, isFirst);
     }
 
     @Override
@@ -85,5 +89,20 @@ public class PlayerAction {
                 ", setIsFirst=" + isFirst +
                 ", player=" + player +
                 '}';
+    }
+
+    public PlayerAction getParent() {
+        return parent;
+    }
+
+    public void setParent(PlayerAction parent) {
+        this.parent = parent;
+    }
+
+    public int getPathLength() {
+        if (parent == null) {
+            return 1;
+        }
+        return parent.getPathLength() + 1;
     }
 }

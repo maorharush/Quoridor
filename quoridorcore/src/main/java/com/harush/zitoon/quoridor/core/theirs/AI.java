@@ -164,11 +164,9 @@ public class AI extends Player {
         
         List<Position> moves = generateMoves(board);
         Position maxMove = moves.remove(0);
-        int maxscore = alphaBeta(players, this.getID(),
-                board.makeMove(maxMove.toString()), 0, -1000000, +1000000);
+        int maxscore = alphaBeta(players, this.getID(), board.makeMove(maxMove.toString()), 0, -1000000, +1000000);
         for (Position current : moves) {
-            int temp = alphaBeta(players, this.getID(),
-                    board.makeMove(current.toString()), 0, -1000000, +1000000);
+            int temp = alphaBeta(players, this.getID(), board.makeMove(current.toString()), 0, -1000000, +1000000);
             if (temp >= maxscore) {
                 maxMove = current;
                 break;

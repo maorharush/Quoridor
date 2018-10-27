@@ -3,7 +3,8 @@ package com.harush.zitoon.quoridor.core.model;
 import com.harush.zitoon.quoridor.core.model.Utils.GamePersistenceService;
 import com.harush.zitoon.quoridor.core.model.Utils.PlayerAction;
 import com.harush.zitoon.quoridor.core.model.Utils.WinnerDecider;
-import com.harush.zitoon.quoridor.core.dao.*;
+import com.harush.zitoon.quoridor.core.dao.DAOFactory;
+import com.harush.zitoon.quoridor.core.dao.GameDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;
 
@@ -23,9 +24,16 @@ public class GameSession extends Observable {
     private int currentPlayerIndex = 0;
     private Map<PawnType, Player> pawnType2PlayerMap = new HashMap<>();
     private WinnerDecider winnerDecider;
-    private PlayerDAO playerDAO;
     private int gameID;
     private GameDAO gameDAO;
+    /**
+     * private WinnerDecider winnerDecider;
+     * <p>
+     * /**
+     * A {@link Stack} was chosen to store all the moves as an undo function can be
+     * implemented in the practise mode.
+     */
+    private Deque<Move> moves;
     private Player2PlayerDBOConverter player2PlayerDBOConverter;
 
 
@@ -34,17 +42,14 @@ public class GameSession extends Observable {
             Board board,
             RuleType rule,
             DAOFactory daoFactory,
-            WinnerDecider winnerDecider,
-            Player2PlayerDBOConverter player2PlayerDBOConverter) {
+            WinnerDecider winnerDecider) {
         this.board = board;
         this.players = new ArrayList<>();
-
+        this.moves = new ArrayDeque<>();
         this.ruleType = rule;
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
         this.gameDAO = daoFactory.getDAO(GameDAO.TABLE_NAME);
-        this.playerDAO = daoFactory.getDAO(PlayerDAO.TABLE_NAME);
-        this.player2PlayerDBOConverter = player2PlayerDBOConverter;
     }
 
     public void setGameID(int gameID) {
@@ -53,6 +58,10 @@ public class GameSession extends Observable {
 
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
+    }
+
+    public int getCurrentPlayerIndex() {
+        return currentPlayerIndex;
     }
 
     /**
@@ -110,7 +119,31 @@ public class GameSession extends Observable {
         return players.get(id);
     }
 
+    /**
+     * Adds a {@link Move} to the move list.
+     *
+     * @param move the pawn
+     * @return true if the move was successful
+     */
+    public boolean addMove(Move move) {
+        moves.push(move);
+        return true;
+    }
 
+    /**
+     * Gets a history of moves that have taken place.
+     *
+     * @return the history of moves
+     */
+    public Deque<Move> getMoves() {
+        return moves;
+    }
+
+    /**
+     * Gets the rule type for this particular session.
+     *
+     * @return the rule type
+     */
     public RuleType getRuleType() {
         return ruleType;
     }

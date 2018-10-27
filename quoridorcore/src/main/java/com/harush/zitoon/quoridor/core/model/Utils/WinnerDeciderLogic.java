@@ -38,6 +38,11 @@ public class WinnerDeciderLogic implements WinnerDecider {
         Coordinate initialCoordinate = player.getPawn().getInitialCoordinate();
         Coordinate currentCoordinate = player.getPawn().getCurrentCoordinate();
 
+        return isWinner(initialCoordinate, currentCoordinate);
+    }
+
+    @Override
+    public boolean isWinner(Coordinate initialCoordinate, Coordinate currentCoordinate) {
         List<Coordinate> winningRow = initialCoordinate2WinningRowMap.get(initialCoordinate);
         return winningRow.contains(currentCoordinate);
     }

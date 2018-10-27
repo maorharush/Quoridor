@@ -6,6 +6,7 @@ import com.harush.zitoon.quoridor.core.model.Utils.Settings;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
 
+import java.util.List;
 import java.util.Objects;
 
 import javafx.scene.image.Image;
@@ -63,7 +64,7 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
 
         MovePawnTask movePawnTask = new MovePawnTask(pawn, x, y);
         movePawnTask.setOnSucceeded((workerStateEvent) -> {
-            LogicResult logicResult = (LogicResult) workerStateEvent.getSource().getValue();
+            LogicResult logicResult = (LogicResult)workerStateEvent.getSource().getValue();
             if (!logicResult.isSuccess()) {
                 // Can display error message returned from logic layer in UI here by logicResult.getErrMsg();
                 System.out.println(logicResult.getErrMsg());
@@ -77,6 +78,11 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         new Thread(movePawnTask).start();
 
         return new LogicResult(true);
+    }
+
+    @Override
+    public List<Coordinate> getValidMoves() {
+        return pawn.getValidMoves();
     }
 
     @Override
