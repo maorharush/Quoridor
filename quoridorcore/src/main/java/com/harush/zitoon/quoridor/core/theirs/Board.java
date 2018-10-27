@@ -6,24 +6,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Queue;
+
 import com.harush.zitoon.quoridor.core.theirs.Position.Orientation;
 
 
 /**
  * Represents the game board of Quoridor.
- * 
+ *
  * @author Joey Tuong
  * @author Luke Pearson
  */
 public class Board {
-    
-    private final int    walls   = 20;
-    private final int    size    = 9;
-    private int          current = 0;
-    private Box[][]      boxes;
-    private Player[]     players;
+
+    private final int walls = 20;
+    private final int size = 9;
+    private int current = 0;
+    private Box[][] boxes;
+    private Player[] players;
     private List<String> history;
-    
+
     /**
      * Construct the graph of boxes.
      */
@@ -35,7 +36,7 @@ public class Board {
                 boxes[i][j] = new Box(i, j);
             }
         }
-        
+
         for (int i = 1; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++) {
                 boxes[i][j].setNeighbour(Direction.UP, boxes[i - 1][j]);
@@ -57,44 +58,43 @@ public class Board {
             }
         }
     }
-    
+
     /**
      * Construct a new board object initialised with a set of players
-     * 
-     * @param players
-     *            an array of 2 or 4 initial players
+     *
+     * @param players an array of 2 or 4 initial players
      */
     public Board(Player[] players) {
         this.history = new LinkedList<>();
         this.players = players;
         initBoxGraph();
-        Direction[] defaults = { Direction.UP, Direction.DOWN, Direction.LEFT,
-                Direction.RIGHT };
-        Position[] defaultpos = { new Position(8, 4), new Position(0, 4),
-                new Position(4, 8), new Position(4, 0) };
-        if (players.length != 2 && players.length != 4) { throw new IllegalArgumentException(
-                "Only 2 or 4 players are supported."); }
+        Direction[] defaults = {Direction.UP, Direction.DOWN, Direction.LEFT,
+                Direction.RIGHT};
+        Position[] defaultpos = {new Position(8, 4), new Position(0, 4),
+                new Position(4, 8), new Position(4, 0)};
+        if (players.length != 2 && players.length != 4) {
+            throw new IllegalArgumentException(
+                    "Only 2 or 4 players are supported.");
+        }
         for (int i = 0; i < players.length; i++) {
             players[i].initialise(i + 1, defaults[i], walls / players.length);
             Position m = defaultpos[i];
             boxes[m.getRow()][m.getCol()].setPlayer(players[i]);
         }
     }
-    
+
     /**
      * Construct a new board and run a sequence of moves on it.
-     * 
-     * @param players
-     *            set of initial players
-     * @param history
-     *            applied set of moves to get to a state
+     *
+     * @param players set of initial players
+     * @param history applied set of moves to get to a state
      */
     private Board(Player[] players, List<String> history) {
         this.history = new LinkedList<>();
         this.players = players;
         initBoxGraph();
-        Position[] defaultpos = { new Position(8, 4), new Position(0, 4),
-                new Position(4, 8), new Position(4, 0) };
+        Position[] defaultpos = {new Position(8, 4), new Position(0, 4),
+                new Position(4, 8), new Position(4, 0)};
         for (int i = 0; i < players.length; i++) {
             Position m = defaultpos[i];
             boxes[m.getRow()][m.getCol()].setPlayer(players[i]);
@@ -105,7 +105,7 @@ public class Board {
             this.move(p);
         }
     }
-    
+
     /**
      * Print the current state of the board.
      */
@@ -130,10 +130,10 @@ public class Board {
                     }
                 }
                 if (cell.getNeighbour(Direction.DOWN) != null && i != 8) {
-                    
+
                     cellname = "[24m" + cellname;
                 } else {
-                    
+
                     cellname = "[4m" + cellname;
                     if (cell.getPlayer() != null
                             && cell.getPlayer().getID() == currentPlayer()) {
@@ -152,12 +152,12 @@ public class Board {
             System.out.println("[24m");
         }
         System.out.println("It is " + players[current].getName() + "'s turn.");
-        
+
     }
-    
+
     /**
      * Get a list of the IDs of all players in the game.
-     * 
+     *
      * @return list of player ids
      */
     public List<Integer> getPlayers() {
@@ -167,69 +167,67 @@ public class Board {
         }
         return ps;
     }
-    
+
     /**
      * Get the number of walls a given player has remaining.
-     * 
-     * @param player
-     *            the ID of the player
+     *
+     * @param player the ID of the player
      * @return number of walls the given player has left
      */
     public int remainingWalls(int player) {
         return players[player - 1].getNumWalls();
     }
-    
+
     /**
      * Get the current player.
-     * 
+     *
      * @return whose turn it is
      */
     public int currentPlayer() {
         return players[current].getID();
     }
-    
+
     /**
      * Get the last move taken.
-     * 
+     *
      * @return the last move taken
      */
     public String lastMove() {
         return history.get(history.size() - 1);
     }
-    
+
     /**
      * Get the position of a player
-     * 
-     * @param p
-     *            player
+     *
+     * @param p player
      * @return position of player
      */
     public Position positionOf(Player p) {
         for (int i = 0; i < boxes.length; i++) {
             for (int j = 0; j < boxes.length; j++) {
-                if (p.equals(boxes[i][j].getPlayer())) { return new Position(i,
-                        j); }
+                if (p.equals(boxes[i][j].getPlayer())) {
+                    return new Position(i,
+                            j);
+                }
             }
         }
         return null;
     }
-    
+
     /**
      * Get the position of the player with a specified ID
-     * 
-     * @param id
-     *            ID of the player in question
+     *
+     * @param id ID of the player in question
      * @return position of the player
      */
     public Position positionOf(int id) {
         return positionOf(players[id - 1]);
     }
-    
+
     /**
      * Get the id of the player at the specified position
-     * 
-     * @param p
-     *            position whose contents are being checked
+     *
+     * @param p position whose contents are being checked
      * @return id of the player at position p
      */
     public Integer playerAt(Position p) {
@@ -240,25 +238,22 @@ public class Board {
             return null;
         }
     }
-    
+
     /**
      * Check if a wall exists from position p
-     * 
-     * @param p
-     *            origin square
-     * @param d
-     *            direction to check
+     *
+     * @param p origin square
+     * @param d direction to check
      * @return if the wall exists
      */
     public boolean wallExists(Position p, Direction d) {
         return boxes[p.getRow()][p.getCol()].getNeighbour(d) == null;
     }
-    
+
     /**
      * Get all reachable positions from a square
-     * 
-     * @param p
-     *            origin square
+     *
+     * @param p origin square
      * @return list of reachable positions
      */
     public List<Position> neighboursOf(Position p) {
@@ -271,10 +266,10 @@ public class Board {
         }
         return neighbours;
     }
-    
+
     /**
      * Flood the board
-     * 
+     *
      * @return if the board is floodable.
      */
     public boolean flood() {
@@ -296,12 +291,11 @@ public class Board {
         }
         return visited.size() == size * size;
     }
-    
+
     /**
      * Get a list of valid move squares from a position
-     * 
-     * @param pm
-     *            origin square
+     *
+     * @param pm origin square
      * @return reachable empty squares
      */
     public List<Position> validMoves(Position pm) {
@@ -318,7 +312,7 @@ public class Board {
                 dirs.add(dir);
             }
         }
-        
+
         for (Position p : adjacent) {
             d = dirs.removeFirst();
             if (playerAt(p) != null) {
@@ -329,10 +323,10 @@ public class Board {
         }
         return moves;
     }
-    
+
     /**
      * Implement the special rules of player adjacency in quoridor.
-     * 
+     *
      * @param p starting position
      * @param d direction to jump
      * @return list of possible moves
@@ -355,10 +349,10 @@ public class Board {
             return moves.toArray(rval);
         }
     }
-    
+
     /**
      * Check if a wall/move move is a valid move.
-     * 
+     *
      * @param m position object to test
      * @return if move is valid.
      */
@@ -374,15 +368,15 @@ public class Board {
                         && southwest.getNeighbour(Direction.RIGHT) != null;
                 validity = validity
                         && !(northwest.getNeighbour(Direction.DOWN) == null && northeast
-                                .getNeighbour(Direction.DOWN) == null);
-                
+                        .getNeighbour(Direction.DOWN) == null);
+
             } else if (m.getOrientation() == Orientation.Horizontal) {
                 validity = northwest.getNeighbour(Direction.DOWN) != null;
                 validity = validity
                         && northeast.getNeighbour(Direction.DOWN) != null;
                 validity = validity
                         && !(northwest.getNeighbour(Direction.RIGHT) == null && southwest
-                                .getNeighbour(Direction.RIGHT) == null);
+                        .getNeighbour(Direction.RIGHT) == null);
             } else {
                 validity = false;
             }
@@ -400,10 +394,10 @@ public class Board {
         }
         return validity;
     }
-    
+
     /**
      * Check if a move is valid.
-     * 
+     *
      * @param m move
      * @return whether the move is valid.
      */
@@ -414,12 +408,12 @@ public class Board {
             return m.equals("undo") && history.size() > 0;
         }
     }
-    
+
     /**
-     * Create a copy of the board with the move applied. 
-     * 
+     * Create a copy of the board with the move applied.
+     * <p>
      * Returns null if the move is invalid.
-     * 
+     *
      * @param move move to apply
      * @return the resulting board (or null)
      */
@@ -449,10 +443,10 @@ public class Board {
         }
         return null;
     }
-    
+
     /**
      * Apply a move to the current board. Unprotected.
-     * 
+     *
      * @param m move to apply
      */
     private void move(Position m) {
@@ -466,12 +460,12 @@ public class Board {
         }
         current = (current + 1) % players.length;
     }
-    
+
     /**
      * Move the current player to the specified position.
-     * 
+     * <p>
      * Unprotected.
-     * 
+     *
      * @param m target box
      */
     private void placeMove(Position m) {
@@ -480,12 +474,12 @@ public class Board {
         boxes[from.getRow()][from.getCol()].setPlayer(null);
         boxes[m.getRow()][m.getCol()].setPlayer(p);
     }
-    
+
     /**
      * Place a wall at the given position.
-     * 
+     * <p>
      * Unprotected.
-     * 
+     *
      * @param position Position to place the wall in.
      */
     private void placeWall(Position position) {
@@ -495,7 +489,7 @@ public class Board {
         Box northeast = boxes[position.getRow()][position.getCol() + 1];
         Box southwest = boxes[position.getRow() + 1][position.getCol()];
         Box southeast = boxes[position.getRow() + 1][position.getCol() + 1];
-        
+
         if (position.getOrientation() == Orientation.Vertical) {
             northwest.setNeighbour(Direction.RIGHT, null);
             northeast.setNeighbour(Direction.LEFT, null);
@@ -508,10 +502,10 @@ public class Board {
             southeast.setNeighbour(Direction.UP, null);
         }
     }
-    
+
     /**
      * Remove a wall at a specified position. Unprotected.
-     * 
+     *
      * @param position wall location
      */
     private void removeWall(Position position) {
@@ -533,7 +527,7 @@ public class Board {
                     boxes[row][col + 1]);
         }
     }
-    
+
     public Board clone() {
         return new Board(players, history);
     }

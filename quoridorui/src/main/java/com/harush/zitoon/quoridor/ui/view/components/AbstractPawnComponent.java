@@ -4,6 +4,8 @@ import static com.harush.zitoon.quoridor.ui.view.MainGame.TILE_SIZE;
 
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.task.MovePawnTask;
+
+import java.util.List;
 import java.util.Objects;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -73,6 +75,11 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         new Thread(movePawnTask).start();
 
         return new LogicResult(true);
+    }
+
+    @Override
+    public List<Coordinate> getValidMoves() {
+        return pawn.getValidMoves();
     }
 
     @Override
