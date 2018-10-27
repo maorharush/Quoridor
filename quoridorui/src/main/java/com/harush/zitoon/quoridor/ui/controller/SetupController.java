@@ -1,6 +1,5 @@
 package com.harush.zitoon.quoridor.ui.controller;
 
-import com.harush.zitoon.quoridor.core.model.Utils.*;
 import com.harush.zitoon.quoridor.core.dao.*;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
 import com.harush.zitoon.quoridor.core.dao.dbo.converter.Player2PlayerDBOConverter;

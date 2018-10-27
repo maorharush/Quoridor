@@ -1,8 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.model.Utils.GamePersistenceService;
-import com.harush.zitoon.quoridor.core.model.Utils.PlayerAction;
-import com.harush.zitoon.quoridor.core.model.Utils.WinnerDecider;
+import com.harush.zitoon.quoridor.core.model.WinnerDecider;
 import com.harush.zitoon.quoridor.core.dao.DAOFactory;
 import com.harush.zitoon.quoridor.core.dao.GameDAO;
 import com.harush.zitoon.quoridor.core.dao.dbo.GameDBO;
@@ -33,7 +31,7 @@ public class GameSession extends Observable {
      * A {@link Stack} was chosen to store all the moves as an undo function can be
      * implemented in the practise mode.
      */
-    private Deque<Move> moves;
+
     private Player2PlayerDBOConverter player2PlayerDBOConverter;
 
 
@@ -45,7 +43,6 @@ public class GameSession extends Observable {
             WinnerDecider winnerDecider) {
         this.board = board;
         this.players = new ArrayList<>();
-        this.moves = new ArrayDeque<>();
         this.ruleType = rule;
         this.winnerDecider = winnerDecider;
         this.gameID = gameID;
@@ -119,25 +116,8 @@ public class GameSession extends Observable {
         return players.get(id);
     }
 
-    /**
-     * Adds a {@link Move} to the move list.
-     *
-     * @param move the pawn
-     * @return true if the move was successful
-     */
-    public boolean addMove(Move move) {
-        moves.push(move);
-        return true;
-    }
 
-    /**
-     * Gets a history of moves that have taken place.
-     *
-     * @return the history of moves
-     */
-    public Deque<Move> getMoves() {
-        return moves;
-    }
+
 
     /**
      * Gets the rule type for this particular session.

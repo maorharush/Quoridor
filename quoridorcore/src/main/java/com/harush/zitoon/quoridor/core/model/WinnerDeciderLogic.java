@@ -1,7 +1,6 @@
-package com.harush.zitoon.quoridor.core.model.Utils;
+package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.model.Coordinate;
-import com.harush.zitoon.quoridor.core.model.Player;
+import com.harush.zitoon.quoridor.core.model.WinnerDecider;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,9 +1,9 @@
 package com.harush.zitoon.quoridor.core.dao.dbo.converter;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
-import com.harush.zitoon.quoridor.core.model.Utils.PlayerAction;
+import com.harush.zitoon.quoridor.core.model.PlayerAction;
 
-import static com.harush.zitoon.quoridor.core.model.Utils.PlayerActionType.MOVE_PAWN;
+import static com.harush.zitoon.quoridor.core.model.PlayerActionType.MOVE_PAWN;
 
 /** converting players action from core to DBO
  * used as independent class to operate with the core logic before database operation is been made.

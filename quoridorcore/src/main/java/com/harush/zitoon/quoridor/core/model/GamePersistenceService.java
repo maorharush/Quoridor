@@ -1,7 +1,4 @@
-package com.harush.zitoon.quoridor.core.model.Utils;
-
-import com.harush.zitoon.quoridor.core.model.GameSession;
-import com.harush.zitoon.quoridor.core.model.Player;
+package com.harush.zitoon.quoridor.core.model;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.harush.zitoon.quoridor.core.dao.dbo.converter;
 
 import com.harush.zitoon.quoridor.core.dao.dbo.GameRecDBO;
-import com.harush.zitoon.quoridor.core.model.Utils.PlayerAction;
+import com.harush.zitoon.quoridor.core.model.PlayerAction;
 
 public interface PlayerAction2GameRecDBOConverter {
 

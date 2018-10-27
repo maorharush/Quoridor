@@ -1,9 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.model.Utils.GamePersistenceServiceImpl;
-import com.harush.zitoon.quoridor.core.model.Utils.PlayersHistoryFactory;
-import com.harush.zitoon.quoridor.core.model.Utils.PopulateBoardUtil;
-import com.harush.zitoon.quoridor.core.model.Utils.Statistics;
 import com.harush.zitoon.quoridor.core.dao.GameRecDAO;
 import org.junit.Before;
 import org.mockito.InjectMocks;

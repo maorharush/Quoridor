@@ -1,7 +1,4 @@
-package com.harush.zitoon.quoridor.core.model.Utils;
-
-import com.harush.zitoon.quoridor.core.model.Board;
-import com.harush.zitoon.quoridor.core.model.WallData;
+package com.harush.zitoon.quoridor.core.model;
 
 import java.util.List;
 import java.util.stream.Collectors;

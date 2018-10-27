@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.ui.view.utils;
 
-import com.harush.zitoon.quoridor.core.model.Utils.Settings;
+import com.harush.zitoon.quoridor.core.model.Settings;
 
 public final class UIUtils {
 

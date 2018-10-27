@@ -1,9 +1,4 @@
-package com.harush.zitoon.quoridor.core.model.Utils;
-
-import com.harush.zitoon.quoridor.core.model.Board;
-import com.harush.zitoon.quoridor.core.model.RuleType;
-import com.harush.zitoon.quoridor.core.model.Tile;
-import com.harush.zitoon.quoridor.core.model.Wall;
+package com.harush.zitoon.quoridor.core.model;
 
 /**
  * 

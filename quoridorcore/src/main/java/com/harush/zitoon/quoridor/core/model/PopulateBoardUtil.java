@@ -1,6 +1,4 @@
-package com.harush.zitoon.quoridor.core.model.Utils;
-
-import com.harush.zitoon.quoridor.core.model.Board;
+package com.harush.zitoon.quoridor.core.model;
 
 import java.util.List;
 
