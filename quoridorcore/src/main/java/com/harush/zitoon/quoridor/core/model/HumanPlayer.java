@@ -1,7 +1,5 @@
 package com.harush.zitoon.quoridor.core.model;
 
-import com.harush.zitoon.quoridor.core.theirs.Human;
-
 /**
  * This class creates a new Human Player object.
  * @author Moar Harush
