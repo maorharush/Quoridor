@@ -75,11 +75,17 @@ public class HorizontalWallLogic implements Wall {
             return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
         }
 
-        if (board.containsWall(currentX, currentY, true) ||
-                board.containsWall(nextX, currentY, true)) {
+        if (isOccupiedByHorizontalWall(currentX, currentY) || isCrossedByWall()) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
-
         return new LogicResult(true);
+    }
+
+    private boolean isCrossedByWall() {
+        return board.containsWall(currentX, currentY - 1, false) && board.containsWall(currentX, currentY, false);
+    }
+
+    private boolean isOccupiedByHorizontalWall(int x, int y) {
+        return board.containsWall(x, y, true) || board.containsWall(x + 1, y, true);
     }
 }

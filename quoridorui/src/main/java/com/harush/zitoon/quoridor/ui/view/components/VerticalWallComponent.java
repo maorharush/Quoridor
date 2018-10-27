@@ -1,6 +1,9 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
-import com.harush.zitoon.quoridor.core.model.*;
+import com.harush.zitoon.quoridor.core.model.GameSession;
+import com.harush.zitoon.quoridor.core.model.LogicResult;
+import com.harush.zitoon.quoridor.core.model.Settings;
+import com.harush.zitoon.quoridor.core.model.Wall;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.task.PlaceWallTask;
 import javafx.scene.input.MouseEvent;

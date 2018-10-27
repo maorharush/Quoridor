@@ -2,7 +2,10 @@ package com.harush.zitoon.quoridor.ui.view;
 
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.controller.StatsController;
-import com.harush.zitoon.quoridor.ui.view.components.*;
+import com.harush.zitoon.quoridor.ui.view.components.AbstractPawnComponent;
+import com.harush.zitoon.quoridor.ui.view.components.HorizontalWallComponent;
+import com.harush.zitoon.quoridor.ui.view.components.TileComponent;
+import com.harush.zitoon.quoridor.ui.view.components.VerticalWallComponent;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +19,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -34,8 +36,6 @@ public class MainGame extends Application implements GameScreen, Observer {
     private int height;
     private int width;
     private TileComponent[][] tileBoard;
-    private HorizontalWallComponent[][] horizontalWalls;
-    private Group labels = new Group();
     private Group tileGroup = new Group();
     private Group pawnGroup = new Group();
     private Group horizontalWallGroup = new Group();

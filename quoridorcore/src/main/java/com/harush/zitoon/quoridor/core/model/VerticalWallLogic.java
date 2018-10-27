@@ -74,10 +74,17 @@ public class VerticalWallLogic implements Wall {
             return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
         }
 
-        if (board.containsWall(currentX, currentY, false) ||
-                board.containsWall(currentX, nextY, false)) {
+        if (isOccupiedByVerticalWall(currentX, currentY) || isCrossedByWall()) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
         return new LogicResult(true);
+    }
+
+    private boolean isCrossedByWall() {
+        return board.containsWall(currentX, currentY + 1, true) && board.containsWall(currentX + 1, currentY + 1, true);
+    }
+
+    private boolean isOccupiedByVerticalWall(int x, int y) {
+        return board.containsWall(x, y, false) || board.containsWall(x, y + 1, false);
     }
 }
