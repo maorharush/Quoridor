@@ -237,26 +237,37 @@ public class PawnLogic implements Pawn {
 
     private boolean isValidNorthWest(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveLeft(currentX, nextX)) {
-            if (isSpecialJump(currentX, currentY - 1) || isSpecialJump(currentX - 1, currentY)) {
+            if (isEnemyPawnAbove()) {
                 if (!isUnblocked(currentX, nextY, true)) {
-                    if (isUnblocked(currentX - 1, nextY, false))
+                    if (isUnblockedNortWest())
                         return true;
                 }
             }
+            if (isEnemyPawnOnTheLeft()) {
+                if (!isUnblocked(nextX - 1, currentY, true)) {
+                    if (isUnblockedNortWest())
+                        return true;
+                }
+            }
+
         }
         return false;
     }
 
+    private boolean isUnblockedNortWest() {
+        return isUnblocked(currentX-1,currentY-2,false)&&isUnblocked(currentX,currentY,true);
+    }
+
     private boolean isValidNorthEast(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveRight(currentX, nextX)) {
-            if(isEnemyPawnAbove()){
-                if (!isUnblocked(currentX, nextY-1, true)) {
+            if (isEnemyPawnAbove()) {
+                if (!isUnblocked(currentX, nextY, true)) {
                     if (isUnblockedNorthEast())
                         return true;
                 }
             }
-            if(isEnemyPawnOnTheRight()){
-                if (!isUnblocked(currentX+1, currentY, true)) {
+            if (isEnemyPawnOnTheRight()) {
+                if (!isUnblocked(currentX + 1, currentY, true)) {
                     if (isUnblockedNorthEast())
                         return true;
                 }
@@ -267,12 +278,12 @@ public class PawnLogic implements Pawn {
     }
 
     private boolean isUnblockedNorthEast() {
-        return isUnblocked(currentX,currentY,false)&&isUnblocked(currentX,currentY,true);
+        return isUnblocked(currentX, currentY, false) && isUnblocked(currentX, currentY, true);
     }
 
     private boolean isEnemyPawnAbove() {
 
-        return isSpecialJump(currentX,currentY-1)||isSpecialJump(currentX+1,currentY);
+        return isSpecialJump(currentX, currentY - 1) || isSpecialJump(currentX + 1, currentY);
     }
 
     private boolean isValidSouthDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
@@ -297,16 +308,15 @@ public class PawnLogic implements Pawn {
 
             if (isEnemyPawnOnTheLeft()) {
                 if (!isUnblocked(nextX - 1, currentY, false)) {
-                    if (isUnblocked(nextX - 1, currentY, false)) {
-                        if (isUnBlockedSouthWest()) {
-                            return true;
-                        }
+                    if (isUnBlockedSouthWest()) {
+                        return true;
                     }
                 }
             }
         }
+
         return false;
-    }
+}
 
     private boolean isValidSouthEast(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveRight(currentX, nextX)) {
