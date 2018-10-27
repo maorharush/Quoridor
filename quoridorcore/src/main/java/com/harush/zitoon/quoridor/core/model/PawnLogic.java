@@ -117,6 +117,9 @@ public class PawnLogic implements Pawn {
         if (isValidVerticalMove(currentX, currentY, nextX, nextY)) {
             return true;
         }
+        if(isValidHorizontalMove(currentX, currentY, nextX, nextY)){
+            return true;
+        }
         if (isValidSouthDiagonallMove(currentX, currentY, nextX, nextY)) {
             return true;
         }
@@ -130,7 +133,7 @@ public class PawnLogic implements Pawn {
             return true;
         }
 
-        return isValidHorizontalMove(currentX, currentY, nextX, nextY);
+        return false;
     }
 
     private boolean isValidWestDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
@@ -200,7 +203,7 @@ public class PawnLogic implements Pawn {
     private boolean isValidSouthWest(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveLeft(currentX, nextX)) {
             if (isSpecialJump(currentX, currentY+1)||isSpecialJump(currentX-1,currentY)) {
-                if(!isUnblocked(nextX+1,nextY+1,true)||!isUnblocked(currentX-1,currentY-1,false)) {
+                if(isUnblocked(nextX,nextY-1,true)&&isUnblocked(currentX-1,currentY,false)) {
                     if(isUnblocked(currentX-1,nextY,false))
                         return true;
                 }

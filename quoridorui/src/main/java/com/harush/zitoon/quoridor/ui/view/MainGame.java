@@ -140,7 +140,7 @@ public class MainGame extends Application implements GameScreen, Observer {
         //Add labels to the board
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                String location = "(" + x + ", " + y + ")";
+                String location = "(" + x + ", " + (y+1) + ")";
                 Text text = new Text(x,y, location);
                 text.setTranslateX(x*Settings.getSingleton().getTileSize());
                 text.setTranslateY(y*Settings.getSingleton().getTileSize()+40);

@@ -34,8 +34,11 @@ public class HorizontalWallLogic implements Wall {
             return new LogicResult(false, "A horizontal wall cannot be placed at the very edge of the board");
         }
 
-        if (gameSession.getBoard().containsWall(currentX, currentY, true) ||
-                gameSession.getBoard().containsWall(nextWallX, currentY, true)) {
+        if ((gameSession.getBoard().containsWall(currentX, currentY, true) ||
+                gameSession.getBoard().containsWall(nextWallX, currentY, true)) &&
+                (gameSession.getBoard().containsWall(currentX, currentY-1, false)&&
+                gameSession.getBoard().containsWall(currentX, currentY, false))
+        ) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
 

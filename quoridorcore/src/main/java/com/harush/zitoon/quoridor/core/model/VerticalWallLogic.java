@@ -23,6 +23,7 @@ public class VerticalWallLogic implements Wall {
     @Override
     public LogicResult placeWall() {
         int nextWallY = currentY + 1;
+
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
 
@@ -30,8 +31,11 @@ public class VerticalWallLogic implements Wall {
             return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
         }
 
-        if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
-                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
+        if ((gameSession.getBoard().containsWall(currentX, currentY, false) ||
+                gameSession.getBoard().containsWall(currentX, nextWallY, false))&&
+                ( gameSession.getBoard().containsWall(currentX, currentY, true)&&
+                gameSession.getBoard().containsWall(currentX, currentY+1, true))
+        ) {
             return new LogicResult(false, "You cannot place a wall here.");
         }
 

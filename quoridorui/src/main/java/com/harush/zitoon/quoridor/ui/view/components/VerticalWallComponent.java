@@ -51,6 +51,7 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 
 	@Override
 	public LogicResult placeWall() {
+
 		final String playerColor = gameSession.getCurrentPlayer().getPawn().getType().getHexColor();
 		PlaceWallTask placeWallTask = new PlaceWallTask(wall);
 		placeWallTask.setOnSucceeded((workerStateEvent) -> {
