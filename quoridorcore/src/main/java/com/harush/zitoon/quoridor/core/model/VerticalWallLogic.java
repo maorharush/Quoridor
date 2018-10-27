@@ -40,7 +40,7 @@ public class VerticalWallLogic implements Wall{
             return new LogicResult(false, "You do not have any walls left.");
         }
         if(!wallMoveValidator.isEnemyPathBlockedAfterWallMove(currentX,currentY,false,true)){//TODO:should examine the use of isFirst here
-            return  new LogicResult(false,"You cannot place a wall here, blocking opponents path to victory is illegel.");
+            return  new LogicResult(false,"You cannot place a wall here, blocking opponents path to victory is illegal.");
         }
         gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
         System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
