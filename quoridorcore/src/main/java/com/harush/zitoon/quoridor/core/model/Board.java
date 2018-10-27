@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Represents a board filled with tiles.
@@ -14,22 +15,22 @@ import java.util.Objects;
 public class Board {
 
     private Tile[][] tiles;
+
     private WallData[][] horizontalWallData;
     private WallData[][] verticalWallData;
     private int height;
     private int width;
-
     public Board() {
         this(9, 9);
     }
 
-    public Board(int height, int width) {
+    public Board(int width, int height) {
         if ((height % 2 == 0) || (width % 2 == 0)) {
             throw new IllegalStateException("Height or width of the board cannot be even.");
         }
-        this.tiles = new Tile[height][width];
-        this.horizontalWallData = new WallData[height][width];
-        this.verticalWallData = new WallData[height][width];
+        this.tiles = new Tile[width][height];
+        this.horizontalWallData = new WallData[width][height];
+        this.verticalWallData = new WallData[width][height];
         this.height = height;
         this.width = width;
         setTilePositions();
@@ -55,6 +56,10 @@ public class Board {
     public Tile getTile(int x, int y) {
         validateCoordinate(x, y);
         return tiles[x][y];
+    }
+
+    public boolean isOccupied(int x, int y) {
+        return getTile(x, y).containsPawn();
     }
 
     public LogicResult movePawn(int currentX, int currentY, int nextX, int nextY) {
@@ -108,7 +113,7 @@ public class Board {
     }
 
     public boolean containsPawn(int x, int y) {
-        return getTile(x,y).containsPawn();
+        return getTile(x, y).containsPawn();
     }
 
     /**
@@ -136,9 +141,13 @@ public class Board {
         setWall(wallData.getX(), wallData.getY(), wallData.isHorizontal(), wallData.isFirst(), null);
     }
 
+    public void setTile(Tile tile) {
+        tiles[tile.getX()][tile.getY()] = tile;
+    }
+
     /**
      * Returns a {@link Wall} given the x and y coordina
-     *      * @param x            the x coordinatete.
+     * * @param x            the x coordinatete.
      *
      * @param y            the y coordinate
      * @param isHorizontal whether the wall is horizontal
@@ -155,7 +164,7 @@ public class Board {
         }
     }
 
-    public List<WallData> getAllWalls() {
+    public List<WallData> getAllExistingWalls() {
         List<WallData> walls = new ArrayList<>();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -164,6 +173,26 @@ public class Board {
             }
         }
         return walls;
+    }
+
+    public List<WallData> getAllWalls() {
+        List<WallData> verticals = Arrays.stream(verticalWallData)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+
+        List<WallData> horizontals = Arrays.stream(horizontalWallData)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
+
+        verticals.addAll(horizontals);
+
+        return verticals;
+    }
+
+    public List<Tile> getAllTiles() {
+        return Arrays.stream(tiles)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
     }
 
     private void addWallIfExists(List<WallData> wall, int y, int x, boolean isHorizontal) {

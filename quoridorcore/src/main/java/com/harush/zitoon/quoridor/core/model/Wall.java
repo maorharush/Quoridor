@@ -4,5 +4,7 @@ public interface Wall {
 
     LogicResult placeWall();
 
-    LogicResult removeWall();
+    LogicResult validateWallPlacement();
+
+    LogicResult validateWallWithinBoard();
 }
