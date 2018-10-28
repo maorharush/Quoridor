@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
-public class VerticalWallLogic implements Wall {
+public class VerticalWallLogic implements Wall{
 
     private GameSession gameSession;
 
@@ -36,6 +36,19 @@ public class VerticalWallLogic implements Wall {
         int nextWallY = currentY + 1;
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
+        WinnerDecider winnerDecider = new WinnerDeciderLogic();
+        WallMoveValidatorImpl wallMoveValidator = new WallMoveValidatorImpl(gameSession, new PathClearanceValidatorImpl(winnerDecider));
+        if (currentX == width || nextWallY == height) {
+            return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
+        }
+
+        if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
+                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
+            return new LogicResult(false, "You cannot place a wall here.");
+        }
+
+        if (currentPlayer.getNumWalls() == 0) {
+            return new LogicResult(false, "You do not have any walls left.");
 
         LogicResult validationResult = validateWallPlacement();
         if (!validationResult.isSuccess()) {
@@ -43,6 +56,10 @@ public class VerticalWallLogic implements Wall {
         }
 
         board.setWall(currentX, currentY, false, true, currentPlayer);
+        if(!wallMoveValidator.isEnemyPathBlockedAfterWallMove(currentX,currentY,false,true)){//TODO:should examine the use of isFirst here
+            return  new LogicResult(false,"You cannot place a wall here, blocking opponents path to victory is illegal.");
+        }
+        gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
         System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
 
         if (currentX < width) {
@@ -57,6 +74,8 @@ public class VerticalWallLogic implements Wall {
 
         return new LogicResult(true);
     }
+
+
 
     @Override
     public LogicResult validateWallPlacement() {

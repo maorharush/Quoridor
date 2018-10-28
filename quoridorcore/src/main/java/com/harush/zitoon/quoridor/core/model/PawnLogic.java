@@ -14,9 +14,13 @@ public class PawnLogic implements Pawn {
     private int currentX;
 
     private int currentY;
+
     private Board board;
+
     private GameSession gameSession;
+
     private PawnType type;
+
     private Coordinate initialCoordinate;
 
     public PawnLogic(GameSession gameSession, PawnType type) {
@@ -29,6 +33,12 @@ public class PawnLogic implements Pawn {
         this.board = board;
         this.type = type;
     }
+
+    public PawnLogic(Board board, PawnType type) {
+        this.board = board;
+        this.type = type;
+    }
+
 
     @Override
     public LogicResult move(int newX, int newY) {
