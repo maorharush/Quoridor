@@ -3,3 +3,7 @@ Quoridor.iml
 .project
 .classpath
 target/
+Quoridor.iml
+classes/
+quoridorcore/quoridor-core.iml
+quoridorui/quoridor-ui.iml

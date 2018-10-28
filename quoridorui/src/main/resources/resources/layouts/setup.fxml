@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/"
+            fx:controller="com.harush.zitoon.quoridor.ui.controller.SetupController" stylesheets="@../style.css" fx:id="gameStage">
+    <top>
+        <VBox alignment="BASELINE_CENTER">
+            <Label>
+                <font>
+                    <Font size="21.0"/>
+                </font>
+                <text>Play</text>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <VBox alignment="CENTER" prefHeight="600" prefWidth="400" spacing="15">
+
+            <JFXButton mnemonicParsing="false" fx:id="on1PlayerButton" onAction="#on1PlayerBtn" prefHeight="75.0" prefWidth="135.0">
+                <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="177.0" layoutY="53.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@images/setup/ai.png"/>
+                    </image>
+                </ImageView>
+                <text>Against AI</text>
+            </JFXButton>
+            <JFXButton layoutY="100.0" mnemonicParsing="false" onAction="#on2PlayerBtn" prefHeight="75.0"
+                       prefWidth="135.0">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/resources/layouts/images/setup/2.png"/>
+                    </image>
+                </ImageView>
+                <text>2 Player Game</text>
+            </JFXButton>
+            <JFXButton layoutY="200.0" mnemonicParsing="false" onAction="#on4PlayerBtn" prefHeight="75.0"
+                       prefWidth="135.0">
+                <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@/resources/layouts/images/setup/4.png"/>
+                    </image>
+                </ImageView>
+                <text>4 Player Game</text>
+            </JFXButton>
+            <JFXButton fx:id="backBtn" layoutY="300.0" mnemonicParsing="false" onAction="#onBackBtn" prefHeight="75" prefWidth="135">
+                <text>Back</text>
+            </JFXButton>
+
+        </VBox>
+    </center>
+</BorderPane>

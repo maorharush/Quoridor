@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<BorderPane xmlns="http://javafx.com/javafx/8.0.72" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.harush.zitoon.quoridor.ui.controller.MainMenuController" stylesheets="@../style.css">
+    <top>
+        <VBox alignment="CENTER">
+
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Quoridor" fill="darkblue">
+                    <font>
+                        <Font size="90.0" />
+                    </font>
+                </Text>
+            </VBox>
+    </top>
+    <center>
+        <VBox prefHeight="390.0" prefWidth="361.0" alignment="CENTER" spacing="10">
+            <JFXButton mnemonicParsing="false" onAction="#onPlayBtnPress" prefHeight="40.0" prefWidth="125.0"
+                       text="Play">
+                <graphic>
+                    <ImageView fitHeight="25.0" fitWidth="25.0" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/layouts/images/main/control-play-black.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+            <JFXButton layoutY="50" mnemonicParsing="false" onAction="#onSettingBtnPress" prefHeight="40.0"
+                       prefWidth="125.0" text="Settings">
+                <graphic>
+                    <ImageView BorderPane.alignment="BASELINE_LEFT" fitHeight="25.0" fitWidth="25.0" layoutY="50.0"
+                               pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/layouts/images/main/setting_tools.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+            <JFXButton layoutY="100" mnemonicParsing="false" onAction="#onHelpBtnPress" prefHeight="40.0"
+                       prefWidth="125.0" text="Help">
+                <graphic>
+                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/layouts/images/main/door_open.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </JFXButton>
+            <JFXButton layoutY="150" fx:id="button" mnemonicParsing="false" onAction="#onExitBtnPress" prefHeight="40.0"
+                       prefWidth="125.0" text="Exit">
+                <graphic>
+
+                    <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="-15.0" pickOnBounds="true"
+                               preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/layouts/images/main/question.png"/>
+                        </image>
+                    </ImageView>
+
+                </graphic>
+
+            </JFXButton>
+
+
+        </VBox>
+    </center>
+</BorderPane>

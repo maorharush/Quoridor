@@ -1,0 +1,12 @@
+.root{
+-fx-background-color: #E0E7FF;
+}
+.pane{}
+/*Raised button example */
+.button {
+     -jfx-button-type: RAISED;
+     -fx-background-color: #57617F;
+     -fx-text-fill: white;
+     -jfx-disable-visual-focus:false;
+}
+
