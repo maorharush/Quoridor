@@ -49,31 +49,28 @@ public class VerticalWallLogic implements Wall{
 
         if (currentPlayer.getNumWalls() == 0) {
             return new LogicResult(false, "You do not have any walls left.");
-
-        LogicResult validationResult = validateWallPlacement();
-        if (!validationResult.isSuccess()) {
-            return validationResult;
         }
+            LogicResult validationResult = validateWallPlacement();
+            if (!validationResult.isSuccess()) {
+                return validationResult;
+            }
 
-        board.setWall(currentX, currentY, false, true, currentPlayer);
-        if(!wallMoveValidator.isEnemyPathBlockedAfterWallMove(currentX,currentY,false,true)){//TODO:should examine the use of isFirst here
-            return  new LogicResult(false,"You cannot place a wall here, blocking opponents path to victory is illegal.");
+            gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
+            System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
+            board.setWall(currentX, currentY, false, true, currentPlayer);
+
+            if (currentX < width) {
+                board.setWall(currentX, nextWallY, false, false, currentPlayer);
+                System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, currentX, nextWallY));
+            }
+            currentPlayer.getStatistics().incrementWallsUsed();
+            currentPlayer.decrementWalls();
+
+            PlayerAction playerAction = new PlayerAction(currentX, currentY, false, true, currentPlayer);
+            gameSession.updateTurn(playerAction);
+
+            return new LogicResult(true);
         }
-        gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
-        System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
-
-        if (currentX < width) {
-            board.setWall(currentX, nextWallY, false, false, currentPlayer);
-            System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, currentX, nextWallY));
-        }
-        currentPlayer.getStatistics().incrementWallsUsed();
-        currentPlayer.decrementWalls();
-
-        PlayerAction playerAction = new PlayerAction(currentX, currentY, false, true, currentPlayer);
-        gameSession.updateTurn(playerAction);
-
-        return new LogicResult(true);
-    }
 
 
 

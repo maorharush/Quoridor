@@ -29,15 +29,14 @@ public class PawnLogic implements Pawn {
         this.type = type;
     }
 
-    public PawnLogic(Board board, PawnType type) {
-        this.board = board;
-        this.type = type;
-    }
+
 
     public PawnLogic(Board board, PawnType type) {
         this.board = board;
         this.type = type;
     }
+
+
 
 
     @Override
@@ -250,13 +249,13 @@ public class PawnLogic implements Pawn {
         if (isMoveLeft(currentX, nextX)) {
             if (isEnemyPawnAbove()) {
                 if (!isUnblocked(currentX, nextY, true)) {
-                    if (isUnblockedNortWest())
+                    if (isUnblockedNorthWest())
                         return true;
                 }
             }
             if (isEnemyPawnOnTheLeft()) {
                 if (!isUnblocked(nextX - 1, currentY, true)) {
-                    if (isUnblockedNortWest())
+                    if (isUnblockedNorthWest())
                         return true;
                 }
             }
@@ -265,7 +264,7 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
-    private boolean isUnblockedNortWest() {
+    private boolean isUnblockedNorthWest() {
         return isUnblocked(currentX-1,currentY-2,false)&&isUnblocked(currentX,currentY,true);
     }
 
