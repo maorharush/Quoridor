@@ -59,6 +59,11 @@ public class PawnLogic implements Pawn {
     }
 
     @Override
+    public LogicResult move(Coordinate coordinate) {
+        return move(coordinate.getX(), coordinate.getY());
+    }
+
+    @Override
     public List<Coordinate> getValidMoves() {
         List<Coordinate> potentialMoves = getPotentialsMoves();
         return potentialMoves.stream().filter(potentialMove -> isValidMove(potentialMove.getX(), potentialMove.getY())).collect(Collectors.toList());

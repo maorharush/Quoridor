@@ -1,6 +1,7 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
 import com.harush.zitoon.quoridor.core.model.Coordinate;
+import com.harush.zitoon.quoridor.core.model.LogicResult;
 import com.harush.zitoon.quoridor.core.model.Pawn;
 
 /**
@@ -13,4 +14,5 @@ public class AIPawnComponent extends AbstractPawnComponent {
     public AIPawnComponent(int x, int y, String playerName, Pawn pawn) {
         super(x, y, playerName, pawn);
     }
+
 }

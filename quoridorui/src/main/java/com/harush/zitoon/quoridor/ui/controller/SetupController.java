@@ -94,7 +94,8 @@ public class SetupController extends AbstractController implements Initializable
         Player player1 = new HumanPlayer(humanPlayerName, humanPawnComponent);
 //        Player player2 = new DumbAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
 //        Player player2 = new WantsToWinAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
-        Player player2 = new AlphaBetaAIPlayer(aiPlayerName, gameSession, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+//        Player player2 = new AlphaBetaAIPlayer(aiPlayerName, gameSession, aiPawnComponent, verticalWallComponents, horizontalWallComponents);
+        Player player2 = new MerhavAIPlayer(aiPlayerName, aiPawnComponent, verticalWallComponents, horizontalWallComponents, gameSession);
         players.add(player1);
         players.add(player2);
         return players;
