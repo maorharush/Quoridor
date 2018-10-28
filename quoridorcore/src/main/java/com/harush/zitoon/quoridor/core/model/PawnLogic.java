@@ -190,18 +190,18 @@ public class PawnLogic implements Pawn {
         if (isValidHorizontalMove(currentX, currentY, nextX, nextY)) {
             return true;
         }
-//        if (isValidSouthDiagonalMove(currentX, currentY, nextX, nextY)) {
-//            return true;
-//        }
-//        if (isValidNorthDiagonalMove(currentX, currentY, nextX, nextY)) {
-//            return true;
-//        }
-//        if (isValidEastDiagonalMove(currentX, currentY, nextX, nextY)) {
-//            return true;
-//        }
-//        if (isValidWestDiagonalMove(currentX, currentY, nextX, nextY)) {
-//            return true;
-//        }
+        if (isValidSouthDiagonalMove(currentX, currentY, nextX, nextY)) {
+            return true;
+        }
+        if (isValidNorthDiagonalMove(currentX, currentY, nextX, nextY)) {
+            return true;
+        }
+        if (isValidEastDiagonalMove(currentX, currentY, nextX, nextY)) {
+            return true;
+        }
+        if (isValidWestDiagonalMove(currentX, currentY, nextX, nextY)) {
+            return true;
+        }
 
         return false;
     }
@@ -282,11 +282,6 @@ public class PawnLogic implements Pawn {
         return isUnblocked(currentX, currentY, false) && isUnblocked(currentX, currentY, true);
     }
 
-    private boolean isEnemyPawnAbove() {
-
-        return isSpecialJump(currentX, currentY - 1) || isSpecialJump(currentX + 1, currentY);
-    }
-
     private boolean isValidSouthDiagonalMove(int currentX, int currentY, int nextX, int nextY) {
         if (isMoveDown(currentY, nextY)) {
             if (isValidSouthEast(currentX, currentY, nextX, nextY)) {
@@ -354,16 +349,33 @@ public class PawnLogic implements Pawn {
         return false;
     }
 
+    private boolean isEnemyPawnAbove() {
+        if (!isOffBoard(currentX, currentY - 1)) {
+            return isSpecialJump(currentX, currentY - 1);
+        }
+        return false;
+    }
+
     private boolean isEnemyPawnOnTheLeft() {
-        return isSpecialJump(currentX - 1, currentY);
+        if (!isOffBoard(currentX - 1, currentY)) {
+            return isSpecialJump(currentX - 1, currentY);
+        }
+        return true;
     }
 
     private boolean isEnemyPawnOnTheRight() {
-        return isSpecialJump(currentX + 1, currentY);
+        if (!isOffBoard(currentX + 1, currentY)) {
+            return isSpecialJump(currentX + 1, currentY);
+        }
+
+        return false;
     }
 
     private boolean isEnemyPawnBelow() {
-        return isSpecialJump(currentX, currentY + 1);
+        if (!isOffBoard(currentX, currentY + 1)) {
+            return isSpecialJump(currentX, currentY + 1);
+        }
+        return false;
     }
 
     private Boolean isValidHorizontalMove(int currentX, int currentY, int nextX, int nextY) {
