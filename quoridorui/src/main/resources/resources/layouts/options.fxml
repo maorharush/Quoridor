@@ -47,7 +47,7 @@
                         </Text>
                         <Text accessibleText="Whether to show help when moving pawn" fill="#b2acac" layoutX="499.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ghost Trail" />
                         <Text accessibleText="The number of walls to be available per player" layoutX="172.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of Walls" />
-                        <Text accessibleText="Whether to show names aboves pawns" layoutX="322.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show Name Labels" />
+                        <Text accessibleText="Whether to show names above pawns" layoutX="322.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show Name Labels" />
                         <CheckBox fx:id="indicateLabel" layoutX="300.0" layoutY="143.0" mnemonicParsing="false" selected="true" text="Enabled" />
                         <CheckBox disable="true" layoutX="495.0" layoutY="136.0" mnemonicParsing="false" text="Enabled" />
                         <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="14.0" layoutY="237.0" pickOnBounds="true" preserveRatio="true">
