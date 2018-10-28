@@ -34,7 +34,7 @@ public class PopulateBoardUtilImpl implements PopulateBoardUtil {
     @Override
     public void populateBoardWithWalls(Board board, List<PlayerHistory> playerHistories) {
         List<WallData> wallData = playerHistories.stream().
-                filter(playerHistory -> playerHistory.getWallPlacements() != null).
+                filter(playerHistory -> playerHistory.getWallPlacements() != null).     //null? not -1?
                 flatMap(playerHistory -> playerHistory.getWallPlacements().stream())
                 .collect(Collectors.toList());
 

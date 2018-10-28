@@ -1,5 +1,7 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.model.WinnerDecider;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

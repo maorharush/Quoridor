@@ -30,8 +30,8 @@ public class PlayerAction2GameRecDBOConverterImpl implements PlayerAction2GameRe
             gameRecord.setWall_y(playerAction.getY());
             gameRecord.setPawn_x(-1);
             gameRecord.setPawn_y(-1);
-            gameRecord.setFence_orien(playerAction.isHorizontal() ? 'h' : 'v');
-            gameRecord.setIs_first(playerAction.isFirst() ? 1 : 0);
+            gameRecord.setFence_orien(playerAction.getIsHorizontal() ? 'h' : 'v');
+            gameRecord.setIs_first(playerAction.getIsFirst() ? 1 : 0);
         }
         return gameRecord;
     }

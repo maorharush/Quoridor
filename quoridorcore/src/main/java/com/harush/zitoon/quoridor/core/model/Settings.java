@@ -56,7 +56,7 @@ public class Settings {
 		setBoardHeight(9);
 		setBoardWidth(9);
 		//Set tile size
-		setTileSize(50);			
+		setTileSize(50);
 	}
 	
 	/**

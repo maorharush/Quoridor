@@ -16,5 +16,9 @@
             <groupId>com.harush.zitoon</groupId>
             <artifactId>quoridor-core</artifactId>
         </dependency>
+        <dependency>
+        <groupId>com.jfoenix</groupId>
+        <artifactId>jfoenix</artifactId>
+    </dependency>
     </dependencies>
 </project>

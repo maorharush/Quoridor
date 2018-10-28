@@ -1,5 +1,7 @@
 package com.harush.zitoon.quoridor.core.model;
 
+import com.harush.zitoon.quoridor.core.model.Wall;
+
 /**
  * 
  * Represents various statistics within the game.
