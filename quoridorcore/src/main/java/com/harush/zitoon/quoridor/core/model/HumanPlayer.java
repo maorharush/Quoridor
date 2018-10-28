@@ -19,5 +19,8 @@ public class HumanPlayer extends Player {
 		System.out.println(String.format("Waiting for human player %s's input...", getName()));
 	}
 
-
+	@Override
+	public String toString() {
+		return "HumanPlayer{}";
+	}
 }

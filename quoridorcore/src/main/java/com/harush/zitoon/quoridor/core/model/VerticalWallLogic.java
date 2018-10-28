@@ -1,6 +1,6 @@
 package com.harush.zitoon.quoridor.core.model;
 
-public class VerticalWallLogic implements Wall {
+public class VerticalWallLogic implements Wall{
 
     private GameSession gameSession;
 
@@ -36,27 +36,43 @@ public class VerticalWallLogic implements Wall {
         int nextWallY = currentY + 1;
         Player currentPlayer = gameSession.getCurrentPlayer();
         String currentPlayerName = currentPlayer.getName();
-
-        LogicResult validationResult = validateWallPlacement();
-        if (!validationResult.isSuccess()) {
-            return validationResult;
+        WinnerDecider winnerDecider = new WinnerDeciderLogic();
+        WallMoveValidatorImpl wallMoveValidator = new WallMoveValidatorImpl(gameSession, new PathClearanceValidatorImpl(winnerDecider));
+        if (currentX == width || nextWallY == height) {
+            return new LogicResult(false, "A vertical wall cannot be placed at the very top of the board");
         }
 
-        board.setWall(currentX, currentY, false, true, currentPlayer);
-        System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
-
-        if (currentX < width) {
-            board.setWall(currentX, nextWallY, false, false, currentPlayer);
-            System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, currentX, nextWallY));
+        if (gameSession.getBoard().containsWall(currentX, currentY, false) ||
+                gameSession.getBoard().containsWall(currentX, nextWallY, false)) {
+            return new LogicResult(false, "You cannot place a wall here.");
         }
-        currentPlayer.getStatistics().incrementWallsUsed();
-        currentPlayer.decrementWalls();
 
-        PlayerAction playerAction = new PlayerAction(currentX, currentY, false, true, currentPlayer);
-        gameSession.updateTurn(playerAction);
+        if (currentPlayer.getNumWalls() == 0) {
+            return new LogicResult(false, "You do not have any walls left.");
+        }
+            LogicResult validationResult = validateWallPlacement();
+            if (!validationResult.isSuccess()) {
+                return validationResult;
+            }
 
-        return new LogicResult(true);
-    }
+            gameSession.getBoard().setWall(currentX, currentY, false, true, currentPlayer);
+            System.out.println(String.format("1. %s placed wall at (%d,%d)", currentPlayerName, currentX, currentY));
+            board.setWall(currentX, currentY, false, true, currentPlayer);
+
+            if (currentX < width) {
+                board.setWall(currentX, nextWallY, false, false, currentPlayer);
+                System.out.println(String.format("2. %s placed wall at (%d,%d)", currentPlayerName, currentX, nextWallY));
+            }
+            currentPlayer.getStatistics().incrementWallsUsed();
+            currentPlayer.decrementWalls();
+
+            PlayerAction playerAction = new PlayerAction(currentX, currentY, false, true, currentPlayer);
+            gameSession.updateTurn(playerAction);
+
+            return new LogicResult(true);
+        }
+
+
 
     @Override
     public LogicResult validateWallPlacement() {

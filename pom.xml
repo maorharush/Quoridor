@@ -20,6 +20,7 @@
         <mockito.version>1.9.5</mockito.version>
         <com.jfoenix.version>8.0.4</com.jfoenix.version>
         <guava.version>26.0-jre</guava.version>
+
     </properties>
 
     <dependencyManagement>
@@ -64,6 +65,11 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>uk.com.robust-it</groupId>
+                <artifactId>cloning</artifactId>
+                <version>1.9.10</version>
             </dependency>
             <dependency>
                 <groupId>com.jfoenix</groupId>

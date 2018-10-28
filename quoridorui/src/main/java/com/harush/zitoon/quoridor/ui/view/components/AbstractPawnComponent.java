@@ -143,6 +143,11 @@ public abstract class AbstractPawnComponent extends StackPane implements Pawn {
         pawn.setCurrentCoordinate(currentCoordinate);
     }
 
+    @Override
+    public void setBoard(Board board) {
+        pawn.setBoard(board);
+    }
+
     private void drawPawn() {
         StackPane pane = new StackPane();
         pane.setLayoutX(currentX-10);

@@ -26,4 +26,6 @@ public interface Pawn {
     void setInitialCoordinate(Coordinate initialCoordinate);
 
     void setCurrentCoordinate(Coordinate currentCoordinate);
+
+    void setBoard(Board board);
 }

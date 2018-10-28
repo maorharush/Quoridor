@@ -92,5 +92,10 @@ public class PawnCloneHandler implements CloneHandler<Pawn> {
             currentX = currentCoordinate.getX();
             currentY = currentCoordinate.getY();
         }
+
+        @Override
+        public void setBoard(Board board) {
+
+        }
     }
 }
