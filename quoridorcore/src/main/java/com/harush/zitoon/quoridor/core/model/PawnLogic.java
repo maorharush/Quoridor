@@ -190,18 +190,18 @@ public class PawnLogic implements Pawn {
         if (isValidHorizontalMove(currentX, currentY, nextX, nextY)) {
             return true;
         }
-        if (isValidSouthDiagonalMove(currentX, currentY, nextX, nextY)) {
-            return true;
-        }
-        if (isValidNorthDiagonalMove(currentX, currentY, nextX, nextY)) {
-            return true;
-        }
-        if (isValidEastDiagonalMove(currentX, currentY, nextX, nextY)) {
-            return true;
-        }
-        if (isValidWestDiagonalMove(currentX, currentY, nextX, nextY)) {
-            return true;
-        }
+//        if (isValidSouthDiagonalMove(currentX, currentY, nextX, nextY)) {
+//            return true;
+//        }
+//        if (isValidNorthDiagonalMove(currentX, currentY, nextX, nextY)) {
+//            return true;
+//        }
+//        if (isValidEastDiagonalMove(currentX, currentY, nextX, nextY)) {
+//            return true;
+//        }
+//        if (isValidWestDiagonalMove(currentX, currentY, nextX, nextY)) {
+//            return true;
+//        }
 
         return false;
     }
