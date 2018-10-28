@@ -15,8 +15,8 @@ public class TileComponent extends Rectangle {
 	public TileComponent(int x, int y) {
 		setWidth(MainGame.TILE_SIZE);
 		setHeight(MainGame.TILE_SIZE);
-		relocate(x * MainGame.TILE_SIZE, y * MainGame.TILE_SIZE);
-		setFill(Color.valueOf("#ffffff"));
+		relocate(x * MainGame.TILE_SIZE+3, y * MainGame.TILE_SIZE+3);
+		setFill(Color.valueOf("#663813"));
 	}
 	
 }

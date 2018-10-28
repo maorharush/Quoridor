@@ -28,7 +28,7 @@ public class PlayerAction {
         this.isFirst = isFirst;
     }
 
-    public boolean isFirst() {
+    public boolean getIsFirst() {
         return isFirst;
     }
 
@@ -52,7 +52,7 @@ public class PlayerAction {
         this.player = player;
     }
 
-    public boolean isHorizontal() {
+    public boolean getIsHorizontal() {
         return isHorizontal;
     }
 
@@ -83,8 +83,8 @@ public class PlayerAction {
                 "playerActionType=" + playerActionType +
                 ", x=" + x +
                 ", y=" + y +
-                ", isHorizontal=" + isHorizontal +
-                ", isFirst=" + isFirst +
+                ", getIsHorizontal=" + isHorizontal +
+                ", setIsFirst=" + isFirst +
                 ", player=" + player +
                 '}';
     }

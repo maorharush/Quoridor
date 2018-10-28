@@ -23,6 +23,11 @@ public class MainMenu extends Application implements GameScreen {
 			Parent root = FXMLLoader.load(getClass().getResource("/resources/layouts/mainmenu.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setTitle("Quoridor");
+
+			//theres a method of LoadScrean, why dont we use it?
+			primaryStage.setFullScreenExitHint("");
+			primaryStage.setFullScreen(true);
+
 			primaryStage.getIcons().add(new Image("resources/icons/favicon.png"));
 			primaryStage.setScene(scene);
 			primaryStage.show();

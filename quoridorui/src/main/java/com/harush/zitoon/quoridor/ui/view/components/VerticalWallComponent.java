@@ -1,5 +1,10 @@
 package com.harush.zitoon.quoridor.ui.view.components;
 
+import com.harush.zitoon.quoridor.core.model.GameSession;
+import com.harush.zitoon.quoridor.core.model.LogicResult;
+import com.harush.zitoon.quoridor.core.model.Settings;
+import com.harush.zitoon.quoridor.core.model.Wall;
+import com.harush.zitoon.quoridor.core.model.Settings;
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.task.PlaceWallTask;
@@ -42,7 +47,7 @@ public class VerticalWallComponent extends Rectangle implements Wall {
 
         setOnMouseEntered(e -> setWallColor(Color.valueOf(gameSession.getCurrentPlayer().getPawn().getType().getHexColor())));
 
-        setOnMouseExited(e -> setWallColor(Color.rgb(153, 217, 234, 0.8)));
+		setOnMouseExited(e -> setWallColor(Color.valueOf("#45260D")));
 
         setOnMousePressed(this::onMousePressed);
 
@@ -105,7 +110,8 @@ public class VerticalWallComponent extends Rectangle implements Wall {
         setWidth((double)MainGame.TILE_SIZE / 10);
         setHeight((double)MainGame.TILE_SIZE / 5 + 40);
         relocate((x * MainGame.TILE_SIZE) + 45, y * MainGame.TILE_SIZE);
-        setFill(Color.rgb(153, 217, 234, 0.8));
+        setFill(Color.valueOf("#45260D"));
+
     }
 }
 

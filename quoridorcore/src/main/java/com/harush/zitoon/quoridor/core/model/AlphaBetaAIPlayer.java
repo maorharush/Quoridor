@@ -58,7 +58,7 @@ public class AlphaBetaAIPlayer extends Player {
     private void makeChosenMove(PlayerAction maxMove) {
         if (maxMove.getPlayerActionType().equals(PlayerActionType.MOVE_PAWN)) {
             pawn.move(maxMove.getX(), maxMove.getY());
-        } else if (maxMove.isHorizontal()) {
+        } else if (maxMove.getIsHorizontal()) {
             horizontalWalls[maxMove.getX()][maxMove.getY()].placeWall();
         } else {
             verticalWalls[maxMove.getX()][maxMove.getY()].placeWall();
@@ -156,7 +156,7 @@ public class AlphaBetaAIPlayer extends Player {
         if (potentialMove.getPlayerActionType().equals(PlayerActionType.MOVE_PAWN)) {
             boardClone.movePawn(pawn.getX(), pawn.getY(), potentialMove.getX(), potentialMove.getY());
         } else if (potentialMove.getPlayer().getNumWalls() > 0) {
-            if (potentialMove.isHorizontal()) {
+            if (potentialMove.getIsHorizontal()) {
                 potentialMove.getPlayer().decrementWalls();
                 boardClone.setWall(potentialMove.getX(), potentialMove.getY(), true, true, potentialMove.getPlayer());
             } else {

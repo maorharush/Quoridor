@@ -8,6 +8,19 @@ import com.harush.zitoon.quoridor.core.dao.dbo.converter.PlayerAction2GameRecDBO
 import com.harush.zitoon.quoridor.core.model.*;
 import com.harush.zitoon.quoridor.ui.view.MainGame;
 import com.harush.zitoon.quoridor.ui.view.components.*;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,44 +29,15 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.util.Pair;
-
 /**
  * Handles setup actions
  */
 public class SetupController extends AbstractController implements Initializable {
 
     @FXML
-    private TableView<Player> multiPlayerTable;
-    @FXML
-    private TableColumn<Player, String> nameColumn;
-    @FXML
-    private TableColumn<Player, String> pawnColumn;
-    @FXML
-    private AnchorPane multiPlayerPane;
-    @FXML
-    private Button addPlayerBtn;
-    @FXML
-    private Button playBtn;
+    private BorderPane gameStage;
     private int width = Settings.getSingleton().getBoardWidth();
     private int height = Settings.getSingleton().getBoardHeight();
-    private Color[] defaultColours;
-    private int playerIndex;
     private Board board = new Board(Settings.getSingleton().getBoardHeight(), Settings.getSingleton().getBoardWidth());
     private PawnType[] pawnTypes = PawnType.values();
     private DAOFactory daoFactory = DAOFactoryImpl.instance();
@@ -61,11 +45,12 @@ public class SetupController extends AbstractController implements Initializable
     private GameSession gameSession = new GameSession(gameDAO.getLastGameID() + 1, board, Settings.getSingleton().getRuleType(), daoFactory, new WinnerDeciderLogic());
     private VerticalWallComponent[][] verticalWallComponents = makeVerticalWallComponents();
     private HorizontalWallComponent[][] horizontalWallComponents = makeHorizontalWallComponents();
-    private List<AbstractPawnComponent> multiPlayerPawnComponents = new ArrayList<>();
-    private VerticalWallComponent[][] multiPlayerVerticalWallComponents = makeVerticalWallComponents();
-    private HorizontalWallComponent[][] multiPlayerHorizontalWallComponents = makeHorizontalWallComponents();
     private int[] xStartingPositions = getStartingPositionsX(width);
     private int[] yStartingPositions = getStartingPositionsY(height, width);
+    @FXML
+    private Button backBtn;
+    @FXML
+    private Button on1PlayerButton;
     private GamePersistenceService gamePersistenceService;
     private PopulateBoardUtil populateBoardUtil = new PopulateBoardUtilImpl();
 
@@ -81,87 +66,16 @@ public class SetupController extends AbstractController implements Initializable
      */
     @FXML
     private void onBackBtn(ActionEvent event) {
-        Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
+        Stage stage = (Stage) backBtn.getScene().getWindow();
+
         loadScreen(stage, "mainmenu.fxml");
-    }
-
-    /**
-     * Action triggered by pressing the play button.
-     *
-     * @param event the action
-     */
-    @FXML
-    private void onPlayBtn(ActionEvent event) {
-        setupNewGame(multiPlayerTable.getItems(), multiPlayerVerticalWallComponents, multiPlayerHorizontalWallComponents);
-    }
-
-    /**
-     * Action triggered by pressing the add player button. Adapted from <a href="http://code.makery.ch/blog/javafx-dialogs-official/">Makery</a>.
-     *
-     * @param event the action
-     */
-    @FXML
-    private void onAddPlayerBtn(ActionEvent event) {
-        Dialog<Pair<String, String>> popup = new Dialog<>();
-        popup.setTitle("Add a Player");
-        popup.setHeaderText("Add a player to this game session");
-
-        ButtonType buttonType = new ButtonType("Add Player", ButtonData.OK_DONE);
-        popup.getDialogPane().getButtonTypes().addAll(buttonType, ButtonType.CANCEL);
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
-
-        TextField name = new TextField();
-        name.setPromptText("Name");
-        ColorPicker colorPicker = new ColorPicker(defaultColours[playerIndex]);
-        colorPicker.setPromptText("Pawn colour");
-
-        grid.add(new Label("Name:"), 0, 0);
-        grid.add(name, 1, 0);
-        grid.add(new Label("Pawn colour:"), 0, 1);
-        grid.add(colorPicker, 1, 1);
-
-        Node addButton = popup.getDialogPane().lookupButton(buttonType);
-        addButton.setDisable(true);
-
-        name.textProperty().addListener((observable, oldValue, newValue) -> addButton.setDisable(newValue.trim().isEmpty()));
-
-        popup.getDialogPane().setContent(grid);
-
-        Platform.runLater(name::requestFocus);
-        popup.showAndWait();
-        String hexColor = convertColour(colorPicker);
-        System.out.println(colorPicker.getValue().toString());
-        String playerName = name.getText();
-
-        if (!playerName.isEmpty() && !hexColor.isEmpty()) {
-            Pawn pawn = makePawn(PawnType.getByHexColor(hexColor));
-            HumanPawnComponent humanPawnComponent = makeHumanPawnComponent(xStartingPositions[playerIndex], yStartingPositions[playerIndex], playerName, pawn);
-            multiPlayerPawnComponents.add(humanPawnComponent);
-
-            Player player = new HumanPlayer(playerName, pawn);
-            System.out.println(hexColor);
-            multiPlayerTable.getItems().add(player);
-            playerIndex++;
-        }
-        if (multiPlayerTable.getItems().size() == GameSession.MAX_PLAYERS) {
-            addPlayerBtn.setDisable(true);
-        }
-
-        if ((multiPlayerTable.getItems().size() % 2 == 0) && (multiPlayerTable.getItems().size() != 0)) {
-            playBtn.setDisable(false);
-        } else {
-            playBtn.setDisable(true);
-        }
     }
 
     @FXML
     private void on1PlayerBtn(ActionEvent actionEvent) {
         TextInputDialog textInputDialog = getInsertPlayerNameTextInputDialog(1);
 
+        textInputDialog.initOwner(on1PlayerButton.getScene().getWindow());
         Optional<String> optionalPlayerName = textInputDialog.showAndWait();
         String humanPlayerName = optionalPlayerName.orElse("Player");
         String aiPlayerName = "Wall-e";
@@ -229,19 +143,10 @@ public class SetupController extends AbstractController implements Initializable
         return horizontalWalls;
     }
 
-    /**
-     * Sets up a game with {@link Player players}
-     *
-     * @param players the players
-     */
-    private void setupNewGame(List<Player> players, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
-        setupNewGameWithWallComponents(players, verticalWallComponents, horizontalWallComponents);
-    }
-
     private void setupNewGameWithWallComponents(List<Player> players, VerticalWallComponent[][] verticalWallComponents, HorizontalWallComponent[][] horizontalWallComponents) {
         gamePersistenceService.initGamePersistence(players, gameSession);
         setupGameSession(players);
-        Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
+        Stage stage = (Stage) gameStage.getScene().getWindow();
         centerStage(stage, width, height);
         List<AbstractPawnComponent> pawnComponents = players.stream().map(player -> (AbstractPawnComponent) player.getPawn()).collect(Collectors.toList());
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
@@ -257,22 +162,9 @@ public class SetupController extends AbstractController implements Initializable
         setupNewGameWithWallComponents(players, verticalWallComponents, horizontalWallComponents);
     }
 
-    /**
-     * Converts a {@link ColorPicker} value to hex.
-     *
-     * @param colourPicker the {@link ColorPicker}
-     * @return the converted colour
-     */
-    private String convertColour(ColorPicker colourPicker) {
-        int green = (int) (colourPicker.getValue().getGreen() * 255);
-        int blue = (int) (colourPicker.getValue().getBlue() * 255);
-        int red = (int) (colourPicker.getValue().getRed() * 255);
-        return "#" + Integer.toHexString(red) + Integer.toHexString(green) + Integer.toHexString(blue);
-    }
-
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        doStuffWeWillProbablyDelete();
+
     }
 
     @Override
@@ -361,7 +253,7 @@ public class SetupController extends AbstractController implements Initializable
 
     private void setupSavedGameUI(List<Player> players, List<PlayerHistory> playerHistories) {
         placeWallsInPreviousLocation(players, playerHistories);
-        Stage stage = (Stage) multiPlayerPane.getScene().getWindow();
+        Stage stage = (Stage) gameStage.getScene().getWindow();
         centerStage(stage, width, height);
         List<AbstractPawnComponent> pawnComponents = players.stream().map(player -> (AbstractPawnComponent) player.getPawn()).collect(Collectors.toList());
         new MainGame(stage, gameSession, pawnComponents, verticalWallComponents, horizontalWallComponents);
@@ -394,6 +286,7 @@ public class SetupController extends AbstractController implements Initializable
     private boolean askUserIfShouldLoadGame() {
         boolean shouldLoadGame = false;
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(gameStage.getScene().getWindow());
         alert.setTitle("Resume previous game");
         alert.setHeaderText("Would you like to resume the previous game?");
         alert.setContentText("A previous game can be resumed.");
@@ -408,26 +301,6 @@ public class SetupController extends AbstractController implements Initializable
             shouldLoadGame = result.get() == buttonTypeYes;
         }
         return shouldLoadGame;
-    }
-
-    private void doStuffWeWillProbablyDelete() {
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        pawnColumn.setCellValueFactory(new PropertyValueFactory<>("pawnColour"));
-        pawnColumn.setCellFactory(column -> new TableCell<Player, String>() {
-            @Override
-            public void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : getString());
-                setStyle("-fx-background-color:" + getString() + ";");
-            }
-
-            private String getString() {
-                return getItem() == null ? "" : getItem();
-            }
-        });
-        multiPlayerTable.setPlaceholder(new Label("No players yet"));
-        defaultColours = new Color[]{Color.valueOf("#663366"), Color.valueOf("#b3e6b3"), Color.valueOf("#334db3"), Color.valueOf("#ff6666")};
-        playerIndex = 0;
     }
 
     private void setupGameSession(List<Player> players) {
@@ -448,6 +321,7 @@ public class SetupController extends AbstractController implements Initializable
 
     private TextInputDialog getInsertPlayerNameTextInputDialog(int playerNumber) {
         TextInputDialog textInputDialog = new TextInputDialog("Player");
+        textInputDialog.initOwner(gameStage.getScene().getWindow());
         textInputDialog.setTitle("Insert player name");
         textInputDialog.setHeaderText(String.format("Player %d's Name:", playerNumber));
         textInputDialog.getDialogPane().getButtonTypes().remove(ButtonType.CANCEL);

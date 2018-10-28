@@ -17,7 +17,7 @@ import java.util.Optional;
 public class MainMenuController extends AbstractController {
 	
 	@FXML
-	private Button exitButton;
+	private Button button;
 	
 	/**
 	 * Handles action triggered by the play button being pressed.
@@ -25,7 +25,9 @@ public class MainMenuController extends AbstractController {
 	 */
     @FXML 
     private void onPlayBtnPress(ActionEvent event) {
-    	Stage stage = (Stage) exitButton.getScene().getWindow();
+    	Stage stage = (Stage) button.getScene().getWindow();
+
+
     	loadScreen(stage, "setup.fxml");
     }
     
@@ -35,7 +37,7 @@ public class MainMenuController extends AbstractController {
      */
     @FXML 
     private void onHelpBtnPress(ActionEvent event) {
-    	Stage stage = (Stage) exitButton.getScene().getWindow();
+    	Stage stage = (Stage) button.getScene().getWindow();
     	loadScreen(stage, "help.fxml");
     }  
     
@@ -45,7 +47,7 @@ public class MainMenuController extends AbstractController {
      */    
     @FXML 
     private void onSettingBtnPress(ActionEvent event) {
-    	Stage stage = (Stage) exitButton.getScene().getWindow();
+    	Stage stage = (Stage) button.getScene().getWindow();
     	loadScreen(stage, "options.fxml");
     }
     
@@ -56,18 +58,21 @@ public class MainMenuController extends AbstractController {
     @FXML 
     private void onExitBtnPress(ActionEvent event) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initOwner(button.getScene().getWindow());
         alert.setTitle("Exit Confirmation");
         alert.setHeaderText("Exit Quoridor");
         alert.setContentText("Are you sure you want to exit the game?");  	
         
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get() == ButtonType.OK) {
-        	Stage stage = (Stage) exitButton.getScene().getWindow();
+        	Stage stage = (Stage) button.getScene().getWindow();
         	stage.close();
         	return;
         } else {
         	//empty to handle normal closing
         }
+
+
 
     }
 }

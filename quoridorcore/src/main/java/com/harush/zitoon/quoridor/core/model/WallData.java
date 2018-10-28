@@ -8,7 +8,7 @@ import java.util.Objects;
  * @version 0.2
  */
 public class WallData {
-	
+
 	private int x;
 	private int y;
 	private boolean isHorizontal;
@@ -52,7 +52,7 @@ public class WallData {
 		return isHorizontal;
 	}
 
-	public boolean isFirst() {
+	public boolean setIsFirst() {
 		return isFirst;
 	}
 

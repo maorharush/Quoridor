@@ -18,6 +18,7 @@
         <mysql.connector.version>8.0.11</mysql.connector.version>
         <core.version>1.0-SNAPSHOT</core.version>
         <mockito.version>1.9.5</mockito.version>
+        <com.jfoenix.version>8.0.4</com.jfoenix.version>
         <guava.version>26.0-jre</guava.version>
     </properties>
 
@@ -64,6 +65,12 @@
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.jfoenix</groupId>
+                <artifactId>jfoenix</artifactId>
+                <version>${com.jfoenix.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
